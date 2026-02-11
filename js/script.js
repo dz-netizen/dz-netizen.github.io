@@ -135,4 +135,21 @@
 
     $container.removeClass('mobile-nav-on');
   });
+
+  // Logo typing effect (typewriter)
+  var $logo = $('#logo[data-typing="true"]');
+  if ($logo.length){
+    var fullText = $logo.attr('data-text') || $logo.text();
+    var index = 0;
+
+    $logo.text('');
+
+    var typeNext = function(){
+      index++;
+      $logo.text(fullText.slice(0, index));
+      if (index < fullText.length) setTimeout(typeNext, 120);
+    };
+
+    setTimeout(typeNext, 200);
+  }
 })(jQuery);
