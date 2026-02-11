@@ -152,4 +152,38 @@
 
     setTimeout(typeNext, 200);
   }
+
+  // Post TOC (left panel) - build from headings in article body
+  var $postToc = $('#post-toc');
+  if ($postToc.length){
+    var $nav = $postToc.find('.post-toc-nav');
+    var $article = $('.article-entry');
+    var $headings = $article.find('h2, h3, h4');
+
+    if ($headings.length){
+      var $list = $('<ul></ul>');
+      $headings.each(function(){
+        var $h = $(this);
+        var id = $h.attr('id');
+        if (!id) return;
+
+        var level = parseInt(this.tagName.substring(1), 10);
+        var text = $h.text().trim();
+        if (!text) return;
+
+        var $li = $('<li></li>').addClass('level-' + level);
+        var $a = $('<a></a>').attr('href', '#' + id).text(text);
+        $li.append($a);
+        $list.append($li);
+      });
+
+      if ($list.children().length){
+        $nav.empty().append($list);
+      } else {
+        $postToc.hide();
+      }
+    } else {
+      $postToc.hide();
+    }
+  }
 })(jQuery);
