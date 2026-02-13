@@ -161,24 +161,90 @@
     var $headings = $article.find('h2, h3, h4');
 
     if ($headings.length){
-      var $list = $('<ul></ul>');
+      // Build nested list structure by heading level
+      var levels = [];
+      $headings.each(function(){
+        var level = parseInt(this.tagName.substring(1), 10);
+        if (!isNaN(level)) levels.push(level);
+      });
+
+      var baseLevel = levels.length ? Math.min.apply(null, levels) : 2;
+      var $root = $('<ul></ul>');
+      // Stack of <ul> elements by normalized heading level.
+      // normalizedLevel = headingLevel - baseLevel + 1 (so baseLevel becomes level 1)
+      var ulStack = [$root];
+
+      var ensureChildList = function($parentLi){
+        if (!$parentLi || !$parentLi.length) return null;
+        var $child = $parentLi.children('ul').first();
+        if (!$child.length) $child = $('<ul></ul>').appendTo($parentLi);
+        return $child;
+      };
+
       $headings.each(function(){
         var $h = $(this);
         var id = $h.attr('id');
         if (!id) return;
 
         var level = parseInt(this.tagName.substring(1), 10);
+        if (isNaN(level)) return;
+
         var text = $h.text().trim();
         if (!text) return;
 
-        var $li = $('<li></li>').addClass('level-' + level);
+        var normalizedLevel = level - baseLevel + 1;
+        if (normalizedLevel < 1) normalizedLevel = 1;
+
+        // Move up to the correct list for this level
+        while (ulStack.length > normalizedLevel){
+          ulStack.pop();
+        }
+
+        // Move down (create nested lists) if needed
+        while (ulStack.length < normalizedLevel){
+          var $parentUl = ulStack[ulStack.length - 1];
+          var $parentLi = $parentUl.children('li').last();
+          if (!$parentLi.length) break;
+
+          var $childUl = ensureChildList($parentLi);
+          if (!$childUl) break;
+          ulStack.push($childUl);
+        }
+
+        var $li = $('<li></li>')
+          .addClass('toc-item')
+          .addClass('level-' + level)
+          .attr('data-level', level);
+
         var $a = $('<a></a>').attr('href', '#' + id).text(text);
         $li.append($a);
-        $list.append($li);
+        ulStack[ulStack.length - 1].append($li);
       });
 
-      if ($list.children().length){
-        $nav.empty().append($list);
+      // Add toggle buttons for items with children
+      $root.find('li').each(function(){
+        var $li = $(this);
+        var $childUl = $li.children('ul');
+        if (!$childUl.length) return;
+
+        var $toggle = $('<button type="button" class="toc-toggle" aria-expanded="true" aria-label="Toggle section"></button>')
+          .append('<span class="fa fa-chevron-right" aria-hidden="true"></span>');
+
+        $li.prepend($toggle);
+      });
+
+      if ($root.children().length){
+        $nav.empty().append($root);
+
+        // Toggle collapse/expand
+        $nav.off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          var $btn = $(this);
+          var $li = $btn.closest('li');
+          var isCollapsed = $li.toggleClass('is-collapsed').hasClass('is-collapsed');
+          $btn.attr('aria-expanded', (!isCollapsed).toString());
+        });
       } else {
         $postToc.hide();
       }

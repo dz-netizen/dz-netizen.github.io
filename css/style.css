@@ -1287,17 +1287,47 @@ pre .javascript .function {
 .post-toc-nav li {
   margin: 6px 0;
 }
+.post-toc-nav li > ul {
+  margin: 6px 0 0;
+  padding-left: 12px;
+}
+.post-toc-nav li.is-collapsed > ul {
+  display: none;
+}
 .post-toc-nav a {
   text-decoration: none;
 }
 .post-toc-nav a:hover {
   text-decoration: underline;
 }
-.post-toc-nav .level-3 {
-  margin-left: 12px;
+.post-toc-nav .toc-toggle {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin-right: 6px;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.75;
 }
-.post-toc-nav .level-4 {
-  margin-left: 24px;
+.post-toc-nav .toc-toggle:hover {
+  opacity: 1;
+}
+.post-toc-nav .toc-toggle .fa {
+  display: inline-block;
+  font-size: 12px;
+  -webkit-transition: -webkit-transform 0.15s ease;
+  -moz-transition: -moz-transform 0.15s ease;
+  -ms-transition: -ms-transform 0.15s ease;
+  transition: transform 0.15s ease;
+}
+.post-toc-nav li.is-collapsed > .toc-toggle .fa {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 @media screen and (min-width: 768px) {
   #sidebar {

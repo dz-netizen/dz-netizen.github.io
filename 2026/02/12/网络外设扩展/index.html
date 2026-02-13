@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>网络外设扩展 | DZ_Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本项目旨在基于开源高性能处理器香山“昆明湖”的FPGA原型验证环境实现网络外设扩展。在保持系统原有功能的前提下，增加Ethernet模块及相应软件驱动&#x2F;协议栈支持，使系统能够通过网络收发数据，与外部设备（如PC、交换机）交互，从而满足复杂系统级测试、远程控制及网络终端应用需求。   如图所示，Shell基本功能及PHY已具备，本项目的核心工作即为在Shell中添加Ethernet功能模块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络外设扩展">
+<meta property="og:url" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/index.html">
+<meta property="og:site_name" content="DZ_Blog">
+<meta property="og:description" content="本项目旨在基于开源高性能处理器香山“昆明湖”的FPGA原型验证环境实现网络外设扩展。在保持系统原有功能的前提下，增加Ethernet模块及相应软件驱动&#x2F;协议栈支持，使系统能够通过网络收发数据，与外部设备（如PC、交换机）交互，从而满足复杂系统级测试、远程控制及网络终端应用需求。   如图所示，Shell基本功能及PHY已具备，本项目的核心工作即为在Shell中添加Ethernet功能模块">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/ETH_shell.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/xdma.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/open_hw_manager.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/ila_trigger.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/single_freq_xdma.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/ila_1freq.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/div_freq.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/tri_axi.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/axi_addr.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/vcu128_design.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/vu19p_bd.png">
+<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/license_error.png">
+<meta property="article:published_time" content="2026-02-12T07:23:18.000Z">
+<meta property="article:modified_time" content="2026-02-13T07:50:58.351Z">
+<meta property="article:author" content="Zhang Chaochao">
+<meta property="article:tag" content="Ethernet">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/ETH_shell.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="-wrap">
+        <a href="/" id="logo" data-typing="true" data-text="爱你的命运_">爱你的命运_</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dz-netizen.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      
+  <aside id="post-toc" aria-label="Table of contents">
+    <div class="widget-wrap">
+      <h3 class="widget-title">目录</h3>
+      <div class="widget widget-toc">
+        <nav class="post-toc-nav"></nav>
+      </div>
+    </div>
+  </aside>
+
+
+      <div class="outer">
+        <section id="main"><article id="post-网络外设扩展" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/" class="article-date">
+  <time class="dt-published" datetime="2026-02-12T07:23:18.000Z" itemprop="datePublished">2026-02-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/">科研实践</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      网络外设扩展
+    </h1>
+  
+
+      </header>
+    
+    
+    
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>本项目旨在基于开源高性能处理器香山“昆明湖”的FPGA原型验证环境实现网络外设扩展。在保持系统原有功能的前提下，增加Ethernet模块及相应软件驱动&#x2F;协议栈支持，使系统能够通过网络收发数据，与外部设备（如PC、交换机）交互，从而满足复杂系统级测试、远程控制及网络终端应用需求。</p>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/ETH_shell.png" class="" title="网络外设扩展">
+
+<p>如图所示，Shell基本功能及PHY已具备，本项目的核心工作即为在Shell中添加Ethernet功能模块实现Role和外部网络设备的数据传输。</p>
+<p>项目进程可以大致分为以下阶段：</p>
+<hr>
+<h2 id="基础知识学习"><a href="#基础知识学习" class="headerlink" title="基础知识学习"></a>基础知识学习</h2><h3 id="vivado使用"><a href="#vivado使用" class="headerlink" title="vivado使用"></a>vivado使用</h3><h4 id="IP-intergrator"><a href="#IP-intergrator" class="headerlink" title="IP intergrator"></a>IP intergrator</h4><h4 id="RTL-Analysis"><a href="#RTL-Analysis" class="headerlink" title="RTL Analysis"></a>RTL Analysis</h4><h4 id="Systhesis"><a href="#Systhesis" class="headerlink" title="Systhesis"></a>Systhesis</h4><h4 id="Generate-Bitstream"><a href="#Generate-Bitstream" class="headerlink" title="Generate Bitstream"></a>Generate Bitstream</h4><h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><h4 id="PHY"><a href="#PHY" class="headerlink" title="PHY"></a>PHY</h4><p>PHY（Physical Layer，物理层）是OSI模型中的第一层，负责在物理介质（如电缆、光纤）上传输和接收原始比特流。</p>
+<h4 id="MAC"><a href="#MAC" class="headerlink" title="MAC"></a>MAC</h4><p>MAC（Media Access Control，媒体访问控制）位于OSI模型的数据链路层（第二层），负责管理数据帧的传输和接收，确保数据在局域网内的有序、无冲突传输。</p>
+<h4 id="SGMI"><a href="#SGMI" class="headerlink" title="SGMI"></a>SGMI</h4><h4 id="GMII"><a href="#GMII" class="headerlink" title="GMII"></a>GMII</h4><p>（Gigabit MII）： GMII 接口向下兼容 MII 接口， 支持 10Mbps、 100Mbps 和 1000Mbps 的操作，数据位宽为 8 位 在 1000Mbps 传输速率下，时钟频率为 125Mhz 在 100Mbps 传输速率下，时钟频率为 25Mhz 在 10Mbps 传输速率下，时钟频率为 2.5Mhz</p>
+<h4 id="SGMII"><a href="#SGMII" class="headerlink" title="SGMII"></a>SGMII</h4><p>SGMII（Serial Gigabit Media Independent Interface）是一种用于千兆以太网的串行接口标准，用于连接MAC层和PHY层，减少引脚数量，提高通信效率。</p>
+<h4 id="RGMII"><a href="#RGMII" class="headerlink" title="RGMII"></a>RGMII</h4><p>（Reduced GMII）： RGMII 是 GMII 的简化版，数据位宽为 4 位 在 1000Mbps 传输速率下，时钟频率为 125Mhz，在时钟的上下沿同时采样数据 在 100Mbps传输速率下，时钟频率为25MHz，为单个时钟沿采样 在 10Mbps传输速率下，时钟频率为2.5MHz，为单个时钟沿采样 在千兆以太网中，常用的接口为 RGMII 和 GMII 接口。</p>
+<h4 id="RMII"><a href="#RMII" class="headerlink" title="RMII"></a>RMII</h4><p>是 Reduced Media Independent Interface 的缩写，中文通常翻译为 简化介质无关接口。</p>
+<p>它是一种用于连接以太网媒体访问控制器（MAC）和物理层（PHY）芯片的接口标准，是IEEE 802.3标准的一部分。</p>
+<h4 id="MDI"><a href="#MDI" class="headerlink" title="MDI"></a>MDI</h4><p>是 Medium Dependent Interface 的缩写，中文通常翻译为 介质相关接口。</p>
+<p>它是 OSI 模型物理层（Layer 1）的一部分，定义了网络设备（如网卡、交换机、集线器）的物理端口如何与特定类型的传输介质（如双绞线、光纤、同轴电缆等）进行连接。</p>
+<h4 id="AXI"><a href="#AXI" class="headerlink" title="AXI"></a>AXI</h4><p>（Advanced eXtensible Interface，高级可扩展接口）是ARM公司提出的AMBA（Advanced Microcontroller Bus Architecture）协议的一部分，是一种面向高性能、高带宽、低延迟的片上总线协议。它被广泛应用于现代SoC（System-on-Chip，片上系统）设计中，以满足复杂多核系统的数据通信需求。以下从定义、特点、核心机制、应用场景和优势等方面为您详细解析AXI协议。</p>
+<h4 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h4><p>是由Xerox公司于20世纪70年代在帕洛阿尔托研究中心（PARC）开发的一种基带<strong>局域网</strong>技术。</p>
+<h4 id="MDIO和MDC"><a href="#MDIO和MDC" class="headerlink" title="MDIO和MDC"></a>MDIO和MDC</h4><p>MDIO全称为”Management Data Input&#x2F;Output”，即管理数据输入输出；而MDC全称为”Management Data Clock”，即管理数据时钟。</p>
+<p>是现代以太网通信中两个重要的信号线，它们共同构成了MDIO（Management Data Input&#x2F;Output）接口，用于MAC（介质访问控制）层与PHY（物理层）之间的管理通信。</p>
+<h4 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h4><p>（Dynamic Host Configuration Protocol，动态主机配置协议）</p>
+<p>通常被应用在大型的局域网络环境中，主要作用是集中的管理、分配IP地址，使网络环境中的主机动态的获得IP地址、Gateway地址、DNS服务器地址等信息，并能够提升地址的使用率。</p>
+<h3 id="xdma（Xilinx-DMA）的使用"><a href="#xdma（Xilinx-DMA）的使用" class="headerlink" title="xdma（Xilinx DMA）的使用"></a>xdma（Xilinx DMA）的使用</h3><p>是 Xilinx提供的一种 基于 PCIe 的高速 DMA 解决方案，常用于 FPGA 与主机之间进行大规模高速数据传输。<br>即 让 FPGA 和 PC 内存之间高速搬运数据的“通道”。</p>
+<p>IP核中部分设置如下：</p>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/xdma.png" class="" title="IP核介绍">
+
+<h3 id="ILA-工具的使用"><a href="#ILA-工具的使用" class="headerlink" title="ILA 工具的使用"></a>ILA 工具的使用</h3><ul>
+<li>在BD设计中添加ILA 对应IP，抓取相应的数据</li>
+<li>在后续过程中会生成对应的.ltx文件</li>
+<li>生成bitstream后进入Open Hardware Manager 进行烧录后重启</li>
+<li>再一次进入Open Hardware Manager</li>
+</ul>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/open_hw_manager.png" class="" title="open_hw_manager">
+
+<ul>
+<li><p>点击specify the probes file and refresh the device添加.ltx文件</p>
+</li>
+<li><p>点击 + 添加trigger并设置触发条件</p>
+</li>
+</ul>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/ila_trigger.png" class="" title="ila_trigger">
+
+<h3 id="Xilinx收费IP核hardware-evaluation-license申请"><a href="#Xilinx收费IP核hardware-evaluation-license申请" class="headerlink" title="Xilinx收费IP核hardware_evaluation license申请"></a>Xilinx收费IP核hardware_evaluation license申请</h3><p>参看博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/zd1314798/article/details/149838003?sharetype=blogdetail&sharerId=149838003&sharerefer=PC&sharesource=zd1314798&spm=1011.2480.3001.8118">apply</a></p>
+<p>补充 IP license的类型说明：</p>
+<p>design_linking：允许客户进行包括时许仿真的各种仿真，但是不能生成bit文件</p>
+<p>hardware_evaluation license：这就是申请的license，允许生成bit文件，但有时间限制，一定时间后不能使用。</p>
+<p>key for product use：购买生成的license，全部功能都可以使用。</p>
+<hr>
+<h2 id="通过XDMA控制多时钟下LED"><a href="#通过XDMA控制多时钟下LED" class="headerlink" title="通过XDMA控制多时钟下LED"></a>通过XDMA控制多时钟下LED</h2><p>在xczu19eg-ffvc1760-2-e芯片上实现xdma_ep模块功能，完成PCIe总线信号与AXI协议的转换，并实现100 MHz与250 MHz时钟域下不同LED灯的控制。此过程帮助熟悉XDMA的使用、ILA调试及多时钟域概念，为后续Ethernet模块调试奠定基础。</p>
+<hr>
+<h3 id="单一时钟实现"><a href="#单一时钟实现" class="headerlink" title="单一时钟实现"></a>单一时钟实现</h3><p>在xczu19eg-ffvc1760-2-e芯片上实现图示模块功能，利用xdma_ep模块实现pcie标准总线信号到axi总线协议信号转变，通过axi_gpio_0 IP核 控制4个LED灯。</p>
+<h4 id="BD设计"><a href="#BD设计" class="headerlink" title="BD设计"></a>BD设计</h4><img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/single_freq_xdma.png" class="" title="单频率控制">
+
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>在服务器上运行设计好的模块，正确控制LED灯。</p>
+<p><strong>流程</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 连接内网</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#检测目标设备是否开机并联网</span></span><br><span class="line">ping 10.128.157.241</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接服务器</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开vivado</span></span><br><span class="line"> /opt/Xilinx_2020.2/Vivado/2020.2/bin/vivado -nolog -nojour</span><br><span class="line"></span><br><span class="line"><span class="comment"># 烧录</span></span><br><span class="line"> open hard ware manager -&gt; open target -&gt; program device -&gt; add bit stream </span><br><span class="line"></span><br><span class="line"><span class="comment"># 终端运行</span></span><br><span class="line"><span class="built_in">sudo</span> reboot <span class="comment">#重启</span></span><br><span class="line"><span class="built_in">sudo</span> insmod xdma.ko <span class="comment"># 加载驱动</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读操作</span></span><br><span class="line"><span class="built_in">sudo</span> ~/proto/pcie-util /dev/xdma0_user <span class="built_in">read</span> 0x00000000</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加-ILA-调试"><a href="#添加-ILA-调试" class="headerlink" title="添加 ILA 调试"></a>添加 ILA 调试</h4><p>实现图示block design的模块，利用ILA抓取M_AXI_LITE以及GPIO数据，进行调试。</p>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/ila_1freq.png" class="" title="ila_single_freq">
+
+<h3 id="分频率GPIO设计"><a href="#分频率GPIO设计" class="headerlink" title="分频率GPIO设计"></a>分频率GPIO设计</h3><p>扩展GPIO，实现不同频率的GPIO控制（100MHz，250MHz）；进行引脚约束。</p>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/div_freq.png" class="" title="分频GPIO BD">
+
+
+<p>板卡号:xczu19eg-ffvc1760-2-e (active)</p>
+<hr>
+<p>基本思路</p>
+<ul>
+<li>添加clock wizard IP核，得到100MHz和250MHz的时钟信号；</li>
+</ul>
+<hr>
+<ul>
+<li><p>添加axi interconnect IP核，将xdma的M_AXI_LITE信号分为两个不同频率的信号。<br><a target="_blank" rel="noopener" href="https://gitcode.com/Open-source-documentation-tutorial/eddcb/blob/main/pg059-axi-interconnect.pdf">axi interconnect</a></p>
+</li>
+<li><p>添加Processor System Reset保证时序一致</p>
+</li>
+</ul>
+<hr>
+<p>引脚约束</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">set_property PACKAGE_PIN E16 [get_ports &#123;GPIO_0_tri_io[3]&#125;]</span><br><span class="line">set_property PACKAGE_PIN D16 [get_ports &#123;GPIO_0_tri_io[2]&#125;]</span><br><span class="line">set_property PACKAGE_PIN C16 [get_ports &#123;GPIO_0_tri_io[1]&#125;]</span><br><span class="line">set_property PACKAGE_PIN B16 [get_ports &#123;GPIO_0_tri_io[0]&#125;]</span><br><span class="line">set_property PACKAGE_PIN N10 [get_ports pcie_ep_perstn]</span><br><span class="line"> </span><br><span class="line">set_property PACKAGE_PIN AF11 [get_ports &#123;pcie_ep_gt_ref_clk_clk_n[0]&#125;]</span><br><span class="line">set_property PACKAGE_PIN AF12 [get_ports &#123;pcie_ep_gt_ref_clk_clk_p[0]&#125;]</span><br><span class="line"> </span><br><span class="line">set_property IOSTANDARD LVCMOS33 [get_ports pcie_ep_perstn]</span><br><span class="line">set_property IOSTANDARD LVCMOS18 [get_ports &#123;GPIO_0_tri_io[3]&#125;]</span><br><span class="line">set_property IOSTANDARD LVCMOS18 [get_ports &#123;GPIO_0_tri_io[2]&#125;]</span><br><span class="line">set_pjroperty IOSTANDARD LVCMOS18 [get_ports &#123;GPIO_0_tri_io[1]&#125;]</span><br><span class="line">set_property IOSTANDARD LVCMOS18 [get_ports &#123;GPIO_0_tri_io[0]&#125;]</span><br></pre></td></tr></table></figure>
+
+<h4 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h4><ul>
+<li><strong>在服务器上运行过程中发现read全为ffffffff，且不能读。</strong></li>
+</ul>
+<p>通过阅读手册得知：在读写之前，需要将基地址偏移量为0x0004的寄存器设置为0。</p>
+<p><a target="_blank" rel="noopener" href="https://hthreads.github.io/classes/embedded-systems/labs/lab2/assets/datasheets/axi-gpio.pdf">三态GPIO</a></p>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/tri_axi.png" class="" title="tri_axi">
+
+<hr>
+<ul>
+<li><strong>通过ILA IP核抓取M_AXI_LITE信号对比发现，低地址读取触发正常，高地址读取时虽然服务器读取值任为全f，但不能正常触发。</strong></li>
+</ul>
+<p>在分频gpio基础上添加ILA IP核抓取S_AXI信号进行调试。</p>
+<p>xdma IP核中PCIe to AXI Translation为0x1000_0000。</p>
+<p>推断是基地址设定的问题，修改完善Address Map，烧录bit运行。</p>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/axi_addr.png" class="" title="axi_addr">
+
+<p>最终成功读写。</p>
+<h2 id="Ethernet-模块设计"><a href="#Ethernet-模块设计" class="headerlink" title="Ethernet 模块设计"></a>Ethernet 模块设计</h2><p>参考VCU128平台，完成Ethernet模块设计。通过XDMA控制Ethernet模块寄存器读写，实现MAC与PHY的互联。</p>
+<hr>
+<h3 id="基于Xilinx-VCU128板卡的SERVE-h平台设计"><a href="#基于Xilinx-VCU128板卡的SERVE-h平台设计" class="headerlink" title="基于Xilinx VCU128板卡的SERVE.h平台设计"></a>基于Xilinx VCU128板卡的SERVE.h平台设计</h3><img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/vcu128_design.png" class="" title="vcu128_design">
+
+<ul>
+<li>GEM(Gigabit Ethernet MAC)</li>
+</ul>
+<p>Ethernet 部分为</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">axi_mmio_ic (AXI4-Lite)</span><br><span class="line">        ↓</span><br><span class="line">        GEM</span><br><span class="line">        ↓</span><br><span class="line">        DMA</span><br><span class="line">        ↓</span><br><span class="line">axi_dma_ic (AXI4)</span><br><span class="line">        ↓</span><br><span class="line">		DDR4</span><br></pre></td></tr></table></figure>
+
+<h3 id="基于-vu19p-的设计"><a href="#基于-vu19p-的设计" class="headerlink" title="基于 vu19p 的设计"></a>基于 vu19p 的设计</h3><p>了解 基于Xilinx VCU128板卡的SERVE.h平台设计，明确大致任务方向；</p>
+<p>通过vcu128的设计，掌握Ethernet System IP、DMA IP的原理及使用方法。</p>
+<p>基于vu19p着手设计:</p>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/vu19p_bd.png" class="" title="vu19p_bd">
+
+<h4 id="debug-1"><a href="#debug-1" class="headerlink" title="debug"></a>debug</h4><ul>
+<li><strong>license</strong></li>
+</ul>
+<img src="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/license_error.png" class="" title="license_error">
+
+<p>报错说明存在IP核不允许生成bitstream</p>
+<p>进入AXI 1G&#x2F;2.5G Ethernet Subsystem IP核re-customize界面，确实发现最下角为design linking license字样。</p>
+<ul>
+<li><strong>rx&#x2F;tx lane</strong></li>
+</ul>
+<p>在Xilinx VU19P FPGA中，I&#x2F;O bank通常被划分为多个Tri-state（T）组，例如 T0、T1、T2 和 T3，这一分区主要与I&#x2F;O引脚的分配、数据流控制和接口标准有关。为了更详细地解释这一结构，我们需要深入了解几个关键概念：I&#x2F;O Bank、Tri-state（T）、以及如何将这些划分映射到FPGA的实际硬件架构上。</p>
+<ul>
+<li><p>每组T控制多个Lane：一个T组控制多个lane，而每个lane又可以携带多个nibble。例如，PCIe协议中的数据传输通常是通过多个lane并行传输的。在一个Bank中，T组（如T0、T1、T2、T3）管理每个lane的数据传输，确保数据可以同时从多个通道传输，从而增加带宽。</p>
+</li>
+<li><p>多个nibble组成一个lane：每个lane可以划分为两个nibble，每个nibble包含4位数据。这样，数据传输过程就被拆分成更小的部分，通过不同的lane并行工作来提高传输速率。例如，一个lane如果包含两个nibble（即8位），通过并行的lane，可以组成16位、32位等宽的数据通道。</p>
+</li>
+</ul>
+<p>在将vcu128移植到vu19p上时，需要考虑到这一点，阅读电路原理图，决定lane的选择。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zd1314798/article/details/150386233?spm=1001.2014.3001.5501">vcu128 与 vu19p lane 的处理 差异</a></p>
+
+        
+      </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://dz-netizen.github.io/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/" data-id="cuidETII83u1REqGMNTI9RxLq" data-title="网络外设扩展" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ethernet/" rel="tag">Ethernet</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/02/11/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">github.io blog 使用说明</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/">科研实践</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ethernet/" rel="tag">Ethernet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">February 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/02/12/%E7%BD%91%E7%BB%9C%E5%A4%96%E8%AE%BE%E6%89%A9%E5%B1%95/">网络外设扩展</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/11/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">github.io blog 使用说明</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/11/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Zhang Chaochao<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
