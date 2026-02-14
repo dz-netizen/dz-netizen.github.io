@@ -256,15 +256,195 @@
       if ($root.children().length){
         $nav.empty().append($root);
 
-        // Toggle collapse/expand
+        var getHeaderOffset = function(){
+          // Landscape theme has a fixed top nav bar (#header-nav-wrap).
+          // Using full #header height (banner included) makes TOC jumps land too low.
+          var $fixedNav = $('#header-nav-wrap');
+          if ($fixedNav.length){
+            var pos = ($fixedNav.css('position') || '').toLowerCase();
+            if (pos === 'fixed' || pos === 'sticky') return ($fixedNav.outerHeight() || 0);
+          }
+
+          // Fallback: body padding-top is set to header-nav-height.
+          var paddingTop = parseInt(($('body').css('padding-top') || '0').replace('px', ''), 10);
+          return isNaN(paddingTop) ? 0 : paddingTop;
+        };
+
+        var setBranchExpanded = function($li, expanded){
+          if (!$li || !$li.length) return;
+          var hasChildren = $li.children('ul').length > 0;
+          if (!hasChildren) return;
+          $li.toggleClass('is-collapsed', !expanded);
+          $li.children('.toc-toggle').attr('aria-expanded', (!!expanded).toString());
+        };
+
+        var expandOnlyPath = function($activeLi){
+          if (!$activeLi || !$activeLi.length) return;
+          var $path = $activeLi.parents('li').addBack();
+
+          // Collapse everything not on the active path
+          $nav.find('li').each(function(){
+            var $li = $(this);
+            if ($li.children('ul').length === 0) return;
+            if ($path.is($li)){
+              setBranchExpanded($li, true);
+            } else {
+              setBranchExpanded($li, false);
+            }
+          });
+        };
+
+        var setActiveTocById = function(id){
+          if (!id) return;
+          var $link = $nav.find('a[href="#' + id + '"]').first();
+          if (!$link.length) return;
+
+          $nav.find('li.is-active').removeClass('is-active');
+          var $li = $link.closest('li');
+          $li.addClass('is-active');
+          expandOnlyPath($li);
+        };
+
+        // Initialize collapsed state: keep only current branch open.
+        $nav.find('li').each(function(){
+          var $li = $(this);
+          if ($li.children('ul').length) setBranchExpanded($li, false);
+        });
+
+        // Smooth scroll to heading with header offset.
+        var smoothScrollToId = function(id){
+          var el = document.getElementById(id);
+          if (!el) return;
+          var headerOffset = getHeaderOffset();
+          var rect = el.getBoundingClientRect();
+          var absoluteTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop || 0);
+          // Align the heading to the top of the visible content area.
+          var targetTop = Math.max(0, absoluteTop - headerOffset);
+
+          try {
+            window.scrollTo({ top: targetTop, behavior: 'smooth' });
+          } catch (e) {
+            window.scrollTo(0, targetTop);
+          }
+        };
+
+        // Accordion toggle: only one branch expanded at a time.
         $nav.off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e){
           e.preventDefault();
           e.stopPropagation();
           var $btn = $(this);
           var $li = $btn.closest('li');
-          var isCollapsed = $li.toggleClass('is-collapsed').hasClass('is-collapsed');
-          $btn.attr('aria-expanded', (!isCollapsed).toString());
+          var isCollapsed = $li.hasClass('is-collapsed');
+          if (isCollapsed){
+            // Expanding this branch collapses all others.
+            expandOnlyPath($li);
+          } else {
+            setBranchExpanded($li, false);
+          }
         });
+
+        // TOC link click: expand branch + smooth scroll
+        $nav.off('click.tocLink').on('click.tocLink', 'a[href^="#"]', function(e){
+          var href = $(this).attr('href') || '';
+          if (!href || href.charAt(0) !== '#') return;
+          var id = href.slice(1);
+          if (!id) return;
+          e.preventDefault();
+
+          var $li = $(this).closest('li');
+          $nav.find('li.is-active').removeClass('is-active');
+          $li.addClass('is-active');
+          expandOnlyPath($li);
+          smoothScrollToId(id);
+
+          if (window.history && window.history.pushState){
+            window.history.pushState(null, '', '#' + id);
+          } else {
+            window.location.hash = id;
+          }
+        });
+
+        // Scroll spy: highlight the current heading and keep its branch open
+        var headingPositions = [];
+        var refreshHeadingPositions = function(){
+          headingPositions = [];
+          $headings.each(function(){
+            var id = this.id;
+            if (!id) return;
+            headingPositions.push({
+              id: id,
+              top: $(this).offset().top
+            });
+          });
+          headingPositions.sort(function(a, b){ return a.top - b.top; });
+        };
+
+        var rafPending = false;
+        var lastActiveId = null;
+        var updateActiveFromScroll = function(){
+          rafPending = false;
+          if (!headingPositions.length) return;
+          var scrollTop = $(window).scrollTop();
+          var offset = getHeaderOffset() + 4;
+          var probe = scrollTop + offset;
+
+          var activeId = headingPositions[0].id;
+          for (var i = 0; i < headingPositions.length; i++){
+            if (headingPositions[i].top <= probe){
+              activeId = headingPositions[i].id;
+            } else {
+              break;
+            }
+          }
+
+          if (activeId && activeId !== lastActiveId){
+            lastActiveId = activeId;
+            setActiveTocById(activeId);
+          }
+        };
+
+        var requestUpdate = function(){
+          if (rafPending) return;
+          rafPending = true;
+          window.requestAnimationFrame(updateActiveFromScroll);
+        };
+
+        var debounce = function(fn, wait){
+          var t;
+          return function(){
+            clearTimeout(t);
+            var args = arguments;
+            var ctx = this;
+            t = setTimeout(function(){ fn.apply(ctx, args); }, wait);
+          };
+        };
+
+        refreshHeadingPositions();
+
+        // Initial active state: hash > first heading
+        var hash = (window.location.hash || '').replace('#', '');
+        if (hash){
+          setActiveTocById(hash);
+        } else if (headingPositions.length){
+          setActiveTocById(headingPositions[0].id);
+        }
+
+        $(window)
+          .off('scroll.tocSpy')
+          .on('scroll.tocSpy', requestUpdate)
+          .off('resize.tocSpy')
+          .on('resize.tocSpy', debounce(function(){
+            refreshHeadingPositions();
+            requestUpdate();
+          }, 200));
+
+        // Images and other late layout shifts can change offsets
+        $(window).off('load.tocSpy').on('load.tocSpy', function(){
+          refreshHeadingPositions();
+          requestUpdate();
+        });
+
+        requestUpdate();
       } else {
         $postToc.hide();
       }
