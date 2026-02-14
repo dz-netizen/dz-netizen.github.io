@@ -544,6 +544,10 @@ a.article-title:hover {
 .article-entry:after {
   clear: both;
 }
+.article-entry .heading-number {
+  display: inline-block;
+  margin-right: 0.25em;
+}
 .article-entry p,
 .article-entry table {
   line-height: 1.6em;
@@ -1275,7 +1279,7 @@ pre .javascript .function {
     margin: 0;
   }
   #post-toc .widget {
-    max-height: calc(100vh - 160px);
+    max-height: calc(90vh - 200px);
     overflow: auto;
   }
 }

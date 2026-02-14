@@ -158,7 +158,7 @@
   if ($postToc.length){
     var $nav = $postToc.find('.post-toc-nav');
     var $article = $('.article-entry');
-    var $headings = $article.find('h2, h3, h4');
+    var $headings = $article.find('h1, h2, h3, h4, h5, h6');
 
     if ($headings.length){
       // Build nested list structure by heading level
@@ -173,6 +173,10 @@
       // Stack of <ul> elements by normalized heading level.
       // normalizedLevel = headingLevel - baseLevel + 1 (so baseLevel becomes level 1)
       var ulStack = [$root];
+
+      // Numbering counters by normalized heading level.
+      // Example: [1,2] => "1.2".
+      var numberStack = [];
 
       var ensureChildList = function($parentLi){
         if (!$parentLi || !$parentLi.length) return null;
@@ -189,7 +193,9 @@
         var level = parseInt(this.tagName.substring(1), 10);
         if (isNaN(level)) return;
 
-        var text = $h.text().trim();
+        // If already numbered, ignore the prefix when building TOC.
+        var $numberSpan = $h.children('.heading-number').first();
+        var text = $h.clone().children('.heading-number').remove().end().text().trim();
         if (!text) return;
 
         var normalizedLevel = level - baseLevel + 1;
@@ -211,12 +217,26 @@
           ulStack.push($childUl);
         }
 
+        // Use the effective nesting level we actually have.
+        var effectiveLevel = ulStack.length;
+        numberStack = numberStack.slice(0, effectiveLevel);
+        while (numberStack.length < effectiveLevel) numberStack.push(0);
+        numberStack[effectiveLevel - 1] += 1;
+        var numberText = numberStack.join('.');
+
+        // Inject number prefix into the heading (once).
+        if (!$numberSpan.length){
+          $h.prepend($('<span class="heading-number"></span>').text(numberText + ' '));
+        } else {
+          $numberSpan.text(numberText + ' ');
+        }
+
         var $li = $('<li></li>')
           .addClass('toc-item')
           .addClass('level-' + level)
           .attr('data-level', level);
 
-        var $a = $('<a></a>').attr('href', '#' + id).text(text);
+        var $a = $('<a></a>').attr('href', '#' + id).text(numberText + ' ' + text);
         $li.append($a);
         ulStack[ulStack.length - 1].append($li);
       });
