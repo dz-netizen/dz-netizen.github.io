@@ -9,39 +9,39 @@
   <meta name="description" content="本项目旨在基于开源高性能处理器香山“昆明湖”的FPGA原型验证环境实现网络外设扩展。在保持系统原有功能的前提下，增加Ethernet模块及相应软件驱动&#x2F;协议栈支持，使系统能够通过网络收发数据，与外部设备（如PC、交换机）交互，从而满足复杂系统级测试、远程控制及网络终端应用需求。   如图所示，Shell基本功能及PHY已具备，本项目的核心工作即为在Shell中添加Ethernet功能模块">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NetworkPeripheralExpansion">
-<meta property="og:url" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/index.html">
+<meta property="og:url" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/index.html">
 <meta property="og:site_name" content="DZ_Blog">
 <meta property="og:description" content="本项目旨在基于开源高性能处理器香山“昆明湖”的FPGA原型验证环境实现网络外设扩展。在保持系统原有功能的前提下，增加Ethernet模块及相应软件驱动&#x2F;协议栈支持，使系统能够通过网络收发数据，与外部设备（如PC、交换机）交互，从而满足复杂系统级测试、远程控制及网络终端应用需求。   如图所示，Shell基本功能及PHY已具备，本项目的核心工作即为在Shell中添加Ethernet功能模块">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/ETH_shell.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/xdma.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/open_hw_manager.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/ila_trigger.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/single_freq_xdma.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/ila_1freq.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/div_freq.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/tri_axi.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/axi_addr.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/vcu128_design.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/vu19p_bd.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/license_error.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/lane.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/vu19p_lane.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/shell.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/vu19p_fpga.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/eth0.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/wave.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/phy_ctr_reg.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/pin.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/mode.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/clk_mode.png">
-<meta property="og:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/led_mode.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/ETH_shell.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/xdma.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/open_hw_manager.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/ila_trigger.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/single_freq_xdma.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/ila_1freq.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/div_freq.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/tri_axi.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/axi_addr.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/vcu128_design.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/vu19p_bd.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/license_error.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/lane.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/vu19p_lane.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/shell.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/vu19p_fpga.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/eth0.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/wave.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/phy_ctr_reg.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/pin.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/mode.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/clk_mode.png">
+<meta property="og:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/led_mode.png">
 <meta property="article:published_time" content="2026-02-12T07:23:18.000Z">
 <meta property="article:modified_time" content="2026-02-14T07:42:27.455Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="Ethernet">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/ETH_shell.png">
+<meta name="twitter:image" content="https://dz-netizen.github.io/NetworkPeripheralExpansion/ETH_shell.png">
   
     <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
   
@@ -111,7 +111,7 @@
       <div class="outer">
         <section id="main"><article id="post-NetworkPeripheralExpansion" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/02/12/NetworkPeripheralExpansion/" class="article-date">
+    <a href="/NetworkPeripheralExpansion/" class="article-date">
   <time class="dt-published" datetime="2026-02-12T07:23:18.000Z" itemprop="datePublished">2026-02-12</time>
 </a>
     
@@ -138,7 +138,7 @@
       <div class="e-content article-entry" itemprop="articleBody">
         
           <p>本项目旨在基于开源高性能处理器香山“昆明湖”的FPGA原型验证环境实现网络外设扩展。在保持系统原有功能的前提下，增加Ethernet模块及相应软件驱动&#x2F;协议栈支持，使系统能够通过网络收发数据，与外部设备（如PC、交换机）交互，从而满足复杂系统级测试、远程控制及网络终端应用需求。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/ETH_shell.png" class="" title="网络外设扩展">
+<img src="/NetworkPeripheralExpansion/ETH_shell.png" class="" title="网络外设扩展">
 
 <p>如图所示，Shell基本功能及PHY已具备，本项目的核心工作即为在Shell中添加Ethernet功能模块实现Role和外部网络设备的数据传输。</p>
 <p>项目进程可以大致分为以下阶段：</p>
@@ -170,7 +170,7 @@
 <p>通常被应用在大型的局域网络环境中，主要作用是集中的管理、分配IP地址，使网络环境中的主机动态的获得IP地址、Gateway地址、DNS服务器地址等信息，并能够提升地址的使用率。</p>
 <h3 id="xdma（Xilinx-DMA）的使用"><a href="#xdma（Xilinx-DMA）的使用" class="headerlink" title="xdma（Xilinx DMA）的使用"></a>xdma（Xilinx DMA）的使用</h3><p>是 Xilinx提供的一种 基于 PCIe 的高速 DMA 解决方案，常用于 FPGA 与主机之间进行大规模高速数据传输。<br>即 让 FPGA 和 PC 内存之间高速搬运数据的“通道”。</p>
 <p>IP核中部分设置如下：</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/xdma.png" class="" title="IP核介绍">
+<img src="/NetworkPeripheralExpansion/xdma.png" class="" title="IP核介绍">
 
 <h3 id="ILA-工具的使用"><a href="#ILA-工具的使用" class="headerlink" title="ILA 工具的使用"></a>ILA 工具的使用</h3><ul>
 <li>在BD设计中添加ILA 对应IP，抓取相应的数据</li>
@@ -178,7 +178,7 @@
 <li>生成bitstream后进入Open Hardware Manager 进行烧录后重启</li>
 <li>再一次进入Open Hardware Manager</li>
 </ul>
-<img src="/2026/02/12/NetworkPeripheralExpansion/open_hw_manager.png" class="" title="open_hw_manager">
+<img src="/NetworkPeripheralExpansion/open_hw_manager.png" class="" title="open_hw_manager">
 
 <ul>
 <li><p>点击specify the probes file and refresh the device添加.ltx文件</p>
@@ -186,7 +186,7 @@
 <li><p>点击 + 添加trigger并设置触发条件</p>
 </li>
 </ul>
-<img src="/2026/02/12/NetworkPeripheralExpansion/ila_trigger.png" class="" title="ila_trigger">
+<img src="/NetworkPeripheralExpansion/ila_trigger.png" class="" title="ila_trigger">
 
 <h3 id="Xilinx收费IP核hardware-evaluation-license申请"><a href="#Xilinx收费IP核hardware-evaluation-license申请" class="headerlink" title="Xilinx收费IP核hardware_evaluation license申请"></a>Xilinx收费IP核hardware_evaluation license申请</h3><p>参看博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/zd1314798/article/details/149838003?sharetype=blogdetail&sharerId=149838003&sharerefer=PC&sharesource=zd1314798&spm=1011.2480.3001.8118">apply</a></p>
 <p>补充 IP license的类型说明：</p>
@@ -198,17 +198,17 @@
 <h2 id="通过XDMA控制多时钟下LED"><a href="#通过XDMA控制多时钟下LED" class="headerlink" title="通过XDMA控制多时钟下LED"></a>通过XDMA控制多时钟下LED</h2><p>在xczu19eg-ffvc1760-2-e芯片上实现xdma_ep模块功能，完成PCIe总线信号与AXI协议的转换，并实现100 MHz与250 MHz时钟域下不同LED灯的控制。此过程帮助熟悉XDMA的使用、ILA调试及多时钟域概念，为后续Ethernet模块调试奠定基础。</p>
 <hr>
 <h3 id="单一时钟实现"><a href="#单一时钟实现" class="headerlink" title="单一时钟实现"></a>单一时钟实现</h3><p>在xczu19eg-ffvc1760-2-e芯片上实现图示模块功能，利用xdma_ep模块实现pcie标准总线信号到axi总线协议信号转变，通过axi_gpio_0 IP核 控制4个LED灯。</p>
-<h4 id="BD设计"><a href="#BD设计" class="headerlink" title="BD设计"></a>BD设计</h4><img src="/2026/02/12/NetworkPeripheralExpansion/single_freq_xdma.png" class="" title="单频率控制">
+<h4 id="BD设计"><a href="#BD设计" class="headerlink" title="BD设计"></a>BD设计</h4><img src="/NetworkPeripheralExpansion/single_freq_xdma.png" class="" title="单频率控制">
 
 <h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>在服务器上运行设计好的模块，正确控制LED灯。</p>
 <p><strong>流程</strong>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 连接内网</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#检测目标设备是否开机并联网</span></span><br><span class="line">ping 10.128.157.241</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接服务器</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开vivado</span></span><br><span class="line"> /opt/Xilinx_2020.2/Vivado/2020.2/bin/vivado -nolog -nojour</span><br><span class="line"></span><br><span class="line"><span class="comment"># 烧录</span></span><br><span class="line"> open hard ware manager -&gt; open target -&gt; program device -&gt; add bit stream </span><br><span class="line"></span><br><span class="line"><span class="comment"># 终端运行</span></span><br><span class="line"><span class="built_in">sudo</span> reboot <span class="comment">#重启</span></span><br><span class="line"><span class="built_in">sudo</span> insmod xdma.ko <span class="comment"># 加载驱动</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读操作</span></span><br><span class="line"><span class="built_in">sudo</span> ~/proto/pcie-util /dev/xdma0_user <span class="built_in">read</span> 0x00000000</span><br></pre></td></tr></table></figure>
 
 <h4 id="添加-ILA-调试"><a href="#添加-ILA-调试" class="headerlink" title="添加 ILA 调试"></a>添加 ILA 调试</h4><p>实现图示block design的模块，利用ILA抓取M_AXI_LITE以及GPIO数据，进行调试。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/ila_1freq.png" class="" title="ila_single_freq">
+<img src="/NetworkPeripheralExpansion/ila_1freq.png" class="" title="ila_single_freq">
 
 <h3 id="分频率GPIO设计"><a href="#分频率GPIO设计" class="headerlink" title="分频率GPIO设计"></a>分频率GPIO设计</h3><p>扩展GPIO，实现不同频率的GPIO控制（100MHz，250MHz）；进行引脚约束。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/div_freq.png" class="" title="分频GPIO BD">
+<img src="/NetworkPeripheralExpansion/div_freq.png" class="" title="分频GPIO BD">
 
 
 <p>板卡号:xczu19eg-ffvc1760-2-e (active)</p>
@@ -233,7 +233,7 @@
 </ul>
 <p>通过阅读手册得知：在读写之前，需要将基地址偏移量为0x0004的寄存器设置为0。</p>
 <p><a target="_blank" rel="noopener" href="https://hthreads.github.io/classes/embedded-systems/labs/lab2/assets/datasheets/axi-gpio.pdf">三态GPIO</a></p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/tri_axi.png" class="" title="tri_axi">
+<img src="/NetworkPeripheralExpansion/tri_axi.png" class="" title="tri_axi">
 
 <hr>
 <ul>
@@ -242,12 +242,12 @@
 <p>在分频gpio基础上添加ILA IP核抓取S_AXI信号进行调试。</p>
 <p>xdma IP核中PCIe to AXI Translation为0x1000_0000。</p>
 <p>推断是基地址设定的问题，修改完善Address Map，烧录bit运行。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/axi_addr.png" class="" title="axi_addr">
+<img src="/NetworkPeripheralExpansion/axi_addr.png" class="" title="axi_addr">
 
 <p>最终成功读写。</p>
 <h2 id="Ethernet-模块设计"><a href="#Ethernet-模块设计" class="headerlink" title="Ethernet 模块设计"></a>Ethernet 模块设计</h2><p>参考VCU128平台，完成Ethernet模块设计。通过XDMA控制Ethernet模块寄存器读写，实现MAC与PHY的互联。</p>
 <hr>
-<h3 id="基于Xilinx-VCU128板卡的SERVE-h平台设计"><a href="#基于Xilinx-VCU128板卡的SERVE-h平台设计" class="headerlink" title="基于Xilinx VCU128板卡的SERVE.h平台设计"></a>基于Xilinx VCU128板卡的SERVE.h平台设计</h3><img src="/2026/02/12/NetworkPeripheralExpansion/vcu128_design.png" class="" title="vcu128_design">
+<h3 id="基于Xilinx-VCU128板卡的SERVE-h平台设计"><a href="#基于Xilinx-VCU128板卡的SERVE-h平台设计" class="headerlink" title="基于Xilinx VCU128板卡的SERVE.h平台设计"></a>基于Xilinx VCU128板卡的SERVE.h平台设计</h3><img src="/NetworkPeripheralExpansion/vcu128_design.png" class="" title="vcu128_design">
 
 <ul>
 <li>GEM(Gigabit Ethernet MAC)</li>
@@ -258,12 +258,12 @@
 <h3 id="基于-vu19p-的设计"><a href="#基于-vu19p-的设计" class="headerlink" title="基于 vu19p 的设计"></a>基于 vu19p 的设计</h3><p>了解 基于Xilinx VCU128板卡的SERVE.h平台设计，明确大致任务方向；</p>
 <p>通过vcu128的设计，掌握Ethernet System IP、DMA IP的原理及使用方法。</p>
 <p>基于vu19p着手设计:</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/vu19p_bd.png" class="" title="vu19p_bd">
+<img src="/NetworkPeripheralExpansion/vu19p_bd.png" class="" title="vu19p_bd">
 
 <h4 id="debug-1"><a href="#debug-1" class="headerlink" title="debug"></a>debug</h4><ul>
 <li><strong>license</strong></li>
 </ul>
-<img src="/2026/02/12/NetworkPeripheralExpansion/license_error.png" class="" title="license_error">
+<img src="/NetworkPeripheralExpansion/license_error.png" class="" title="license_error">
 
 <p>报错说明存在IP核不允许生成bitstream</p>
 <p>进入AXI 1G&#x2F;2.5G Ethernet Subsystem IP核re-customize界面，确实发现最下角为design linking license字样。</p>
@@ -280,18 +280,18 @@
 <p>在将vcu128移植到vu19p上时，需要考虑到这一点，阅读电路原理图，决定lane的选择。</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zd1314798/article/details/150386233?spm=1001.2014.3001.5501">vcu128 与 vu19p lane 的处理 差异</a></p>
 <p>在IP核设置差分线：</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/lane.png" class="" title="lane">
+<img src="/NetworkPeripheralExpansion/lane.png" class="" title="lane">
 
 <p>此处需要依据电路原理图进行选择。<br>如图，TX信号位于T1L分区的第二对，RX位于T0L分区的第三对，故此处需要选pair 1,和pair 2 。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/vu19p_lane.png" class="" title="vu19p">
+<img src="/NetworkPeripheralExpansion/vu19p_lane.png" class="" title="vu19p">
 
 <h4 id="上板读写"><a href="#上板读写" class="headerlink" title="上板读写"></a>上板读写</h4><p>通过管理接口访问 MDIO 接口完全是基于寄存器映射的。</p>
 <p>具体操作流程如下参见：</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zd1314798/article/details/150394076?spm=1001.2014.3001.5501">MDIO读写</a></p>
 <h2 id="Shell模块集成"><a href="#Shell模块集成" class="headerlink" title="Shell模块集成"></a>Shell模块集成</h2><p>在vu19p上搭建ethernet工程</p>
-<h3 id="Block-Design"><a href="#Block-Design" class="headerlink" title="Block Design"></a>Block Design</h3><img src="/2026/02/12/NetworkPeripheralExpansion/shell.png" class="" title="shell">
+<h3 id="Block-Design"><a href="#Block-Design" class="headerlink" title="Block Design"></a>Block Design</h3><img src="/NetworkPeripheralExpansion/shell.png" class="" title="shell">
 
-<h3 id="上板"><a href="#上板" class="headerlink" title="上板"></a>上板</h3><img src="/2026/02/12/NetworkPeripheralExpansion/vu19p_fpga.png" class="" title="vu19p_fpga">
+<h3 id="上板"><a href="#上板" class="headerlink" title="上板"></a>上板</h3><img src="/NetworkPeripheralExpansion/vu19p_fpga.png" class="" title="vu19p_fpga">
 
 <h3 id="定位PHY，完善片选，加入ILA调试"><a href="#定位PHY，完善片选，加入ILA调试" class="headerlink" title="定位PHY，完善片选，加入ILA调试"></a>定位PHY，完善片选，加入ILA调试</h3><ul>
 <li><p>通过读取REGAD&#x3D;2&#x2F;3寻找PHY的地址为3。</p>
@@ -310,11 +310,11 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">compatible = <span class="string">&quot;xlnx,axi-dma-1.00.a&quot;</span>;</span><br><span class="line">          </span><br><span class="line">compatible = <span class="string">&quot;xlnx,axi-ethernet-1.00.a&quot;</span>;</span><br><span class="line">                </span><br><span class="line">max-speed=&lt;100000&gt;;</span><br></pre></td></tr></table></figure>
 
 <p>发现能够查找到设备，但是进一步 ip link set eht0 up没能成功启动eth设备。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/eth0.png" class="" title="eth0">
+<img src="/NetworkPeripheralExpansion/eth0.png" class="" title="eth0">
 
 <p>后续问题：接口已经启动，但物理链路未连接。</p>
 <h4 id="ILA及示波器对数据进行探测"><a href="#ILA及示波器对数据进行探测" class="headerlink" title="ILA及示波器对数据进行探测"></a>ILA及示波器对数据进行探测</h4><p>在shell中添加ILA抓取一些总线的数据，同时直接利用示波器对一些开发板上的针脚进行探测，查看数据有无、频率等信息。发现PHY没有正确给MAC时钟，初始时有一个125Mhz的时钟，后续link up之后就没了。判断是PHY内部的问题。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/wave.png" class="" title="wave">
+<img src="/NetworkPeripheralExpansion/wave.png" class="" title="wave">
 
 <blockquote>
 <p>示波器</p>
@@ -322,22 +322,22 @@
 <ul>
 <li>添加xdma读写Ethernet模块，对PHY进行配置</li>
 </ul>
-<img src="/2026/02/12/NetworkPeripheralExpansion/phy_ctr_reg.png" class="" title="phy_ctr_reg">
+<img src="/NetworkPeripheralExpansion/phy_ctr_reg.png" class="" title="phy_ctr_reg">
 
 <ul>
 <li>利用示波器探测时钟针脚（33），看看是否有625MHZ时钟。</li>
 </ul>
-<img src="/2026/02/12/NetworkPeripheralExpansion/pin.png" class="" title="pin">
+<img src="/NetworkPeripheralExpansion/pin.png" class="" title="pin">
 
 <p><strong>发现问题</strong>:没有625MHZ时钟</p>
 <p>dp83867is手册 + ILA</p>
 <h4 id="修改开发板"><a href="#修改开发板" class="headerlink" title="修改开发板"></a>修改开发板</h4><p>主要内容：利用软件层面的驱动将sgmii_enable置1，同时也对开发板做出修改。</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/mode.png" class="" title="mode">
+<img src="/NetworkPeripheralExpansion/mode.png" class="" title="mode">
 
-<img src="/2026/02/12/NetworkPeripheralExpansion/clk_mode.png" class="" title="clk_mode">
+<img src="/NetworkPeripheralExpansion/clk_mode.png" class="" title="clk_mode">
 
 <p>阅读电路原理图发现目前是mode 1</p>
-<img src="/2026/02/12/NetworkPeripheralExpansion/led_mode.png" class="" title="led_mode">
+<img src="/NetworkPeripheralExpansion/led_mode.png" class="" title="led_mode">
 
 <p>因此Sgmii Enable没有置1</p>
 <p>而后通过硬件上电路的修改以及上层软件的直接写入，实现设置</p>
@@ -347,7 +347,7 @@
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/2026/02/12/NetworkPeripheralExpansion/" data-id="cuidIgYV3njtiawFeAVq9cCaE" data-title="NetworkPeripheralExpansion" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/NetworkPeripheralExpansion/" data-id="cuidCHIf1QxJQOJd2hav6gK7P" data-title="NetworkPeripheralExpansion" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -360,7 +360,7 @@
 <nav id="article-nav">
   
   
-    <a href="/2026/02/11/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">github.io blog 使用说明</div>
     </a>
@@ -412,15 +412,15 @@
       <ul>
         
           <li>
-            <a href="/2026/02/12/NetworkPeripheralExpansion/">NetworkPeripheralExpansion</a>
+            <a href="/NetworkPeripheralExpansion/">NetworkPeripheralExpansion</a>
           </li>
         
           <li>
-            <a href="/2026/02/11/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">github.io blog 使用说明</a>
+            <a href="/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">github.io blog 使用说明</a>
           </li>
         
           <li>
-            <a href="/2026/02/11/hello-world/">Hello World</a>
+            <a href="/hello-world/">Hello World</a>
           </li>
         
       </ul>
