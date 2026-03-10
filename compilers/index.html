@@ -6,18 +6,21 @@
   
   <title>compilers | DZ_Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="引论语言处理器编译器的结构程序设计语言的发展历程构建编译器的科学编译技术的应用程序设计语言基础总结语法制导翻译器引言语法定义语法制导翻译语法分析简单表达式的翻译器语法分析符号表生成中间代码总结词法分析词法分析器的作用输入缓冲词法单元的规约词法单元的识别词法分析器生成工具Lex有穷自动机从正则表达式到自动机词法分析器生成工具的设计基于DFA的模式匹配器的优化总结语法分析引论上下文无关语法设计文法自顶">
+  <meta name="description" content="编译概论编译的概念 程序设计语言：向人和计算机描述计算过程的符号  编译：从源语言表示的算法到面向硬件的目标语言表示的算法的一种等价变换   编译系统的几种典型形式   编译流程和编译器结构     编译器的结构程序设计语言的发展历程构建一个编译器的相关科学编译器的应用程序设计语言基础一个简单的语法制导翻译器乔姆斯基语言族0型文法 短语结构文法等价于图灵机，任何0型语言都是递归可枚举的，而递归可枚">
 <meta property="og:type" content="article">
 <meta property="og:title" content="compilers">
 <meta property="og:url" content="https://dz-netizen.github.io/compilers/index.html">
 <meta property="og:site_name" content="DZ_Blog">
-<meta property="og:description" content="引论语言处理器编译器的结构程序设计语言的发展历程构建编译器的科学编译技术的应用程序设计语言基础总结语法制导翻译器引言语法定义语法制导翻译语法分析简单表达式的翻译器语法分析符号表生成中间代码总结词法分析词法分析器的作用输入缓冲词法单元的规约词法单元的识别词法分析器生成工具Lex有穷自动机从正则表达式到自动机词法分析器生成工具的设计基于DFA的模式匹配器的优化总结语法分析引论上下文无关语法设计文法自顶">
+<meta property="og:description" content="编译概论编译的概念 程序设计语言：向人和计算机描述计算过程的符号  编译：从源语言表示的算法到面向硬件的目标语言表示的算法的一种等价变换   编译系统的几种典型形式   编译流程和编译器结构     编译器的结构程序设计语言的发展历程构建一个编译器的相关科学编译器的应用程序设计语言基础一个简单的语法制导翻译器乔姆斯基语言族0型文法 短语结构文法等价于图灵机，任何0型语言都是递归可枚举的，而递归可枚">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dz-netizen.github.io/compilers/CmpSysExmp.png">
+<meta property="og:image" content="https://dz-netizen.github.io/compilers/stream.png">
 <meta property="article:published_time" content="2026-03-05T02:28:00.000Z">
-<meta property="article:modified_time" content="2026-03-05T04:04:12.411Z">
+<meta property="article:modified_time" content="2026-03-09T04:00:52.220Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="compilers">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dz-netizen.github.io/compilers/CmpSysExmp.png">
   
     <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
   
@@ -146,7 +149,49 @@
     
       <div class="e-content article-entry" itemprop="articleBody">
         
-          <h1 id="引论"><a href="#引论" class="headerlink" title="引论"></a>引论</h1><h2 id="语言处理器"><a href="#语言处理器" class="headerlink" title="语言处理器"></a>语言处理器</h2><h2 id="编译器的结构"><a href="#编译器的结构" class="headerlink" title="编译器的结构"></a>编译器的结构</h2><h2 id="程序设计语言的发展历程"><a href="#程序设计语言的发展历程" class="headerlink" title="程序设计语言的发展历程"></a>程序设计语言的发展历程</h2><h2 id="构建编译器的科学"><a href="#构建编译器的科学" class="headerlink" title="构建编译器的科学"></a>构建编译器的科学</h2><h2 id="编译技术的应用"><a href="#编译技术的应用" class="headerlink" title="编译技术的应用"></a>编译技术的应用</h2><h2 id="程序设计语言基础"><a href="#程序设计语言基础" class="headerlink" title="程序设计语言基础"></a>程序设计语言基础</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h1 id="语法制导翻译器"><a href="#语法制导翻译器" class="headerlink" title="语法制导翻译器"></a>语法制导翻译器</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><h2 id="语法定义"><a href="#语法定义" class="headerlink" title="语法定义"></a>语法定义</h2><h2 id="语法制导翻译"><a href="#语法制导翻译" class="headerlink" title="语法制导翻译"></a>语法制导翻译</h2><h2 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h2><h2 id="简单表达式的翻译器"><a href="#简单表达式的翻译器" class="headerlink" title="简单表达式的翻译器"></a>简单表达式的翻译器</h2><h2 id="语法分析-1"><a href="#语法分析-1" class="headerlink" title="语法分析"></a>语法分析</h2><h2 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h2><h2 id="生成中间代码"><a href="#生成中间代码" class="headerlink" title="生成中间代码"></a>生成中间代码</h2><h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><h1 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h1><h2 id="词法分析器的作用"><a href="#词法分析器的作用" class="headerlink" title="词法分析器的作用"></a>词法分析器的作用</h2><h2 id="输入缓冲"><a href="#输入缓冲" class="headerlink" title="输入缓冲"></a>输入缓冲</h2><h2 id="词法单元的规约"><a href="#词法单元的规约" class="headerlink" title="词法单元的规约"></a>词法单元的规约</h2><h2 id="词法单元的识别"><a href="#词法单元的识别" class="headerlink" title="词法单元的识别"></a>词法单元的识别</h2><h2 id="词法分析器生成工具Lex"><a href="#词法分析器生成工具Lex" class="headerlink" title="词法分析器生成工具Lex"></a>词法分析器生成工具Lex</h2><h2 id="有穷自动机"><a href="#有穷自动机" class="headerlink" title="有穷自动机"></a>有穷自动机</h2><h2 id="从正则表达式到自动机"><a href="#从正则表达式到自动机" class="headerlink" title="从正则表达式到自动机"></a>从正则表达式到自动机</h2><h2 id="词法分析器生成工具的设计"><a href="#词法分析器生成工具的设计" class="headerlink" title="词法分析器生成工具的设计"></a>词法分析器生成工具的设计</h2><h2 id="基于DFA的模式匹配器的优化"><a href="#基于DFA的模式匹配器的优化" class="headerlink" title="基于DFA的模式匹配器的优化"></a>基于DFA的模式匹配器的优化</h2><h2 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h2><h1 id="语法分析-2"><a href="#语法分析-2" class="headerlink" title="语法分析"></a>语法分析</h1><h2 id="引论-1"><a href="#引论-1" class="headerlink" title="引论"></a>引论</h2><h2 id="上下文无关语法"><a href="#上下文无关语法" class="headerlink" title="上下文无关语法"></a>上下文无关语法</h2><h2 id="设计文法"><a href="#设计文法" class="headerlink" title="设计文法"></a>设计文法</h2><h2 id="自顶向下的语法分析"><a href="#自顶向下的语法分析" class="headerlink" title="自顶向下的语法分析"></a>自顶向下的语法分析</h2><h2 id="自底向上的语法分析"><a href="#自底向上的语法分析" class="headerlink" title="自底向上的语法分析"></a>自底向上的语法分析</h2><h2 id="简单LR技术"><a href="#简单LR技术" class="headerlink" title="简单LR技术"></a>简单LR技术</h2><h2 id="强大LR语法分析器"><a href="#强大LR语法分析器" class="headerlink" title="强大LR语法分析器"></a>强大LR语法分析器</h2><h2 id="使用二义性文法"><a href="#使用二义性文法" class="headerlink" title="使用二义性文法"></a>使用二义性文法</h2><h2 id="语法分析器生成工具"><a href="#语法分析器生成工具" class="headerlink" title="语法分析器生成工具"></a>语法分析器生成工具</h2><h2 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h2><h1 id="语法制导的翻译"><a href="#语法制导的翻译" class="headerlink" title="语法制导的翻译"></a>语法制导的翻译</h1><h2 id="语法制导定义"><a href="#语法制导定义" class="headerlink" title="语法制导定义"></a>语法制导定义</h2><h2 id="SDD的求值顺序"><a href="#SDD的求值顺序" class="headerlink" title="SDD的求值顺序"></a>SDD的求值顺序</h2><h2 id="语法制导翻译的应用"><a href="#语法制导翻译的应用" class="headerlink" title="语法制导翻译的应用"></a>语法制导翻译的应用</h2><h2 id="语法制导的翻译方案"><a href="#语法制导的翻译方案" class="headerlink" title="语法制导的翻译方案"></a>语法制导的翻译方案</h2><h2 id="实现L属性的SDD"><a href="#实现L属性的SDD" class="headerlink" title="实现L属性的SDD"></a>实现L属性的SDD</h2><h1 id="中间代码生成"><a href="#中间代码生成" class="headerlink" title="中间代码生成"></a>中间代码生成</h1><h2 id="语法树的变体"><a href="#语法树的变体" class="headerlink" title="语法树的变体"></a>语法树的变体</h2><h2 id="三地址代码"><a href="#三地址代码" class="headerlink" title="三地址代码"></a>三地址代码</h2><h2 id="类型和声明"><a href="#类型和声明" class="headerlink" title="类型和声明"></a>类型和声明</h2><h2 id="表达式的翻译"><a href="#表达式的翻译" class="headerlink" title="表达式的翻译"></a>表达式的翻译</h2><h2 id="类型检查"><a href="#类型检查" class="headerlink" title="类型检查"></a>类型检查</h2><h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><h2 id="回填"><a href="#回填" class="headerlink" title="回填"></a>回填</h2><h2 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h2><h2 id="过程的中间代码"><a href="#过程的中间代码" class="headerlink" title="过程的中间代码"></a>过程的中间代码</h2><h2 id="总结-4"><a href="#总结-4" class="headerlink" title="总结"></a>总结</h2><h1 id="运行时刻环境"><a href="#运行时刻环境" class="headerlink" title="运行时刻环境"></a>运行时刻环境</h1><h2 id="存储组织"><a href="#存储组织" class="headerlink" title="存储组织"></a>存储组织</h2><h2 id="空间的栈式分配"><a href="#空间的栈式分配" class="headerlink" title="空间的栈式分配"></a>空间的栈式分配</h2><h2 id="栈中非局部数据的访问"><a href="#栈中非局部数据的访问" class="headerlink" title="栈中非局部数据的访问"></a>栈中非局部数据的访问</h2><h2 id="堆管理"><a href="#堆管理" class="headerlink" title="堆管理"></a>堆管理</h2><h2 id="垃圾回收概述"><a href="#垃圾回收概述" class="headerlink" title="垃圾回收概述"></a>垃圾回收概述</h2><h2 id="基于跟踪的回收的介绍"><a href="#基于跟踪的回收的介绍" class="headerlink" title="基于跟踪的回收的介绍"></a>基于跟踪的回收的介绍</h2><h2 id="短停顿垃圾回收"><a href="#短停顿垃圾回收" class="headerlink" title="短停顿垃圾回收"></a>短停顿垃圾回收</h2><h2 id="垃圾回收中的高级论题"><a href="#垃圾回收中的高级论题" class="headerlink" title="垃圾回收中的高级论题"></a>垃圾回收中的高级论题</h2><h2 id="总结-5"><a href="#总结-5" class="headerlink" title="总结"></a>总结</h2><h1 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h1><h2 id="设计中的问题"><a href="#设计中的问题" class="headerlink" title="设计中的问题"></a>设计中的问题</h2><h2 id="目标语言"><a href="#目标语言" class="headerlink" title="目标语言"></a>目标语言</h2><h2 id="目标代码中的地址"><a href="#目标代码中的地址" class="headerlink" title="目标代码中的地址"></a>目标代码中的地址</h2><h2 id="基本块和流图"><a href="#基本块和流图" class="headerlink" title="基本块和流图"></a>基本块和流图</h2><h2 id="基本快的优化"><a href="#基本快的优化" class="headerlink" title="基本快的优化"></a>基本快的优化</h2><h2 id="一个简单的代码生成器"><a href="#一个简单的代码生成器" class="headerlink" title="一个简单的代码生成器"></a>一个简单的代码生成器</h2><h2 id="窥孔优化"><a href="#窥孔优化" class="headerlink" title="窥孔优化"></a>窥孔优化</h2><h2 id="寄存器分配和指派"><a href="#寄存器分配和指派" class="headerlink" title="寄存器分配和指派"></a>寄存器分配和指派</h2><h2 id="通过树重写来选择指令"><a href="#通过树重写来选择指令" class="headerlink" title="通过树重写来选择指令"></a>通过树重写来选择指令</h2><h2 id="表达式的优化代码的生成"><a href="#表达式的优化代码的生成" class="headerlink" title="表达式的优化代码的生成"></a>表达式的优化代码的生成</h2><h2 id="使用动态规划的代码生成"><a href="#使用动态规划的代码生成" class="headerlink" title="使用动态规划的代码生成"></a>使用动态规划的代码生成</h2><h2 id="总结-6"><a href="#总结-6" class="headerlink" title="总结"></a>总结</h2><h1 id="机器无关优化"><a href="#机器无关优化" class="headerlink" title="机器无关优化"></a>机器无关优化</h1><h2 id="优化的主要来源"><a href="#优化的主要来源" class="headerlink" title="优化的主要来源"></a>优化的主要来源</h2><h2 id="数据流分析简介"><a href="#数据流分析简介" class="headerlink" title="数据流分析简介"></a>数据流分析简介</h2><h2 id="数据流分析基础"><a href="#数据流分析基础" class="headerlink" title="数据流分析基础"></a>数据流分析基础</h2><h2 id="常量传播"><a href="#常量传播" class="headerlink" title="常量传播"></a>常量传播</h2><h2 id="部分冗余消除"><a href="#部分冗余消除" class="headerlink" title="部分冗余消除"></a>部分冗余消除</h2><h2 id="流图中的循环"><a href="#流图中的循环" class="headerlink" title="流图中的循环"></a>流图中的循环</h2><h2 id="基于区域的分析"><a href="#基于区域的分析" class="headerlink" title="基于区域的分析"></a>基于区域的分析</h2><h2 id="符号分析"><a href="#符号分析" class="headerlink" title="符号分析"></a>符号分析</h2><h2 id="总结-7"><a href="#总结-7" class="headerlink" title="总结"></a>总结</h2><h1 id="指令集并行性"><a href="#指令集并行性" class="headerlink" title="指令集并行性"></a>指令集并行性</h1><h2 id="处理器体系结构"><a href="#处理器体系结构" class="headerlink" title="处理器体系结构"></a>处理器体系结构</h2><h2 id="代码调度约束"><a href="#代码调度约束" class="headerlink" title="代码调度约束"></a>代码调度约束</h2><h2 id="基本块调度"><a href="#基本块调度" class="headerlink" title="基本块调度"></a>基本块调度</h2><h2 id="全局代码调度"><a href="#全局代码调度" class="headerlink" title="全局代码调度"></a>全局代码调度</h2><h2 id="软件流水线化"><a href="#软件流水线化" class="headerlink" title="软件流水线化"></a>软件流水线化</h2><h2 id="总结-8"><a href="#总结-8" class="headerlink" title="总结"></a>总结</h2><h1 id="并行化和局部性优化"><a href="#并行化和局部性优化" class="headerlink" title="并行化和局部性优化"></a>并行化和局部性优化</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><h2 id="迭代空间"><a href="#迭代空间" class="headerlink" title="迭代空间"></a>迭代空间</h2><h2 id="仿射的数组下标"><a href="#仿射的数组下标" class="headerlink" title="仿射的数组下标"></a>仿射的数组下标</h2><h2 id="数据复用"><a href="#数据复用" class="headerlink" title="数据复用"></a>数据复用</h2><h2 id="数组数据依赖关系分析"><a href="#数组数据依赖关系分析" class="headerlink" title="数组数据依赖关系分析"></a>数组数据依赖关系分析</h2><h2 id="寻找无同步的并行性"><a href="#寻找无同步的并行性" class="headerlink" title="寻找无同步的并行性"></a>寻找无同步的并行性</h2><h2 id="并行循环之间的同步"><a href="#并行循环之间的同步" class="headerlink" title="并行循环之间的同步"></a>并行循环之间的同步</h2><h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
+          <h1 id="编译概论"><a href="#编译概论" class="headerlink" title="编译概论"></a>编译概论</h1><h2 id="编译的概念"><a href="#编译的概念" class="headerlink" title="编译的概念"></a>编译的概念</h2><ul>
+<li><p>程序设计语言：向人和计算机描述计算过程的符号</p>
+</li>
+<li><p>编译：从源语言表示的算法到面向硬件的目标语言表示的算法的一种等价变换</p>
+</li>
+</ul>
+<h3 id="编译系统的几种典型形式"><a href="#编译系统的几种典型形式" class="headerlink" title="编译系统的几种典型形式"></a>编译系统的几种典型形式</h3><img src="/compilers/CmpSysExmp.png" class="" title="编译系统">
+
+<ul>
+<li>编译流程和编译器结构</li>
+</ul>
+<img src="/compilers/stream.png" class="" title="stream">
+
+
+<h2 id="编译器的结构"><a href="#编译器的结构" class="headerlink" title="编译器的结构"></a>编译器的结构</h2><h2 id="程序设计语言的发展历程"><a href="#程序设计语言的发展历程" class="headerlink" title="程序设计语言的发展历程"></a>程序设计语言的发展历程</h2><h2 id="构建一个编译器的相关科学"><a href="#构建一个编译器的相关科学" class="headerlink" title="构建一个编译器的相关科学"></a>构建一个编译器的相关科学</h2><h2 id="编译器的应用"><a href="#编译器的应用" class="headerlink" title="编译器的应用"></a>编译器的应用</h2><h2 id="程序设计语言基础"><a href="#程序设计语言基础" class="headerlink" title="程序设计语言基础"></a>程序设计语言基础</h2><h1 id="一个简单的语法制导翻译器"><a href="#一个简单的语法制导翻译器" class="headerlink" title="一个简单的语法制导翻译器"></a>一个简单的语法制导翻译器</h1><h2 id="乔姆斯基语言族"><a href="#乔姆斯基语言族" class="headerlink" title="乔姆斯基语言族"></a>乔姆斯基语言族</h2><h3 id="0型文法"><a href="#0型文法" class="headerlink" title="0型文法"></a>0型文法</h3><ul>
+<li>短语结构文法<br>等价于图灵机，任何0型语言都是递归可枚举的，而递归可枚举集必定是一个0型语言。</li>
+</ul>
+<h3 id="1型文法"><a href="#1型文法" class="headerlink" title="1型文法"></a>1型文法</h3><ul>
+<li>上下文有关文法<br>等价于线性界限自动机</li>
+</ul>
+<h3 id="2型文法"><a href="#2型文法" class="headerlink" title="2型文法"></a>2型文法</h3><ul>
+<li>上下文无关文法<br>等价于下推自动机</li>
+</ul>
+<h3 id="3型文法"><a href="#3型文法" class="headerlink" title="3型文法"></a>3型文法</h3><ul>
+<li>正则文法<br>有穷状态自动机</li>
+</ul>
+<h3 id="四种文法的描述能力"><a href="#四种文法的描述能力" class="headerlink" title="四种文法的描述能力"></a>四种文法的描述能力</h3><p>$0型语法 \supset 1型文法 \supset 2型文法 \supset 3型文法$</p>
+<p>$a \in A$</p>
+<h2 id="二义性"><a href="#二义性" class="headerlink" title="二义性"></a>二义性</h2><p>如果一个文法，对于同一个终结符号串，存在两个或多个与之对应的语法树，则称该文法具有二义性。</p>
+<ul>
+<li>固有二义语言无法消除二义性</li>
+</ul>
+<h2 id="语法制导翻译"><a href="#语法制导翻译" class="headerlink" title="语法制导翻译"></a>语法制导翻译</h2><h2 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h2><p>语法分析是决定如何使用一个文法生成一个终结符号串的过程</p>
+<ul>
+<li>对于程序设计，这个符号串可以理解为程序</li>
+<li>有两种：自顶向下（top-down）&#x2F;自底向上（bottom-up）</li>
+</ul>
+<h3 id="自上而下"><a href="#自上而下" class="headerlink" title="自上而下"></a>自上而下</h3><p>但不能确定唯一往下走时，需要回溯，当所有路径都不成功时，需要报错，报错原因又是一个问题。</p>
+<h3 id="左递归"><a href="#左递归" class="headerlink" title="左递归"></a>左递归</h3><p>考虑如下产生式，会陷入无线循环<br>expr-&gt;expr+term</p>
+<ul>
+<li>消除左递归</li>
+</ul>
+<h2 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h2><h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
 <ul>
 <li>第一次测验跟理计差不多</li>
 <li>第二次稍微偏后端一点，但是也没有代码生成的，还是主要写一个语法制导翻译方案</li>
@@ -157,7 +202,7 @@
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidT0QOdktN6aWLT-pO7cx4e" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidlp2U66G_JbVz5Aku1pz9W" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -168,6 +213,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/database/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          database
+        
+      </div>
+    </a>
   
   
     <a href="/ComputerNetworks/" id="article-nav-older" class="article-nav-link-wrap">
@@ -240,6 +294,18 @@
   
 <script src="/fancybox/jquery.fancybox.min.js"></script>
 
+
+
+
+  <script src="https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default'
+      });
+    }
+  </script>
 
 
 

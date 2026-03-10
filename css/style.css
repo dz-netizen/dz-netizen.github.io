@@ -590,6 +590,24 @@ a.article-title:hover {
 .article-entry iframe {
   border: none;
 }
+.article-entry .mermaid {
+  text-align: center;
+}
+.article-entry pre.mermaid {
+  background: #fff;
+  color: #555;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 1.6em 0;
+  padding: 16px;
+  overflow-x: auto;
+}
+.article-entry .mermaid svg {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+}
 .article-entry table {
   width: 100%;
   border-collapse: collapse;
