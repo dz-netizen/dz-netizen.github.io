@@ -14,7 +14,7 @@
 <meta property="og:description" content="这篇文章记录：用 Hexo 在本地写作与预览，并部署到 GitHub Pages（username.github.io） 的完整步骤。 你需要先了解的几个东西Node.js &#x2F; npm &#x2F; npx 是什么 Node.js：运行 JavaScript 的运行时环境。Hexo 是基于 Node.js 的。 npm：Node.js 的包管理器（安装依赖、运行脚本）。安装 Node.j">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-11T12:52:17.000Z">
-<meta property="article:modified_time" content="2026-02-11T14:34:11.215Z">
+<meta property="article:modified_time" content="2026-03-18T10:14:05.209Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="GitHub Pages">
 <meta property="article:tag" content="Hexo">
@@ -33,6 +33,21 @@
     
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
@@ -224,12 +239,20 @@
 
 <p>（不同项目脚本名可能不一样，以 <code>package.json</code> 为准。）</p>
 <h2 id="最小工作流（记住这三条就够）"><a href="#最小工作流（记住这三条就够）" class="headerlink" title="最小工作流（记住这三条就够）"></a>最小工作流（记住这三条就够）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 写作预览</span></span><br><span class="line">npx hexo server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发布</span></span><br><span class="line">npx hexo clean</span><br><span class="line">npx hexo g</span><br><span class="line">npx hexo d</span><br></pre></td></tr></table></figure>
-
+<h1 id="LaTeX-公式示例"><a href="#LaTeX-公式示例" class="headerlink" title="LaTeX 公式示例"></a>LaTeX 公式示例</h1><p>行内公式示例：在网络传输中，时延可以写成 $D_{total}&#x3D;D_{proc}+D_{queue}+D_{trans}+D_{prop}$。</p>
+<p>块级公式示例：</p>
+<p>$$<br>	ext{Throughput} &#x3D; \frac{\text{Data Size}}{\text{Transmission Time}}<br>$$</p>
+<p>常见对齐公式（多行推导）：</p>
+<p>$$<br>\begin{aligned}<br>D_{trans} &amp;&#x3D; \frac{L}{R} \<br>D_{prop} &amp;&#x3D; \frac{d}{v} \<br>D_{nodal} &amp;&#x3D; D_{proc} + D_{queue} + D_{trans} + D_{prop}<br>\end{aligned}<br>$$</p>
+<p>矩阵示例：</p>
+<p>$$<br>H &#x3D;<br>\begin{bmatrix}<br>h_{11} &amp; h_{12} \<br>h_{21} &amp; h_{22}<br>\end{bmatrix}<br>$$</p>
+<p>源码写法参考（复制这段即可测试）：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">行内：$E=mc^2$</span><br><span class="line"></span><br><span class="line">块级：</span><br><span class="line">$$</span><br><span class="line">\int<span class="emphasis">_0^1 x^2\,dx = \frac&#123;1&#125;&#123;3&#125;</span></span><br><span class="line"><span class="emphasis">$$</span></span><br></pre></td></tr></table></figure>
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" data-id="cuidwxu5GHzH4UN1az4cuuBbx" data-title="github.io blog 使用说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" data-id="cuidHalh4LUgLb_uZ1plDF8b-" data-title="github.io blog 使用说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/CmpSysExmp.png">
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/stream.png">
 <meta property="article:published_time" content="2026-03-05T02:28:00.000Z">
-<meta property="article:modified_time" content="2026-03-09T04:00:52.220Z">
+<meta property="article:modified_time" content="2026-03-16T03:06:22.988Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="compilers">
 <meta name="twitter:card" content="summary">
@@ -35,6 +35,21 @@
     
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
@@ -191,7 +206,31 @@
 <ul>
 <li>消除左递归</li>
 </ul>
-<h2 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h2><h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
+<h2 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h2><h2 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h2><p>symbol table，用于保存有关源程序构造的各种信息的数据结构</p>
+<ul>
+<li>类型检查。确保一个构造的类型符合上下文的期望</li>
+</ul>
+<h1 id="词法分析-1"><a href="#词法分析-1" class="headerlink" title="词法分析"></a>词法分析</h1><h2 id="词法分析的作用"><a href="#词法分析的作用" class="headerlink" title="词法分析的作用"></a>词法分析的作用</h2><ul>
+<li>编译器的第一阶段<br>读输入的字符流，产生用于语法分析的词法单元<br>完成和用户接口的一些任务</li>
+</ul>
+<h2 id="输入缓冲区"><a href="#输入缓冲区" class="headerlink" title="输入缓冲区"></a>输入缓冲区</h2><h3 id="输入缓冲"><a href="#输入缓冲" class="headerlink" title="输入缓冲"></a>输入缓冲</h3><ul>
+<li><p>词法分析程序可能需要向前看若干个字符，才能决定词素符号的确切性质</p>
+</li>
+<li><p>缓冲区的选择</p>
+</li>
+<li><p>只用一个单独的缓冲区<br>无论缓冲区多大，都不能保证词素符号不会被缓冲区截断</p>
+</li>
+<li><p>缓冲区对</p>
+</li>
+<li><p>哨兵模式<br>采用缓冲区对，要在向前指针每次移动式，检测是否到达了缓冲区的末尾，如果是，要加更新缓冲区</p>
+</li>
+</ul>
+<h2 id="记号的描述，正则式"><a href="#记号的描述，正则式" class="headerlink" title="记号的描述，正则式"></a>记号的描述，正则式</h2><p>正则式与3型文法是等价的<br>正则集：正则式表示的语言</p>
+<ul>
+<li>构成规则：定义字母表∑上的正则式的规则<br>ε是正则式，表示的语言是{ε}<br>如果a是∑上的符号，则a是正则式，表示{a}<br>如果r和s是正则式，分别表示语言L(r)和L(s)，则：<br>r|s是正则式，表示L(r)∪L(s)<br>rs是正则式，表示L(r)L(s)<br>(r)是正则式，表示L(r)<br>(r) *是正则式，表示(L(r)) *<br>仅由有限次使用上述规则得到的表达式才是∑上的正则式</li>
+</ul>
+<p>构成规则的优先性：r* &gt; rs &gt; r|s</p>
+<h2 id="记号的识别"><a href="#记号的识别" class="headerlink" title="记号的识别"></a>记号的识别</h2><h2 id="有穷状态自动机"><a href="#有穷状态自动机" class="headerlink" title="有穷状态自动机"></a>有穷状态自动机</h2><h2 id="正则式与有穷状态自动机的等价"><a href="#正则式与有穷状态自动机的等价" class="headerlink" title="正则式与有穷状态自动机的等价"></a>正则式与有穷状态自动机的等价</h2><h2 id="词法分析程序的自动生成工具"><a href="#词法分析程序的自动生成工具" class="headerlink" title="词法分析程序的自动生成工具"></a>词法分析程序的自动生成工具</h2><h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
 <ul>
 <li>第一次测验跟理计差不多</li>
 <li>第二次稍微偏后端一点，但是也没有代码生成的，还是主要写一个语法制导翻译方案</li>
@@ -202,7 +241,7 @@
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidlp2U66G_JbVz5Aku1pz9W" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidff8ettUw34WHSAMLMvCls" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
