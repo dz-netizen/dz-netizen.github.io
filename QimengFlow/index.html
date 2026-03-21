@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>QimengFlow | DZ_Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言项目相关 启蒙1号是全球第一款自动化设计的CPU；启蒙2号延续启蒙1号的设计方法，CPU中增加了流水线以及多发射；启蒙3号旨在自动化设计一款多发射乱序执行的高性能处理器。  服务器使用https:&#x2F;&#x2F;kcn04njobq1a.feishu.cn&#x2F;wiki&#x2F;Ata1wDxK3i8bQukTncZcTLv5nuQ  模拟器代码https:&#x2F;&#x2F;github.com&#x2F;tututugege&#x2F;simula">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QimengFlow">
+<meta property="og:url" content="https://dz-netizen.github.io/QimengFlow/index.html">
+<meta property="og:site_name" content="DZ_Blog">
+<meta property="og:description" content="前言项目相关 启蒙1号是全球第一款自动化设计的CPU；启蒙2号延续启蒙1号的设计方法，CPU中增加了流水线以及多发射；启蒙3号旨在自动化设计一款多发射乱序执行的高性能处理器。  服务器使用https:&#x2F;&#x2F;kcn04njobq1a.feishu.cn&#x2F;wiki&#x2F;Ata1wDxK3i8bQukTncZcTLv5nuQ  模拟器代码https:&#x2F;&#x2F;github.com&#x2F;tututugege&#x2F;simula">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/bsd.png">
+<meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/process.png">
+<meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/adder32.png">
+<meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
+<meta property="article:modified_time" content="2026-03-21T16:49:17.705Z">
+<meta property="article:author" content="Zhang Chaochao">
+<meta property="article:tag" content="IC design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dz-netizen.github.io/QimengFlow/bsd.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-nav-wrap">
+    <div class="outer">
+      <div id="header-inner" class="inner">
+        <nav id="main-nav">
+          <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+          <a id="nav-logo" class="nav-logo" href="/">DzBlog</a>
+          
+          
+            
+            <a class="main-nav-link" href="/">
+              <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
+              Home
+            </a>
+          
+            
+            <a class="main-nav-link" href="/archives">
+              <span class="fa fa-archive main-nav-icon" aria-hidden="true"></span>
+              Archives
+            </a>
+          
+            
+            <a class="main-nav-link" href="/categories">
+              <span class="fa fa-folder-open-o main-nav-icon" aria-hidden="true"></span>
+              Categories
+            </a>
+          
+            
+            <a class="main-nav-link" href="/tags">
+              <span class="fa fa-tags main-nav-icon" aria-hidden="true"></span>
+              Tags
+            </a>
+          
+            
+            <a class="main-nav-link" href="/">
+              <span class="fa fa-clock-o main-nav-icon" aria-hidden="true"></span>
+              Recent Posts
+            </a>
+          
+        </nav>
+        <nav id="sub-nav">
+          
+          
+            <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+          
+          <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dz-netizen.github.io"></form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="-wrap">
+        <a href="/" id="logo" data-typing="true" data-text="爱你的命运_">爱你的命运_</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+
+      
+  <aside id="post-toc" aria-label="Table of contents">
+    <div class="widget-wrap">
+      <h3 class="widget-title">目录</h3>
+      <div class="widget widget-toc">
+        <nav class="post-toc-nav"></nav>
+      </div>
+    </div>
+  </aside>
+
+
+      <div class="outer">
+        <section id="main"><article id="post-QimengFlow" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/QimengFlow/" class="article-date">
+  <time class="dt-published" datetime="2026-03-19T01:04:47.000Z" itemprop="datePublished">2026-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/">科研实践</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      QimengFlow
+    </h1>
+  
+
+      </header>
+    
+    
+    
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="项目相关"><a href="#项目相关" class="headerlink" title="项目相关"></a>项目相关</h2><ul>
+<li><p>启蒙1号是全球第一款自动化设计的CPU；<br>启蒙2号延续启蒙1号的设计方法，CPU中增加了流水线以及多发射；<br>启蒙3号旨在自动化设计一款多发射乱序执行的高性能处理器。</p>
+</li>
+<li><p><strong>服务器使用</strong><br><a target="_blank" rel="noopener" href="https://kcn04njobq1a.feishu.cn/wiki/Ata1wDxK3i8bQukTncZcTLv5nuQ">https://kcn04njobq1a.feishu.cn/wiki/Ata1wDxK3i8bQukTncZcTLv5nuQ</a></p>
+</li>
+<li><p><strong>模拟器代码</strong><br><a target="_blank" rel="noopener" href="https://github.com/tututugege/simulator">https://github.com/tututugege/simulator</a></p>
+</li>
+<li><p><strong>模拟器接口脚本仓库</strong><br><a target="_blank" rel="noopener" href="https://gitservice.cstcloud.cn/lancer/simulator_script.git">https://gitservice.cstcloud.cn/lancer/simulator_script.git</a></p>
+</li>
+<li><p><strong>BSD仓库</strong><br><a target="_blank" rel="noopener" href="https://gitservice.cstcloud.cn/ICT-IPRC/BSD.git">https://gitservice.cstcloud.cn/ICT-IPRC/BSD.git</a></p>
+</li>
+</ul>
+<h2 id="须知"><a href="#须知" class="headerlink" title="须知"></a>须知</h2><ul>
+<li><strong>BSD(binary structure diagram)算法</strong><br>启蒙系列硬件代码推导的核心算法，根据IO真值表即可推导出内部电路结构</li>
+</ul>
+<img src="/QimengFlow/bsd.png" class="" title="bsd">
+<ul>
+<li><p><strong>yosys(yosys open synthesis suite)</strong><br>开源综合工具套件&#x2F;工具链</p>
+</li>
+<li><p><strong>aag(ascii aig format)</strong><br>文本格式(ascii)<br>与-反相图(and-invert graph)</p>
+</li>
+<li><p><strong>linux、coremark、drystone程序</strong></p>
+</li>
+</ul>
+<p>分别为：linux操作系统内核程序</p>
+<p>CPU性能基准测试程序</p>
+<p>早期CPU基准测试程序</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><img src="/QimengFlow/process.png" class="" title="process">
+
+<ul>
+<li>目前C模拟器已经进入设计尾声，各个模块已敲定，在提性能环节；</li>
+<li>整体CPU跑BSD难度太大，因此将模拟器拆分为各个功能模块，分别进行BSD训练；</li>
+<li>BSD训练并非一帆风顺，C代码可能存在不可综合的情况，或逻辑硬件难以实现，这部分需要根据BSD训练情况调整BSD代码；</li>
+<li>为了验证BSD代码在真实环境中能运行，于是需要通过yosys转成aag再转成cpp格式，这样就可以接回模拟器验证；</li>
+<li>我们接回去要求能正常启动linux、coremark、drystone这些程序，通过后即算初步完成该模块设计。</li>
+</ul>
+<h1 id="week1-adder-io-generator"><a href="#week1-adder-io-generator" class="headerlink" title="week1:adder&amp;io_generator"></a>week1:adder&amp;io_generator</h1><h2 id="adder"><a href="#adder" class="headerlink" title="adder"></a>adder</h2><ul>
+<li><strong>手写一个c++版本的32位加法器，输出32位加法结果以及1位进位，将该加法器通过BSD训练得到硬件代码</strong></li>
+</ul>
+<p>验收指标：33位输出acc达到0.99以上</p>
+<h3 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/* /nfs_global/I/qimeng3/zhangchaochao/BSD/src/io_generator/adder32.h */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> ADD32_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ADD32_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdint&gt;</span>  </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="type">const</span> <span class="type">int</span> PI_WIDTH = <span class="number">64</span>;   <span class="comment">// 32位a + 32位b</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">const</span> <span class="type">int</span> PO_WIDTH = <span class="number">33</span>;   <span class="comment">// 32位sum + 1位carry</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">io_generator_outer</span><span class="params">(<span class="type">bool</span>* pi, <span class="type">bool</span>* po)</span> </span>&#123;</span><br><span class="line">    <span class="type">uint32_t</span> a = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint32_t</span> b = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 拼输入</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (pi[i]) a |= (<span class="number">1u</span> &lt;&lt; i);</span><br><span class="line">        <span class="keyword">if</span> (pi[i + <span class="number">32</span>]) b |= (<span class="number">1u</span> &lt;&lt; i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 做加法</span></span><br><span class="line">    <span class="type">uint64_t</span> res = (<span class="type">uint64_t</span>)a + (<span class="type">uint64_t</span>)b;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 拆输出</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;</span><br><span class="line">        po[i] = (res &gt;&gt; i) &amp; <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    po[<span class="number">32</span>] = (res &gt;&gt; <span class="number">32</span>) &amp; <span class="number">1</span>; <span class="comment">// carry</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><ul>
+<li><strong>环境</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ssh eda-00/eda-03</span><br><span class="line"></span><br><span class="line">tmux new -s add32_test</span><br><span class="line"></span><br><span class="line">conda create -n zcc-eda</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>BSD</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//修改 BSD/src/top.h</span><br><span class="line">//change the include file to your io generator file name. </span><br><span class="line"><span class="comment">#include	&quot;io_generator/adder32.h&quot;	</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> BSD/src</span><br><span class="line">sh zstart.sh</span><br><span class="line">// output：BSD/src/rtl/</span><br></pre></td></tr></table></figure>
+
+<h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) [qimeng3@CentOS7-Login3 src]$ sh zstart.sh</span><br><span class="line"><span class="built_in">rm</span>: cannot remove ‘rtl/*’: No such file or directory </span><br><span class="line">zstart.sh:line 9: /workspace/I/qimeng3/anaconda3/bin/x86_64-conda-linux-gnu-g++: No such file or directory </span><br><span class="line">zstart.sh: line 10: ./a.out: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>随后将<code>/nfs_global/I/qimeng3/zhangchaochao/BSD/src/zstart.h</code>修改为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">export</span> PATH=/lustre/S/chengshuyao/haoshiming/anaconda3/envs/BSD/bin:/bin:/lustre/S/chengshuyao/haoshiming/anaconda3/envs/BSD/bin:/lustre/S/chengshuyao/haoshiming/anaconda3/envs/BSD/bin/gcc</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">export</span> LIBRARY_PATH=/lustre/S/chengshuyao/haoshiming/anaconda3/envs/BSD/bin:/lustre/S/chengshuyao/haoshiming/anaconda3/envs/BSD/lib</span> </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">export</span> LD_LIBRARY_PATH=/lustre/S/chengshuyao/haoshiming/anaconda3/envs/BSD/bin:/lustre/S/chengshuyao/haoshiming/anaconda3/envs/BSD/lib</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">export</span> ASAN_OPTIONS=halt_on_error=0:detect_leaks=1:malloc_context_size=15:log_path=./asan.log</span></span><br><span class="line">mkdir -p rtl</span><br><span class="line">rm -rf rtl/*</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">bash write_vec.sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">g++  -fno-omit-frame-pointer -fsanitize=address  -g BSD.cpp -O3 -std=c++11 -fopenmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">g++  BSD.cpp -O3 -std=c++11 -fopenmp -I./io_generator/simulator_include</span></span><br><span class="line">g++  BSD.cpp -O3 -std=c++11 -fopenmp -I./io_generator/simulator_include</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="variable">$CONDA_PREFIX</span>/bin/x86_64-conda-linux-gnu-g++ -std=c++20  BSD.cpp -O3 -fopenmp -I./io_generator/simulator_include</span></span><br><span class="line">./a.out </span><br></pre></td></tr></table></figure>
+
+<h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><img src="/QimengFlow/adder32.png" class="" title="adder32">
+
+<h2 id="lsu"><a href="#lsu" class="headerlink" title="lsu"></a>lsu</h2><ul>
+<li><strong>生成启蒙3号真实模块的io_generator，并在服务器中投入训练</strong></li>
+</ul>
+<p>验收指标：33位输出acc达到0.99以上</p>
+<p>Step 1：手写 C++ 32 位加法器</p>
+<p>创建 add32.cpp 或 add32.h：</p>
+<p>#ifndef ADD32_H<br>#define ADD32_H<br>#include <cstdint></p>
+<p>class Add32 {<br>public:<br>    void compute(uint32_t a, uint32_t b, uint32_t &amp;sum, bool &amp;carry) {<br>        uint64_t res &#x3D; uint64_t(a) + uint64_t(b);<br>        sum &#x3D; uint32_t(res &amp; 0xFFFFFFFF);<br>        carry &#x3D; (res &gt;&gt; 32) &amp; 0x1;<br>    }<br>};</p>
+<p>#endif</p>
+<p>测试加法器（简单 main 测试）：</p>
+<p>int main() {<br>    Add32 adder;<br>    uint32_t sum;<br>    bool carry;<br>    adder.compute(0xFFFFFFFF, 0x1, sum, carry);<br>    printf(“sum&#x3D;%x, carry&#x3D;%d\n”, sum, carry);<br>    return 0;<br>}<br>Step 2：生成 BSD 接口文件<br>准备头文件</p>
+<p>拷贝你的 add32.h 到 simulator_script&#x2F;interface_extractor&#x2F;include&#x2F;：</p>
+<p>cp add32.h simulator_script&#x2F;interface_extractor&#x2F;include&#x2F;<br>修改 Makefile</p>
+<p>指定你的模块头文件：</p>
+<p>python3 .&#x2F;advanced_interface_analyzer.py .&#x2F;include&#x2F; add32.h</p>
+<p>执行生成接口</p>
+<p>conda activate qm<br>make run_python<br>生成 add32_bsd.h，用于 BSD 训练。<br>Step 3：构建 io_generator</p>
+<p>组织文件</p>
+<p>cp simulator_script&#x2F;interface_extractor&#x2F;add32_bsd.h BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;<br>cp -r simulator&#x2F;* BSD&#x2F;src&#x2F;io_generator&#x2F;simulator_include&#x2F;<br>初始化接口类</p>
+<p>在 add32_bsd.h 中添加：</p>
+<p>Add32 adder &#x3D; {};</p>
+<p>添加 BSD 所需函数：</p>
+<p>void pi_to_simulator(bool* pi);<br>void simulator_to_po(bool* po);<br>void out_initial_detect();<br>剪切 pi_to_simulator &#x2F; simulator_to_po &#x2F; out_initial_detect 到 add32.cpp<br>确保 BSD 训练时可以操作 pi &#x2F; po。<br>Step 4：拆分变量位宽</p>
+<p>拷贝 split_h.py 和 Makefile：</p>
+<p>cp BSD&#x2F;src&#x2F;io_generator&#x2F;prf_bsd&#x2F;split_h.py BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;<br>cp BSD&#x2F;src&#x2F;io_generator&#x2F;prf_bsd&#x2F;Makefile BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;<br>修改 Makefile：<br>–template 指向 add32_bsd.h<br>–cpp 指向 add32.cpp<br>–outdir 输出目录，例如 BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;out&#x2F;</p>
+<p>执行拆分：</p>
+<p>make run_python<br>Step 5：配置 BSD 训练</p>
+<p>修改 top.h</p>
+<p>#include “io_generator&#x2F;add32_bsd&#x2F;add32_bsd.h”</p>
+<p>配置 run_batch.py</p>
+<p>HEADER_DIR &#x3D; “.&#x2F;io_generator&#x2F;add32_bsd&#x2F;“<br>HEADER_PATTERN &#x3D; “<em><em>bsd</em></em>.h”<br>EXE_OUTPUT_DIR &#x3D; “.&#x2F;build_bin”<br>LOG_OUTPUT_DIR &#x3D; “.&#x2F;run_logs”<br>MAX_PARALLEL_PROCESSES &#x3D; 4<br>THREADS_PER_PROCESS &#x3D; 64<br>BASE_COMPILE_CMD &#x3D; “g++ BSD.cpp -o {exe_name} -O3 -std&#x3D;c++11 -fopenmp -I.&#x2F;io_generator&#x2F;simulator_include -I.&#x2F;io_generator”</p>
+<p>启动训练</p>
+<p>python3 .&#x2F;run_batch.py<br>查看结果<br>训练生成的 RTL 在 rtl_set<br>训练日志在 run_logs<br>检查 33 位输出 acc 是否 ≥ 0.99<br>Step 6：验证<br>随机输入 pi → 模拟器 → BSD 输出 po<br>对比 po 与模拟器输出是否一致<br>如果不一致，将 pi 打印到文件，用于调试训练问题</p>
+
+        
+      </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuid-LtU2e-sbkzn3cvld9snY" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IC-design/" rel="tag">IC design</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/database/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">database</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Zhang Chaochao<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+  
+    
+    <a href="/" class="mobile-nav-link">
+      <span class="fa fa-home mobile-nav-icon" aria-hidden="true"></span>
+      Home
+    </a>
+  
+    
+    <a href="/archives" class="mobile-nav-link">
+      <span class="fa fa-archive mobile-nav-icon" aria-hidden="true"></span>
+      Archives
+    </a>
+  
+    
+    <a href="/categories" class="mobile-nav-link">
+      <span class="fa fa-folder-open-o mobile-nav-icon" aria-hidden="true"></span>
+      Categories
+    </a>
+  
+    
+    <a href="/tags" class="mobile-nav-link">
+      <span class="fa fa-tags mobile-nav-icon" aria-hidden="true"></span>
+      Tags
+    </a>
+  
+    
+    <a href="/" class="mobile-nav-link">
+      <span class="fa fa-clock-o mobile-nav-icon" aria-hidden="true"></span>
+      Recent Posts
+    </a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  <script src="https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default'
+      });
+    }
+  </script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
