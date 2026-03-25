@@ -14,7 +14,7 @@
 <meta property="og:description" content="计算机网络概述计算机网络的起源和发展电路交换 “交换” (switch) 的含义即转接——把一条电话线转接到另一条电话线，使它们连通起来。从通信资源的分配角度来看，“交换”就是按照某种方式动态地分配传输线路的资源  特点面向连接必须经过三个步骤：建立连接（占用通信资源）、通话（一直占用通信资源）、释放连接（释放通信资源）  以电路交换方式传送计算机数据效率低计算机数据具有突发性（burst），传送">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-04T00:41:07.000Z">
-<meta property="article:modified_time" content="2026-03-18T01:59:07.763Z">
+<meta property="article:modified_time" content="2026-03-25T02:02:31.363Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="networks">
 <meta name="twitter:card" content="summary">
@@ -295,12 +295,40 @@
 <h3 id="校验和"><a href="#校验和" class="headerlink" title="校验和"></a>校验和</h3><p>将传输的所有字相加起来，相加结果作为校验和，一起传输</p>
 <p>TCP&#x2F;IP：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0110 1011 1110</span><br><span class="line">=&gt; 0110</span><br><span class="line">  +0011</span><br><span class="line">  +0001</span><br><span class="line">  =1010</span><br><span class="line">=&gt; 0101 取反码</span><br></pre></td></tr></table></figure>
-<h3 id="循环冗余校验"><a href="#循环冗余校验" class="headerlink" title="循环冗余校验"></a>循环冗余校验</h3><h2 id="可靠传输"><a href="#可靠传输" class="headerlink" title="可靠传输"></a>可靠传输</h2><h2 id="媒体共享"><a href="#媒体共享" class="headerlink" title="媒体共享"></a>媒体共享</h2><h2 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h2><h1 id="分组交换-1"><a href="#分组交换-1" class="headerlink" title="分组交换"></a>分组交换</h1><h1 id="网络互连"><a href="#网络互连" class="headerlink" title="网络互连"></a>网络互连</h1><h1 id="端到端传输"><a href="#端到端传输" class="headerlink" title="端到端传输"></a>端到端传输</h1><h1 id="网络应用"><a href="#网络应用" class="headerlink" title="网络应用"></a>网络应用</h1><h1 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h1><h1 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h1><h1 id="网络人工智能"><a href="#网络人工智能" class="headerlink" title="网络人工智能"></a>网络人工智能</h1>
+<h3 id="循环冗余校验"><a href="#循环冗余校验" class="headerlink" title="循环冗余校验"></a>循环冗余校验</h3><p>重复帧问题</p>
+<ul>
+<li><p><strong>停顿算法</strong></p>
+</li>
+<li><p><strong>滑动窗口算法</strong></p>
+</li>
+</ul>
+<p>发送方窗口大小：时延带宽积、接受方</p>
+<p>接受方窗口大小：缓存有关</p>
+<p>累计确认-&gt;gobackN</p>
+<p>本质特征：异步处理&#x2F;异步执行</p>
+<ul>
+<li><em>窗口大小</em><br>发送方依据给定的延迟与带宽的乘积<br>（网络能力）拥塞控制机制</li>
+</ul>
+<p>发送方考虑接收方：<br>（接受的能力）流量控制机制</p>
+<p>当RWS&#x3D;SWS时：接收方可以缓存发送方传输的任何帧。原因：$SWS_{begin} \le RWS_{begin}$</p>
+<ul>
+<li><em>序号</em><br>序号无线大的假设不成立。<br>nbit能够表示$2^n$<br>因此序列号必须可以重用</li>
+</ul>
+<p>需要区别同意序列号的不同次发送<br>可用序列的数目必须大于所允许的待确认的帧的数目</p>
+<p>$SWS \lt MaxSeqNum$<br>不够：如果ack丢失，则</p>
+<p>$SWS+RWS \le MaxSeqNum(2^n)$<br>当SWS&#x3D;RWS时，发送窗口大小不能大于可用序列号数的一半</p>
+<h2 id="可靠传输"><a href="#可靠传输" class="headerlink" title="可靠传输"></a>可靠传输</h2><h2 id="媒体共享"><a href="#媒体共享" class="headerlink" title="媒体共享"></a>媒体共享</h2><h3 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h3><h3 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h3><h3 id="码分复用（code-division-multiplexing）"><a href="#码分复用（code-division-multiplexing）" class="headerlink" title="码分复用（code division multiplexing）"></a>码分复用（code division multiplexing）</h3><h3 id="动态媒体接入"><a href="#动态媒体接入" class="headerlink" title="动态媒体接入"></a>动态媒体接入</h3><ul>
+<li><p><strong>随机接入</strong><br>节点按需随机接入，接入后以信道的全部速率进行发送。</p>
+</li>
+<li><p><strong>受控接入</strong></p>
+</li>
+</ul>
+<h2 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h2><h1 id="分组交换-1"><a href="#分组交换-1" class="headerlink" title="分组交换"></a>分组交换</h1><h1 id="网络互连"><a href="#网络互连" class="headerlink" title="网络互连"></a>网络互连</h1><h1 id="端到端传输"><a href="#端到端传输" class="headerlink" title="端到端传输"></a>端到端传输</h1><h1 id="网络应用"><a href="#网络应用" class="headerlink" title="网络应用"></a>网络应用</h1><h1 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h1><h1 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h1><h1 id="网络人工智能"><a href="#网络人工智能" class="headerlink" title="网络人工智能"></a>网络人工智能</h1>
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidVagU21svxVtRLTPJJ-a_6" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidQGEdVYXVl0dbKVNTBIlbV" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
