@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/process.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/adder32.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-03-21T16:49:17.705Z">
+<meta property="article:modified_time" content="2026-03-28T15:58:26.689Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -227,42 +227,12 @@
 <h2 id="lsu"><a href="#lsu" class="headerlink" title="lsu"></a>lsu</h2><ul>
 <li><strong>生成启蒙3号真实模块的io_generator，并在服务器中投入训练</strong></li>
 </ul>
-<p>验收指标：33位输出acc达到0.99以上</p>
-<p>Step 1：手写 C++ 32 位加法器</p>
-<p>创建 add32.cpp 或 add32.h：</p>
-<p>#ifndef ADD32_H<br>#define ADD32_H<br>#include <cstdint></p>
-<p>class Add32 {<br>public:<br>    void compute(uint32_t a, uint32_t b, uint32_t &amp;sum, bool &amp;carry) {<br>        uint64_t res &#x3D; uint64_t(a) + uint64_t(b);<br>        sum &#x3D; uint32_t(res &amp; 0xFFFFFFFF);<br>        carry &#x3D; (res &gt;&gt; 32) &amp; 0x1;<br>    }<br>};</p>
-<p>#endif</p>
-<p>测试加法器（简单 main 测试）：</p>
-<p>int main() {<br>    Add32 adder;<br>    uint32_t sum;<br>    bool carry;<br>    adder.compute(0xFFFFFFFF, 0x1, sum, carry);<br>    printf(“sum&#x3D;%x, carry&#x3D;%d\n”, sum, carry);<br>    return 0;<br>}<br>Step 2：生成 BSD 接口文件<br>准备头文件</p>
-<p>拷贝你的 add32.h 到 simulator_script&#x2F;interface_extractor&#x2F;include&#x2F;：</p>
-<p>cp add32.h simulator_script&#x2F;interface_extractor&#x2F;include&#x2F;<br>修改 Makefile</p>
-<p>指定你的模块头文件：</p>
-<p>python3 .&#x2F;advanced_interface_analyzer.py .&#x2F;include&#x2F; add32.h</p>
-<p>执行生成接口</p>
-<p>conda activate qm<br>make run_python<br>生成 add32_bsd.h，用于 BSD 训练。<br>Step 3：构建 io_generator</p>
-<p>组织文件</p>
-<p>cp simulator_script&#x2F;interface_extractor&#x2F;add32_bsd.h BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;<br>cp -r simulator&#x2F;* BSD&#x2F;src&#x2F;io_generator&#x2F;simulator_include&#x2F;<br>初始化接口类</p>
-<p>在 add32_bsd.h 中添加：</p>
-<p>Add32 adder &#x3D; {};</p>
-<p>添加 BSD 所需函数：</p>
-<p>void pi_to_simulator(bool* pi);<br>void simulator_to_po(bool* po);<br>void out_initial_detect();<br>剪切 pi_to_simulator &#x2F; simulator_to_po &#x2F; out_initial_detect 到 add32.cpp<br>确保 BSD 训练时可以操作 pi &#x2F; po。<br>Step 4：拆分变量位宽</p>
-<p>拷贝 split_h.py 和 Makefile：</p>
-<p>cp BSD&#x2F;src&#x2F;io_generator&#x2F;prf_bsd&#x2F;split_h.py BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;<br>cp BSD&#x2F;src&#x2F;io_generator&#x2F;prf_bsd&#x2F;Makefile BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;<br>修改 Makefile：<br>–template 指向 add32_bsd.h<br>–cpp 指向 add32.cpp<br>–outdir 输出目录，例如 BSD&#x2F;src&#x2F;io_generator&#x2F;add32_bsd&#x2F;out&#x2F;</p>
-<p>执行拆分：</p>
-<p>make run_python<br>Step 5：配置 BSD 训练</p>
-<p>修改 top.h</p>
-<p>#include “io_generator&#x2F;add32_bsd&#x2F;add32_bsd.h”</p>
-<p>配置 run_batch.py</p>
-<p>HEADER_DIR &#x3D; “.&#x2F;io_generator&#x2F;add32_bsd&#x2F;“<br>HEADER_PATTERN &#x3D; “<em><em>bsd</em></em>.h”<br>EXE_OUTPUT_DIR &#x3D; “.&#x2F;build_bin”<br>LOG_OUTPUT_DIR &#x3D; “.&#x2F;run_logs”<br>MAX_PARALLEL_PROCESSES &#x3D; 4<br>THREADS_PER_PROCESS &#x3D; 64<br>BASE_COMPILE_CMD &#x3D; “g++ BSD.cpp -o {exe_name} -O3 -std&#x3D;c++11 -fopenmp -I.&#x2F;io_generator&#x2F;simulator_include -I.&#x2F;io_generator”</p>
-<p>启动训练</p>
-<p>python3 .&#x2F;run_batch.py<br>查看结果<br>训练生成的 RTL 在 rtl_set<br>训练日志在 run_logs<br>检查 33 位输出 acc 是否 ≥ 0.99<br>Step 6：验证<br>随机输入 pi → 模拟器 → BSD 输出 po<br>对比 po 与模拟器输出是否一致<br>如果不一致，将 pi 打印到文件，用于调试训练问题</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidti5ajFIudnuGRraZG_64U" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidv30667rQ-lTRAc3gygsFO" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

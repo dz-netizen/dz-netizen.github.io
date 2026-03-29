@@ -15,8 +15,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/CmpSysExmp.png">
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/stream.png">
+<meta property="og:image" content="https://dz-netizen.github.io/compilers/front_end_modle.png">
 <meta property="article:published_time" content="2026-03-05T02:28:00.000Z">
-<meta property="article:modified_time" content="2026-03-23T12:27:39.021Z">
+<meta property="article:modified_time" content="2026-03-29T08:56:16.490Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="compilers">
 <meta name="twitter:card" content="summary">
@@ -241,39 +242,152 @@
 <li><strong>脚本语言</strong></li>
 </ul>
 <p>具有高层次预算符的解释型语言<br>通常用于将多个计算过程“粘合”在一起</p>
-<h1 id="一个简单的语法制导翻译器"><a href="#一个简单的语法制导翻译器" class="headerlink" title="一个简单的语法制导翻译器"></a>一个简单的语法制导翻译器</h1><h2 id="乔姆斯基语言族"><a href="#乔姆斯基语言族" class="headerlink" title="乔姆斯基语言族"></a>乔姆斯基语言族</h2><h3 id="0型文法"><a href="#0型文法" class="headerlink" title="0型文法"></a>0型文法</h3><ul>
-<li>短语结构文法<br>等价于图灵机，任何0型语言都是递归可枚举的，而递归可枚举集必定是一个0型语言。</li>
+<h1 id="一个简单的语法制导翻译器"><a href="#一个简单的语法制导翻译器" class="headerlink" title="一个简单的语法制导翻译器"></a>一个简单的语法制导翻译器</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><h3 id="一个简单的前端模型"><a href="#一个简单的前端模型" class="headerlink" title="一个简单的前端模型"></a>一个简单的前端模型</h3><img src="/compilers/front_end_modle.png" class="" title="front_end_modle">
+
+<hr>
+<h3 id="语法（syntax）：是分析的基础"><a href="#语法（syntax）：是分析的基础" class="headerlink" title="语法（syntax）：是分析的基础"></a>语法（syntax）：是分析的基础</h3><p>语法给出程序合乎规范的形式要求，而语义决定了程序的含义</p>
+<p>本课程主要关心上下文无关文法，可以描述语言的文法，也可以指导程序的翻译过程</p>
+<ul>
+<li>中缀形式&#x3D;〉后缀形式<br>后缀形式不用括号；便于用栈实现<br>本章利用这个转换简化语法分析的实现</li>
 </ul>
+<p>词法分析：识别程序中的词法单元-记号（token）</p>
+<hr>
+<h3 id="语法树"><a href="#语法树" class="headerlink" title="语法树"></a>语法树</h3><ul>
+<li>语法树（syntax tree）或称为抽象语法树（AST）</li>
+</ul>
+<p>表示了程序的层次语法结构</p>
+<p>一般而言，树的左子树计算先于右子树实现</p>
+<p>语法树是编译器最重要的数据结构，编译器的大部分工作是伴随着对AST的全部和部分的遍历而实施的</p>
+<hr>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><ul>
+<li><strong>句子：在语言中，句子是给定字母表上一个符号串</strong><br>根据上下文的语境，有时也称为“字”</li>
+</ul>
+<hr>
+<ul>
+<li><strong>语言：在给定字母表上一个任意的可数的串集合</strong></li>
+</ul>
+<p>空集、{ε}、所有语法正确的C程序集合、所有语法正确的英语句子的集合等都是语言</p>
+<hr>
+<ul>
+<li><strong>重写规则：也称为规则，产生式或生成式，是描述语言规范的重要概念</strong></li>
+</ul>
+<p>重写规则是形如α→β或α::&#x3D;β的(α,β)有序对，其中α是某个字母表∑的正闭包∑+中的一个符号串， β是∑*中的一个符号串</p>
+<hr>
+<ul>
+<li><strong>文法G定义为四元组：$(V_N，V_T，P，S)$</strong><br>VN是非终结符号集合，VT是终结符号集合，P是产生式的集合，这三个集合是非空有穷集<br>S是开始符号，也称为是识别符号，是一个非终结符，至少在一个产生式作为左部出现<br>$V_N∩V_T&#x3D;Φ$<br>通常用V表示$V_N∪V_T$，称为文法G的字母表或字汇表</li>
+</ul>
+<hr>
+<h2 id="乔姆斯基语言族"><a href="#乔姆斯基语言族" class="headerlink" title="乔姆斯基语言族"></a>乔姆斯基语言族</h2><h3 id="0型文法"><a href="#0型文法" class="headerlink" title="0型文法"></a>0型文法</h3><p><strong>也称短语结构文法</strong></p>
+<p><strong>等价于图灵机，任何0型语言都是递归可枚举的，而递归可枚举集必定是一个0型语言。</strong></p>
+<hr>
+<ul>
+<li><strong>定义</strong><br>设$G&#x3D;(V_N,V_T,P,S)$，<br>如果它的每个产生式α→β是这样一种结构：<br>$α∈(V_N∪V_T)$且至少含有一个非终结符，<br>而$β∈(V_N∪V_T)$ ，<br>则G是一个0型文法</li>
+</ul>
+<hr>
 <h3 id="1型文法"><a href="#1型文法" class="headerlink" title="1型文法"></a>1型文法</h3><ul>
-<li>上下文有关文法<br>等价于线性界限自动机</li>
+<li><strong>上下文有关文法</strong><br>等价于线性界限自动机</li>
 </ul>
+<hr>
+<p><strong>定义</strong></p>
+<p>设$G&#x3D;(V_N,V_t,P,S)$，<br>如果它的每个产生式有如下形式：<br>$xAy→xβy，A∈V_N，β∈(V_N∪V_T)^{+}$，<br>$x、y∈(V_N∪V_T)^{*}$，则G是一个1型文法</p>
+<hr>
+<p>则因为每个产生式都保持符号串长度不变或增大，因此所有由开始符号导出的符号串的长度均不会减小</p>
+<p>1型文法对程序设计语言的应用来说一般太复杂了，难于应用</p>
+<hr>
+<hr class="thick">
+
 <h3 id="2型文法"><a href="#2型文法" class="headerlink" title="2型文法"></a>2型文法</h3><ul>
-<li>上下文无关文法<br>等价于下推自动机</li>
+<li><strong>上下文无关文法</strong><br>等价于下推自动机</li>
 </ul>
+<hr>
+<ul>
+<li><strong>定义</strong></li>
+</ul>
+<p>设$G&#x3D;(V_N,V_t,P,S)$，<br>如果它的每个产生式有如下形式：<br>$A→β，A∈V_N，β∈(V_N∪V_T)$，<br>则G是一个2型文法</p>
+<hr>
+<p>2型文法（CFG）有很多重要性质可以用算法确定，比如是否为空、是否能生成某个字符串，但并不是所有问题都可判定。</p>
+<hr>
+<ul>
+<li><em>不可判定</em><br>L(G1​)&#x3D;L(G2​)?<br>L(G1​)⊆L(G2​)?<br>L(G)&#x3D;Σ∗?</li>
+</ul>
+<hr class="thick">
+
 <h3 id="3型文法"><a href="#3型文法" class="headerlink" title="3型文法"></a>3型文法</h3><ul>
-<li>正则文法<br>有穷状态自动机</li>
+<li>正则文法<br><strong>有穷状态自动机</strong></li>
 </ul>
+<hr>
+<ul>
+<li><em>定义</em><br>设$G&#x3D;(V_N,V_t,P,S)$，<br>如果它的每个产生式有如下形式：<br>A→aB或A→a，其中$A,B∈V_N，a∈V_T$，<br>则G是一个3型文法</li>
+</ul>
+<blockquote>
+<p>该定义给出的定义是右线性文法，如果产生式的形式是： A→Ba或A→a，则称为左线性文法</p>
+</blockquote>
+<hr>
+<p><strong>3型文法的许多性质是可判定的</strong></p>
+<p>3型文法常用于编译器的词法分析程序的构造</p>
+<hr class="thick">
+
 <h3 id="四种文法的描述能力"><a href="#四种文法的描述能力" class="headerlink" title="四种文法的描述能力"></a>四种文法的描述能力</h3><p>$0型语法 \supset 1型文法 \supset 2型文法 \supset 3型文法$</p>
 <p>$a \in A$</p>
+<pre class="mermaid">graph TD
+
+subgraph G0[0型文法 G0]
+    subgraph G1[1型文法 G1]
+        subgraph G2[2型文法 G2]
+            subgraph G3[3型文法 G3]
+                R[正则文法 RG]
+            end
+            C[上下文无关文法 CFG]
+        end
+        S[上下文有关文法 CSG]
+    end
+    U[无限制文法 Type-0]
+end
+
+style G0 fill:#f9f9f9,stroke:#333,stroke-width:1px
+style G1 fill:#f0f8ff,stroke:#333,stroke-width:1px
+style G2 fill:#e6ffe6,stroke:#333,stroke-width:1px
+style G3 fill:#fff5e6,stroke:#333,stroke-width:1px</pre>
+
+<hr>
+<h3 id="文法和程序分析的关联"><a href="#文法和程序分析的关联" class="headerlink" title="文法和程序分析的关联"></a>文法和程序分析的关联</h3><p>依据文法，从开始符号开始推导，得到的所有终结符号串的集合构成该文法定义的语言</p>
+<ul>
+<li><p>对于编译器的词法，可以用３型文法描述</p>
+</li>
+<li><p>对于编译器的语法，可以用２型文法描述<br>其构成的合法句子就是程序，语法分析就是从开始符号出发，推导得到特定句子的过程，也是构建语法树的过程</p>
+</li>
+</ul>
+<hr class="thick">
+
+
 <h2 id="二义性"><a href="#二义性" class="headerlink" title="二义性"></a>二义性</h2><p>如果一个文法，对于同一个终结符号串，存在两个或多个与之对应的语法树，则称该文法具有二义性。</p>
 <ul>
 <li>固有二义语言无法消除二义性</li>
 </ul>
-<h2 id="语法制导翻译"><a href="#语法制导翻译" class="headerlink" title="语法制导翻译"></a>语法制导翻译</h2><h2 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h2><p>语法分析是决定如何使用一个文法生成一个终结符号串的过程</p>
+<hr>
+<h2 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h2><p>语法分析是决定如何使用一个文法生成一个终结符号串的过程</p>
 <ul>
 <li>对于程序设计，这个符号串可以理解为程序</li>
 <li>有两种：自顶向下（top-down）&#x2F;自底向上（bottom-up）</li>
 </ul>
+<hr>
 <h3 id="自上而下"><a href="#自上而下" class="headerlink" title="自上而下"></a>自上而下</h3><p>但不能确定唯一往下走时，需要回溯，当所有路径都不成功时，需要报错，报错原因又是一个问题。</p>
-<h3 id="左递归"><a href="#左递归" class="headerlink" title="左递归"></a>左递归</h3><p>考虑如下产生式，会陷入无线循环<br>expr-&gt;expr+term</p>
-<ul>
-<li>消除左递归</li>
+<hr>
+<h3 id="消除左递归"><a href="#消除左递归" class="headerlink" title="消除左递归"></a>消除左递归</h3><ul>
+<li><p>考虑如下产生式，会陷入无线循环<br>expr-&gt;expr+term</p>
+</li>
+<li><p>消除左递归:变为右递归<br><code>expr-&gt;term rest</code><br><code>rest-&gt;+term rest | ε</code></p>
+</li>
 </ul>
-<h2 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h2><h2 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h2><p>symbol table，用于保存有关源程序构造的各种信息的数据结构</p>
+<p><strong>一般的方法</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A	-&gt;	Aa|b</span><br><span class="line">=&gt;</span><br><span class="line">A	-&gt;	bR</span><br><span class="line">R	-&gt;	aR|ε</span><br><span class="line"></span><br><span class="line"><span class="comment">## 分析：A=&gt;ba^n</span></span><br><span class="line"><span class="comment">## 则可以先生成b</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h2><p>symbol table，用于保存有关源程序构造的各种信息的数据结构</p>
 <ul>
 <li>类型检查。确保一个构造的类型符合上下文的期望</li>
 </ul>
-<h1 id="词法分析-1"><a href="#词法分析-1" class="headerlink" title="词法分析"></a>词法分析</h1><h2 id="词法分析的作用"><a href="#词法分析的作用" class="headerlink" title="词法分析的作用"></a>词法分析的作用</h2><ul>
+<h1 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h1><h2 id="词法分析的作用"><a href="#词法分析的作用" class="headerlink" title="词法分析的作用"></a>词法分析的作用</h2><ul>
 <li>编译器的第一阶段<br>读输入的字符流，产生用于语法分析的词法单元<br>完成和用户接口的一些任务</li>
 </ul>
 <h2 id="输入缓冲区"><a href="#输入缓冲区" class="headerlink" title="输入缓冲区"></a>输入缓冲区</h2><h3 id="输入缓冲"><a href="#输入缓冲" class="headerlink" title="输入缓冲"></a>输入缓冲</h3><ul>
@@ -314,7 +428,20 @@
 <h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p><strong>给出所有能被3整除的0&#x2F;1字符串的语言</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">分析，设串为s=xb,则 s%<span class="number">3</span>=(xb)%<span class="number">3</span>=(<span class="number">2</span>x)%<span class="number">3</span>+b%<span class="number">3</span>=(<span class="number">2</span>r)%<span class="number">3</span>+b%<span class="number">3</span>=(<span class="number">2</span>r+b)%<span class="number">3</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="正则式与有穷状态自动机的等价"><a href="#正则式与有穷状态自动机的等价" class="headerlink" title="正则式与有穷状态自动机的等价"></a>正则式与有穷状态自动机的等价</h2><h3 id="DFA的化简"><a href="#DFA的化简" class="headerlink" title="DFA的化简"></a>DFA的化简</h3><h2 id="词法分析程序的自动生成工具"><a href="#词法分析程序的自动生成工具" class="headerlink" title="词法分析程序的自动生成工具"></a>词法分析程序的自动生成工具</h2><h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
+<h2 id="正则式与有穷状态自动机的等价"><a href="#正则式与有穷状态自动机的等价" class="headerlink" title="正则式与有穷状态自动机的等价"></a>正则式与有穷状态自动机的等价</h2><h3 id="DFA的化简"><a href="#DFA的化简" class="headerlink" title="DFA的化简"></a>DFA的化简</h3><h2 id="词法分析程序的自动生成工具"><a href="#词法分析程序的自动生成工具" class="headerlink" title="词法分析程序的自动生成工具"></a>词法分析程序的自动生成工具</h2><p>语法树的叶子节点构成的字串是C语言代码中的一个完整程序。</p>
+<h1 id="语法分析-1"><a href="#语法分析-1" class="headerlink" title="语法分析"></a>语法分析</h1><p>上下文无关文法的分析：</p>
+<p><em>最左推导</em><br>推导的每一步都是替代最左边的非终结符。</p>
+<p>语法树上运算顺序从下往上递减。</p>
+<p><em>最右推导</em><br>也被称为规范推导</p>
+<h2 id="证明语言和文法的等价性"><a href="#证明语言和文法的等价性" class="headerlink" title="证明语言和文法的等价性"></a>证明语言和文法的等价性</h2><ul>
+<li><p>验证文法生成的语言</p>
+</li>
+<li><p>验证这个语言的句子都可以由这个文法得到</p>
+</li>
+</ul>
+<h2 id="由NFA得到识别同样语言的文法"><a href="#由NFA得到识别同样语言的文法" class="headerlink" title="由NFA得到识别同样语言的文法"></a>由NFA得到识别同样语言的文法</h2><p>将文法的非终结符Ai与NFA的状态i对应<br>如果有NFA的状态i到状态j间有标记为a的转换边，则有文法产生式Ai →aAj，若a是ε，则有Ai →Aj<br>如果i是一个接受状态，则加入产生式Ai →ε<br>如果i是自动机的开始状态，则令Ai是所得文法的开始符号</p>
+<p>float为啥不能做计数器。<br>22位后加不上去了，一对接+1就被舍弃了</p>
+<h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
 <ul>
 <li>第一次测验跟理计差不多</li>
 <li>第二次稍微偏后端一点，但是也没有代码生成的，还是主要写一个语法制导翻译方案</li>
@@ -325,7 +452,7 @@
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidsBObTvdbSKWXbpxo2Iq-A" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuid4R847R_VnoX8PpwQjY_qL" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

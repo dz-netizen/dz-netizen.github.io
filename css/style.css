@@ -227,6 +227,9 @@ body {
 .article-entry hr {
   border: 1px dashed #dbe6f2;
 }
+.article-entry hr.thick {
+  border-width: 3px;
+}
 .article-entry strong {
   font-weight: bold;
 }

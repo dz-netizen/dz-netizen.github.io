@@ -14,7 +14,7 @@
 <meta property="og:description" content="概述数据库的概念 数据库 database   存储和管理一组数据，通常按照某种数据模型来组织   数据库系统 database management system   管理数据库的系统   关系模型 relational model   关系模型中的实体和联系都可以用“表”来表示   关系数据库 relational database   采用关系模型的数据库   关系数据库系统 relatio">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-05T05:38:30.000Z">
-<meta property="article:modified_time" content="2026-03-20T16:56:36.703Z">
+<meta property="article:modified_time" content="2026-03-26T07:26:10.420Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="database">
 <meta name="twitter:card" content="summary">
@@ -231,10 +231,15 @@
         int attribute1 PK
         float attribute2
     }</pre>
+<p>实体集合需要包含本身的属性</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create table</span> entity(</span><br><span class="line">ID  <span class="type">integer</span>,</span><br><span class="line">...</span><br><span class="line"><span class="keyword">primary key</span> (ID)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>弱实体<br>菱形加粗，实体框加粗，部分键下划线用虚线</li>
 </ul>
+<p>建表的不同点：部分键+删除主实体，也删除相应的弱实体</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">primary key</span> (A,B),</span><br><span class="line"><span class="keyword">foreign key</span> (A) <span class="keyword">references</span> A</span><br><span class="line"><span class="keyword">on</span> <span class="keyword">delete</span> cascade</span><br></pre></td></tr></table></figure>
+
 <hr>
 <p>实体集和属性的表示：</p>
 <h2 id="键"><a href="#键" class="headerlink" title="键"></a>键</h2><p>某些属性是特殊的，需要特别标记</p>
@@ -518,6 +523,38 @@
 <p>触发器的使用：额外性能代价<br>如果可以用简单约束或者断言，尽量不要使用触发器</p>
 <p>同一个事件最好不要定义多个触发器</p>
 <p>当这个事件发生时，没有明确的顺序</p>
+<h2 id="ER-table"><a href="#ER-table" class="headerlink" title="ER-&gt;table"></a>ER-&gt;table</h2><ul>
+<li><p>联系集合需要包含本身的属性以及实体集合的主键（可以将两个外键作为主键）</p>
+</li>
+<li><p>如果联系时对于同一个属性，则：<br>取个别名，变成两个表</p>
+</li>
+<li><p>怎么表达key constraint<br>类似 student&#x2F;province<br>studentID已经可以决定这个联系<br>–》 选择其中一个联系集的主键为主键，其他主键为unique<br>或者可以直接在student中怎加一列（province）<br>–》 联系变成表</p>
+</li>
+<li><p>key constraint &amp; total participation<br>加上not null</p>
+</li>
+<li><p>弱实体<br>不同点：部分键+删除主实体，也删除相应的弱实体</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">primary key</span> (A,B),</span><br><span class="line"><span class="keyword">foreign key</span> (A) <span class="keyword">references</span> A</span><br><span class="line"><span class="keyword">on</span> <span class="keyword">delete</span> cascade</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>类层次关系</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">studentid <span class="type">integer</span>,</span><br><span class="line">special   <span class="type">varchar</span>(<span class="number">20</span>),</span><br><span class="line"><span class="keyword">primary key</span> (studentid),</span><br><span class="line"><span class="keyword">foreign key</span> studentid <span class="keyword">references</span> student(id)</span><br><span class="line"><span class="keyword">on</span> <span class="keyword">delete</span> cascade</span><br></pre></td></tr></table></figure>
+
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> index <span class="keyword">on</span>     <span class="comment">-- 因索引属于schema故用create</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> index <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span> <span class="keyword">on</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><p>视图时一个关系表，不直接存储，需要时由视图定义计算得到</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> css <span class="keyword">as</span></span><br><span class="line">    <span class="keyword">select</span> S.id,S.name <span class="keyword">as</span> Sname</span><br><span class="line">    <span class="keyword">from</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> <span class="operator">&lt;</span>view_name<span class="operator">&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>访问控制 grant</p>
+</li>
+<li><p>revoke收回权限</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">revoke</span> [<span class="keyword">grant</span> option <span class="keyword">for</span>] 访问权限 <span class="keyword">on</span> 对象 <span class="keyword">from</span> 用户</span><br><span class="line">[cascade<span class="operator">|</span>restict]</span><br></pre></td></tr></table></figure>
+<p>收回的不是权限，而是再授权的权限</p>
 <h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
 <p>region 大区 5个</p>
 <p>分数：<br>建表1分<br>加载数据、运行TPCH 1分<br>查询SQL语句的解释 3分</p>
@@ -526,12 +563,34 @@
 <li>postgreSQL  开源对象-关系型数据库<br>早期数据库系统 Ingres<br>post ingres Ingres 的“后继版本”<br>加入 SQL 查询语言支持后 PostgreSQL</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> service postgresql start <span class="comment">#用管理员权限启动 PostgreSQL 数据库服务</span></span><br><span class="line"></span><br><span class="line">su - dbms   <span class="comment"># switch user</span></span><br></pre></td></tr></table></figure>
+<h2 id="tpch"><a href="#tpch" class="headerlink" title="tpch"></a>tpch</h2><h3 id="table概览"><a href="#table概览" class="headerlink" title="table概览"></a>table概览</h3><ul>
+<li><p>region地区</p>
+</li>
+<li><p>nation国家</p>
+</li>
+<li><p>customer 客户</p>
+</li>
+<li><p>orders 订单</p>
+</li>
+<li><p>lineitem 订单明细</p>
+</li>
+<li><p>part  零件&#x2F;商品</p>
+</li>
+<li><p>partsupp  零件-供应商关系</p>
+</li>
+</ul>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">	n_name,</span><br><span class="line">	<span class="built_in">sum</span>(l_extendedprice <span class="operator">*</span> (<span class="number">1</span> <span class="operator">-</span> l_discount)) <span class="keyword">as</span> revenue</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	customer,</span><br><span class="line">	orders,</span><br><span class="line">	lineitem,</span><br><span class="line">	supplier,</span><br><span class="line">	nation,</span><br><span class="line">	region</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">	c_custkey <span class="operator">=</span> o_custkey</span><br><span class="line">	<span class="keyword">and</span> l_orderkey <span class="operator">=</span> o_orderkey</span><br><span class="line">	<span class="keyword">and</span> l_suppkey <span class="operator">=</span> s_suppkey</span><br><span class="line">	<span class="keyword">and</span> c_nationkey <span class="operator">=</span> s_nationkey</span><br><span class="line">	<span class="keyword">and</span> s_nationkey <span class="operator">=</span> n_nationkey</span><br><span class="line">	<span class="keyword">and</span> n_regionkey <span class="operator">=</span> r_regionkey</span><br><span class="line">	<span class="keyword">and</span> r_name <span class="operator">=</span> <span class="string">&#x27;:1&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> o_orderdate <span class="operator">&gt;=</span> <span class="type">date</span> <span class="string">&#x27;:2&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> o_orderdate <span class="operator">&lt;</span> <span class="type">date</span> <span class="string">&#x27;:2&#x27;</span> <span class="operator">+</span> <span class="type">interval</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">year</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">	n_name</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">	revenue <span class="keyword">desc</span>;</span><br><span class="line"><span class="comment">-- 在指定地区 + 指定年份内，统计“本国客户 + 本国供应商”的交易收入，并按国家排名</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- using default substitutions</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span></span><br><span class="line">	c_custkey,</span><br><span class="line">	c_name,</span><br><span class="line">	<span class="built_in">sum</span>(l_extendedprice <span class="operator">*</span> (<span class="number">1</span> <span class="operator">-</span> l_discount)) <span class="keyword">as</span> revenue,</span><br><span class="line">	c_acctbal,</span><br><span class="line">	n_name,</span><br><span class="line">	c_address,</span><br><span class="line">	c_phone,</span><br><span class="line">	c_comment</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	customer,</span><br><span class="line">	orders,</span><br><span class="line">	lineitem,</span><br><span class="line">	nation</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">	c_custkey <span class="operator">=</span> o_custkey</span><br><span class="line">	<span class="keyword">and</span> l_orderkey <span class="operator">=</span> o_orderkey</span><br><span class="line">	<span class="keyword">and</span> o_orderdate <span class="operator">&gt;=</span> <span class="type">date</span> <span class="string">&#x27;1993-10-01&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> o_orderdate <span class="operator">&lt;</span> <span class="type">date</span> <span class="string">&#x27;1993-10-01&#x27;</span> <span class="operator">+</span> <span class="type">interval</span> <span class="string">&#x27;3&#x27;</span> <span class="keyword">month</span></span><br><span class="line">	<span class="keyword">and</span> l_returnflag <span class="operator">=</span> <span class="string">&#x27;R&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> c_nationkey <span class="operator">=</span> n_nationkey</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">	c_custkey,</span><br><span class="line">	c_name,</span><br><span class="line">	c_acctbal,</span><br><span class="line">	c_phone,</span><br><span class="line">	n_name,</span><br><span class="line">	c_address,</span><br><span class="line">	c_comment</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">	revenue <span class="keyword">desc</span></span><br><span class="line">limit <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 找出在某段时间内“退货带来最多收入”的客户 TOP 20</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- $ID$</span></span><br><span class="line"><span class="comment">-- TPC-H/TPC-R Small-Quantity-Order Revenue Query (Q17)</span></span><br><span class="line"><span class="comment">-- Functional Query Definition</span></span><br><span class="line"><span class="comment">-- Approved February 1998</span></span><br><span class="line">:x</span><br><span class="line">:o</span><br><span class="line"><span class="keyword">select</span></span><br><span class="line">	<span class="built_in">sum</span>(l_extendedprice) <span class="operator">/</span> <span class="number">7.0</span> <span class="keyword">as</span> avg_yearly</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	lineitem,</span><br><span class="line">	part</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">	p_partkey <span class="operator">=</span> l_partkey</span><br><span class="line">	<span class="keyword">and</span> p_brand <span class="operator">=</span> <span class="string">&#x27;:1&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> p_container <span class="operator">=</span> <span class="string">&#x27;:2&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> l_quantity <span class="operator">&lt;</span> (</span><br><span class="line">		<span class="keyword">select</span></span><br><span class="line">			<span class="number">0.2</span> <span class="operator">*</span> <span class="built_in">avg</span>(l_quantity)</span><br><span class="line">		<span class="keyword">from</span></span><br><span class="line">			lineitem</span><br><span class="line">		<span class="keyword">where</span></span><br><span class="line">			l_partkey <span class="operator">=</span> p_partkey</span><br><span class="line">	);</span><br><span class="line"><span class="comment">-- 计算某类商品中，“小批量订单”带来的平均年收入</span></span><br></pre></td></tr></table></figure>
+
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidrBaSEk1kJdyLRe_wspL_7" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidPzcoaakqxsohclY5828Nt" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
