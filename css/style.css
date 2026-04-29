@@ -1388,6 +1388,7 @@ pre .javascript .function {
   font-weight: bold;
 }
 .post-toc-nav .toc-toggle {
+  display: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

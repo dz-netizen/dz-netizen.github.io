@@ -22,8 +22,15 @@
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/freq_div_multiplexing.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/time_div_multiplexing.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/CDM_eg.png">
+<meta property="og:image" content="https://dz-netizen.github.io/%5Ccompilers%5Ccsma.png">
+<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Ccsma/cd.png">
+<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Ceth.png">
+<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Cip.png">
+<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Cipaddr.png">
+<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Carp.png">
+<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Cip_format.png">
 <meta property="article:published_time" content="2026-03-04T00:41:07.000Z">
-<meta property="article:modified_time" content="2026-03-29T07:04:59.896Z">
+<meta property="article:modified_time" content="2026-04-22T01:56:03.624Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="networks">
 <meta name="twitter:card" content="summary">
@@ -551,23 +558,247 @@
 <li><strong>随机接入</strong><br>节点按需随机接入，接入后以信道的全部速率进行发送。</li>
 </ul>
 <hr>
-<p><strong>典型方案</strong></p>
 <ul>
-<li><p><strong>ALOHA</strong></p>
+<li><strong>典型方案：</strong><br>（一）ALOHA<br>从网络层传递下来的帧首次到达时，立即发送该帧。<br>若碰撞，节点立即以概率p重传该帧，1-p的概率等待一个帧传输时间<br>若不成功，则下一阶段同理类推。</li>
+</ul>
+<p><em>注意：以概率p-发送，称为p坚持，以概率1发送，称为1-坚持</em></p>
+<ul>
+<li>信道利用率</li>
+</ul>
+<p>传输条件：本单元进行传输，在$[t_0-1,t_0]$没有节点已经开始传输，在$[t_0,t0+1]$没有节点传输<br>概率：$p(1-p)^{N-1}(1-p)^{N-1}$，N个节点时，ALOHA信道利用率为$Np(1-p)^{2(N-1)}$<br>$N-&gt;\infty$时，极限值为$\frac{1}{2e}$约18%。</p>
+<hr>
+<p>（二）时隙ALOHA</p>
+<p>为避免一个帧快传输完成时被别的节点发送的帧碰撞。</p>
+<ul>
+<li>设所有帧长度为Lbit，把时间划分为L&#x2F;R秒的时隙<br>一个时隙为传输一帧的时间。</li>
+</ul>
+<p>节点只在时隙开始时传输帧，所有节点时间同步。</p>
+<p>信道利用率</p>
+<p>$Np(1-p)^{N-1}$,当$N-&gt;\infty$时，极限值为$\frac{1}{e}$,约37%。</p>
+<p>（三）载波侦听多点接入 (Carrier Sense Multiple Access, CSMA)</p>
+<p>多点接入<br>广播链路，多个结点以多点接入的方式连接在一链路，同一冲突域</p>
+<p>载波侦听<br>结点在发送前先检测信道，是否有其它结点也在发送，若有，则暂时不要发送数据，以免发生碰撞</p>
+<ul>
+<li><p>非持续CSMA</p>
 </li>
-<li><p><strong>时隙ALOHA</strong></p>
+<li><p>1-坚持CSMA</p>
 </li>
-<li><p><strong>载波侦听多点接入(Carrier Sense Multiple Access, CSMA)</strong></p>
-</li>
-<li><p><strong>受控接入</strong></p>
+<li><p>p-坚持CSMA</p>
 </li>
 </ul>
-<h2 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h2><h1 id="分组交换-1"><a href="#分组交换-1" class="headerlink" title="分组交换"></a>分组交换</h1><h1 id="网络互连"><a href="#网络互连" class="headerlink" title="网络互连"></a>网络互连</h1><h1 id="端到端传输"><a href="#端到端传输" class="headerlink" title="端到端传输"></a>端到端传输</h1><h1 id="网络应用"><a href="#网络应用" class="headerlink" title="网络应用"></a>网络应用</h1><h1 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h1><h1 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h1><h1 id="网络人工智能"><a href="#网络人工智能" class="headerlink" title="网络人工智能"></a>网络人工智能</h1>
+<p><img src="/%5Ccompilers%5Ccsma.png" alt="csma"></p>
+<hr>
+<p>（四）带碰撞检测(Collision Detection)的CSMA  (CSMA&#x2F;CD)</p>
+<p>碰撞检测<br>结点边发送数据边检测信道上的信号电压大小<br>几个结点同时发送数据时，总线上的信号电压摆动值将会增大(互相叠加)</p>
+<p><img src="/%5CComputerNetworks%5Ccsma/cd.png" alt="csma&#x2F;cd"></p>
+<p>由此引出帧必须足够长，能让发送方发送结束前检测到冲突。</p>
+<p>由此，之多经过$2T$，其中T为最远距离除以速度</p>
+<p>（五）带碰撞避免(Collision Avoidance)的CSMA  (CSMA&#x2F;CA)</p>
+<p>CSMA&#x2F;CD：先发，撞了再处理<br>CSMA&#x2F;CA：先尽量避免，再发</p>
+<hr>
+<ul>
+<li><strong>受控接入</strong></li>
+</ul>
+<p>用户接入服从一定控制，如令牌环网</p>
+<hr>
+<h3 id="网络分类"><a href="#网络分类" class="headerlink" title="网络分类"></a>网络分类</h3><p>广域网 WAN (Wide Area Network)<br>城域网 MAN (Metropolitan Area Network)<br>局域网 LAN (Local Area Network)<br>个域网 PAN (Personal Area Network) </p>
+<h2 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h2><ul>
+<li><p>以太网适配器接收（receive）所有帧<br>广播信道，所有主机在一个广播域</p>
+</li>
+<li><p>以太网适配器只接受<br>编址到它自己地址的帧<br>编址到广播地址的帧<br>编址到多点播送地址的帧，如果适配器在监听那个地址<br>所有帧，如果适配器处于混杂模式</p>
+</li>
+<li><p>以太网适配器只向主机传递它接受的帧</p>
+</li>
+</ul>
+<p>往上层拓展原因：广播-》大量碰撞<br>节点负担太大</p>
+<ul>
+<li><strong>以太网帧结构</strong></li>
+</ul>
+<p><img src="/%5CComputerNetworks%5Ceth.png" alt="eth"></p>
+<h1 id="网络互连"><a href="#网络互连" class="headerlink" title="网络互连"></a>网络互连</h1><ul>
+<li><p>直连网络：广播，全干扰，&#x3D;&gt;末端</p>
+</li>
+<li><p>交换网络：单播</p>
+</li>
+</ul>
+<p>交换网络必然是先单播，而后必然归于一个末端进行广播</p>
+<ul>
+<li><p>交换机的互连：两种方式，P2P（点对点）&#x2F;总线型</p>
+</li>
+<li><p>对于任何一个Host，需要在对应线路的每个交换机都存储其对应端口</p>
+</li>
+<li><p>扁平结构做不到，一定要走向层次结构</p>
+</li>
+<li><p>分层、聚合</p>
+</li>
+</ul>
+<p><strong>直连网络</strong>：P2P，多路访问（总线）</p>
+<h2 id="网际协议IP"><a href="#网际协议IP" class="headerlink" title="网际协议IP"></a>网际协议IP</h2><h3 id="ip及相关协议"><a href="#ip及相关协议" class="headerlink" title="ip及相关协议"></a>ip及相关协议</h3><p>网际协议 IP<br> TCP&#x2F;IP 体系中两个最主要的协议之一<br>编址规则、数据包格式、分组处理规则</p>
+<p>与之配套使用的协议</p>
+<ul>
+<li><p>路由选择协议<br>路径选择</p>
+</li>
+<li><p>地址解析协议 ARP (Address Resolution Protocol)<br>实现IP地址与硬件地址的映射</p>
+</li>
+<li><p>网际控制报文协议 ICMP (Internet Control Message Protocol)<br>网络控制与诊断</p>
+</li>
+<li><p>网际组管理协议 IGMP (Internet Group Management Protocol)<br> IP多播</p>
+</li>
+</ul>
+<p><img src="/%5CComputerNetworks%5Cip.png" alt="ip"></p>
+<h3 id="ip地址及其表示方法"><a href="#ip地址及其表示方法" class="headerlink" title="ip地址及其表示方法"></a>ip地址及其表示方法</h3><p>IP地址 (IPv4) （位置&#x2F;身份 合二为一）<br>全球唯一的，32位，结点标识符<br>32位地址空间，理论上可提供约40亿个主机地址<br>由因特网名字与号码指派公司ICANN (Internet Corporation for Assigned Names and Numbers)进行分配</p>
+<ul>
+<li><strong>层次结构</strong></li>
+</ul>
+<p><code>层次结构：IP地址 = 网络号+主机号 </code></p>
+<p>网络号(net-id)：指出结点 (主机或路由器)连在哪个网络上<br>所有连到同一网络上的结点，其IP地址的网络地址部分相同<br>网络号由ICANN分配<br>主机号(host-id)：指出结点在网络内的标识<br>主机号由网络管理员分配</p>
+<hr>
+<h3 id="分类的IP地址"><a href="#分类的IP地址" class="headerlink" title="分类的IP地址"></a>分类的IP地址</h3><p>A类、B类、C类地址为单播地址 (Unicast)<br>D类为组播地址 (Multicast)<br>E类为保留地址以备特殊用途 (Reversed)</p>
+<p><img src="/%5CComputerNetworks%5Cipaddr.png" alt="ipaddr"></p>
+<blockquote>
+<p>网络号全0的地址保留<br>网络号全1的地址保留为环回地址</p>
+</blockquote>
+<blockquote>
+<p>主机号全为0的IP地址，为网络地址<br>主机号全为1的IP地址，表示该网络内的所有地址，即广播地址</p>
+</blockquote>
+<blockquote>
+<p>有一些特定地址没有被分配，被称为私有地址 (private address)<br>只能在局域网内部使用，不能直接在互联网中路由</p>
+</blockquote>
+<h3 id="ip分组转发"><a href="#ip分组转发" class="headerlink" title="ip分组转发"></a>ip分组转发</h3><p>路由器将转发信息存储在转发表中<br>Forwarding Information Base, FIB<br>FIB表中存储的是网络号与下一跳地址的映射关系</p>
+<p>MAC地址：恒定，代表身份</p>
+<p>IP地址：身份+位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IP地址:网络号+主机号</span><br></pre></td></tr></table></figure>
+
+<p>组网时倾向于</p>
+<p>转发表结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">目的地址网络号|下一跳的MAC地址 | 端口</span><br></pre></td></tr></table></figure>
+
+<p>路由表结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Network ID | 目标地址的标识（IP/MAC） | 端口号</span><br><span class="line">用MAC地址不好，会被改变，需要写一个恒定的东西</span><br></pre></td></tr></table></figure>
+
+<p>数据传输过程中，数据包的IP1-&gt;IP2不变，其为决策，最初是什么，最终是哪个<br>但MAC地址改变，真实传输，通信，一个帧只有当发给自己时它才接收</p>
+<p>如果目的地址找不到了，报错，不是广播</p>
+<hr>
+<p>节点怎么知道应该在MAC帧首部填入什么硬件地址</p>
+<p>广播请求，返回响应</p>
+<p>可不可以把MAC编码在IP地址里呢</p>
+<hr>
+<p>ARP表格</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IP|MAC</span><br></pre></td></tr></table></figure>
+
+<h2 id="地址解析协议ARP"><a href="#地址解析协议ARP" class="headerlink" title="地址解析协议ARP"></a>地址解析协议ARP</h2><p>address resolution protocal</p>
+<ul>
+<li><strong>问题</strong><br>主机或路由器的物理接口硬件在转发数据时，只能理解特定网络的编址方案（硬件地址，如 MAC地址 ）</li>
+</ul>
+<p>地址解析：IP地址硬件地址<br>IP数据报在逐跳转发过程中，每一个结点需要根据本次传输的目的结点IP找到对应的目的结点的硬件地址(仅仅是本跳传输的直接接收结点) </p>
+<p>随后，网络适配器把IP数据包封装在目的地址为该硬件地址的帧中，发往本次传输的目的结点（可能是最终目的地，也可能是到达最终目的地的中间路由器 ）</p>
+<p>直接对应：将结点的硬件地址编码到IP地址的主机部分 &#x3D;&#x3D;&gt; 重复问题；主机号浪费；空间不匹配</p>
+<blockquote>
+<p>每个结点保留一张对照表：IP地址硬件地址<br>地址解析协议 (Address Resolution Protocol, ARP) </p>
+</blockquote>
+<p><img src="/%5CComputerNetworks%5Carp.png" alt="address resolution protocal"></p>
+<hr>
+<ul>
+<li>ARP 分组不是IP 协议的一部分，不包括IP头<br>ARP分组直接放在以太网帧的数据部分<br>以太网中将ARP请求和响应分组定义为0x0806 以太类型</li>
+</ul>
+<h2 id="IP报文格式"><a href="#IP报文格式" class="headerlink" title="IP报文格式"></a>IP报文格式</h2><p><img src="/%5CComputerNetworks%5Cip_format.png" alt="ip_format"></p>
+<p>HLen：首部长度，4bits，可表示的最大数值是 15 个单位(1个单位为 4 字节)，即首部最长60字节；最小5，即20字节(仅包含首部的固定部分)</p>
+<blockquote>
+<p>标准 1500 的 MTU：不算链路层报头，算 IP 报头</p>
+</blockquote>
+<h2 id="IP分片"><a href="#IP分片" class="headerlink" title="IP分片"></a>IP分片</h2><p>分片&#x2F;分段</p>
+<p>当一个router发现过不去(MTU_in&gt;MTU2_out)</p>
+<ul>
+<li>变小重传<br>-分段</li>
+</ul>
+<p>-重组</p>
+<hr>
+<p>-接收方<br>应该知道最大长度（添加一个bit，表示是否分组后的小数据包是否是最后一个）<br>知道某一段的位置（offset）<br>聚合标志（ID，哪几个包是一组）</p>
+<p>两个问题：<br>能够解决多次分片吗：可以<br>谁来重组：最终的目的主机</p>
+<p>性能问题<br>可能路径不同<br>设计原则（互联网哲学）</p>
+<hr>
+<h2 id="划分子网"><a href="#划分子网" class="headerlink" title="划分子网"></a>划分子网</h2><p><strong>早期的、分类的IP地址设计不够合理</strong></p>
+<p><code>IP地址 = 网络号+子网号+主机号</code></p>
+<ul>
+<li>分类<br>网络|主机</li>
+</ul>
+<p>子网<br>网|子网|主机</p>
+<ul>
+<li>子网掩码</li>
+</ul>
+<hr>
+<p>数据包处理过程：</p>
+<hr>
+<h2 id="网际控制报文协议ICMP"><a href="#网际控制报文协议ICMP" class="headerlink" title="网际控制报文协议ICMP"></a>网际控制报文协议ICMP</h2><p>网际控制报文协议<br>ICMP，Internet Control Message Protocol<br>用于网络诊断和控制：主机或路由器用于报告差错、异常情况<br>IP层协议，但封装在IP数据报中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bit0        bit8       bit16      bit31</span><br><span class="line">类型        代码        <span class="operator">&lt;</span><span class="comment">-----校验和----&gt;</span></span><br><span class="line"><span class="operator">&lt;</span><span class="comment">--------这四字节取决与ICMP报文类型------&gt;</span></span><br><span class="line"><span class="operator">&lt;</span><span class="comment">------数据部分（长度取决于报文类型------&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h3 id="ICMP应用"><a href="#ICMP应用" class="headerlink" title="ICMP应用"></a>ICMP应用</h3><ul>
+<li><p>测试主机的连通性（ping）</p>
+</li>
+<li><p>Tracerout&#x2F;tracert</p>
+</li>
+</ul>
+<p>Time To Live（TTL）</p>
+<ul>
+<li><p>路径MTU发现</p>
+</li>
+<li><p>路由重定向</p>
+</li>
+</ul>
+<hr>
+<h2 id="路由器"><a href="#路由器" class="headerlink" title="路由器"></a>路由器</h2><ul>
+<li>路由表的结构<br><code>目的网络号|下一跳IP|端口</code></li>
+</ul>
+<hr>
+<h3 id="交换结构"><a href="#交换结构" class="headerlink" title="交换结构"></a>交换结构</h3><p>路由器的核心部件，将分组从一个输入端口转发到一个输出端口<br>三种交换技术：经内存交换、经总线交换、经互联网络交换</p>
+<h3 id="路由选择算法"><a href="#路由选择算法" class="headerlink" title="路由选择算法"></a>路由选择算法</h3><p>目的：找到一条从源路由器(网络)到目的路由器(网络)的“好”路径</p>
+<ul>
+<li>网络模型：使用无向图形式描述路由选择问题</li>
+</ul>
+<hr>
+<p>路由算法：规模太大；动态</p>
+<ul>
+<li>自治系统（autonomous system）</li>
+</ul>
+<p>由单实体管辖的路由器集合组成</p>
+<p>域内路由：<br>内部网关协议和统一的度量标准</p>
+<p>域间路由<br>外部网关协议</p>
+<hr>
+<p><strong>难点：在分布式网络系统中，真正理解算法的运行机理</strong></p>
+<p><code>input-&gt;Router-&gt;output</code><br><code>      -&gt; process      </code><br>Router如何处理输入，更新RT，如何产生输出</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模式一，洪泛</span></span><br><span class="line"><span class="comment">// 原样将路由消息继续扩散</span></span><br><span class="line"><span class="comment">// 根据路由消息，更新路由表</span></span><br><span class="line">input ------------------&gt;output</span><br><span class="line">        |----&gt;处理，更新RT</span><br><span class="line"><span class="comment">// 全网都接收同样的信息</span></span><br><span class="line"><span class="comment">// 要求消息准确</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//迭代</span></span><br><span class="line"><span class="comment">//根据输入信息，更新路由表</span></span><br><span class="line"><span class="comment">//重新生成并发送出路由消息</span></span><br><span class="line">input ----&gt;处理 --------&gt;output</span><br><span class="line"><span class="comment">// 只有邻居接收该信息</span></span><br><span class="line"><span class="comment">// 要求消息准确性略低</span></span><br><span class="line"><span class="comment">// 当前最准不一定是最准</span></span><br><span class="line"><span class="comment">// 迭代的思想：越来越准</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="RIP-routing-information-protocal"><a href="#RIP-routing-information-protocal" class="headerlink" title="RIP(routing information protocal)"></a>RIP(routing information protocal)</h3><ul>
+<li>内部网关协议 IGP中最先得到广泛使用的协议</li>
+</ul>
+<h3 id="距离向量算法"><a href="#距离向量算法" class="headerlink" title="距离向量算法"></a>距离向量算法</h3><p>每个节点维护一个路由表</p>
+<ul>
+<li><strong>链路故障</strong></li>
+</ul>
+<p>所有故障都是由于链路故障或者节点故障&#x3D;&gt;$dest&#x3D;\infty$</p>
+<p>因此<code>新优先</code>-&gt;<code>短优先</code></p>
+<h2 id="OSPF-open-shortest-path-first"><a href="#OSPF-open-shortest-path-first" class="headerlink" title="OSPF(open shortest path first)"></a>OSPF(open shortest path first)</h2><p>链路状态数据库</p>
+<p>每个结点建立完整的网络图-链路状态数据库</p>
+<h3 id="LSP-link-state-packet"><a href="#LSP-link-state-packet" class="headerlink" title="LSP(link state packet)"></a>LSP(link state packet)</h3><p>创建该LSP的标识<br>该节点的相邻节点列表和对应开销路径</p>
+<p>序列号<br>生存期</p>
+<blockquote>
+<p>去重、去旧、去除（不要无穷无尽，生存期）</p>
+</blockquote>
+<h3 id="路由计算"><a href="#路由计算" class="headerlink" title="路由计算"></a>路由计算</h3><p>各个节点计算出，以自己为源节点到其他节点的最短路径，生成路由表</p>
+<p>Dijkstra最短路径</p>
+<ul>
+<li>两种生成树算法<br>归并<br>逐个生长</li>
+</ul>
+<p>要求生成最短路径树<br>广度优先</p>
+<p>广度优先算法基本共性：先进先出，队列</p>
+<h1 id="端到端传输"><a href="#端到端传输" class="headerlink" title="端到端传输"></a>端到端传输</h1><h1 id="网络应用"><a href="#网络应用" class="headerlink" title="网络应用"></a>网络应用</h1><h1 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h1><h1 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h1><h1 id="网络人工智能"><a href="#网络人工智能" class="headerlink" title="网络人工智能"></a>网络人工智能</h1>
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidWg6Us8lvhT2MtjugeCcue" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidHGqGY1MLqkNR_kxnEL43v" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
