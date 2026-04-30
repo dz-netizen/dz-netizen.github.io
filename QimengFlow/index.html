@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/adder32.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-04-29T17:20:34.538Z">
+<meta property="article:modified_time" content="2026-04-30T16:48:36.549Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -477,12 +477,66 @@
 <p>注释掉的部分是软件仿真时read&#x2F;write的写法，<br>现在out.出去的en&#x2F;addr&#x2F;data就是和ram交互的吗？</p>
 <hr>
 <h3 id="明日计划"><a href="#明日计划" class="headerlink" title="明日计划"></a>明日计划</h3><p>开始 在学长variable_order的基础上训一版10万-1亿的rtl</p>
+<h2 id="zhangchaochao-4-30"><a href="#zhangchaochao-4-30" class="headerlink" title="zhangchaochao(4&#x2F;30)"></a>zhangchaochao(4&#x2F;30)</h2><h3 id="codex使用"><a href="#codex使用" class="headerlink" title="codex使用"></a>codex使用</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//================== 建立本地主机和登录节点的通道 ====================</span></span><br><span class="line"><span class="comment">//本地电脑 → 登录节点（local_proxy)</span></span><br><span class="line"><span class="comment">// /workspace/I/qimeng3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注意选slot前需要查看通道使用情况</span></span><br><span class="line">(base) [qimeng3@CentOS7-Login3 qimeng3]$ ./proxy.sh slots <span class="comment">//在base查看空闲slot</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地开代理</span></span><br><span class="line">local_proxy.cmd</span><br><span class="line"><span class="comment">//选slot，输入password，输入verification code</span></span><br><span class="line"><span class="comment">// 绑定slot，建立反向隧道，实现 本地 &lt;-&gt; 登录节点（slot端口）</span></span><br><span class="line"><span class="comment">// localhost:10801 ↔ base:10801</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//================== 建立转发(eda -&gt; base -&gt; proxy -&gt; internet ) =================</span></span><br><span class="line"><span class="comment">//登录节点 → slot / eda / base（proxy.sh)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// eda节点没有直接网络，需要通过base做跳板</span></span><br><span class="line"></span><br><span class="line">(base) [qimeng3@eda<span class="number">-00</span> qimeng3]$ ./proxy.sh enter <span class="number">2</span>     <span class="comment">//建立转发通道,进入可用shell</span></span><br><span class="line">Entering a proxied shell <span class="keyword">for</span> SLOT <span class="number">2</span> (http:<span class="comment">//127.0.0.1:10801)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//上述操作等价于：</span></span><br><span class="line">(base) [qimeng3@eda<span class="number">-00</span> qimeng3]$ ./proxy.sh on <span class="number">2</span> <span class="comment">//建立转发通道，不进入shell</span></span><br><span class="line">(base) [qimeng3@eda<span class="number">-00</span> qimeng3]$ eval <span class="string">&quot;$(./proxy.sh env 2)&quot;</span> <span class="comment">//注入代理环境</span></span><br><span class="line">login shell</span><br><span class="line"></span><br><span class="line"><span class="comment">//================== 本地关闭 =====================</span></span><br><span class="line"></span><br><span class="line">关闭 local_proxy.cmd 窗口</span><br><span class="line"></span><br><span class="line"><span class="comment">//=================== 远端关闭 ====================</span></span><br><span class="line"><span class="comment">//断开 slot / proxy.sh 的转发</span></span><br><span class="line"></span><br><span class="line">(base) [qimeng3@eda<span class="number">-00</span> qimeng3]$ ./proxy.sh off <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="十万训练-一亿测试rtl生成"><a href="#十万训练-一亿测试rtl生成" class="headerlink" title="十万训练&#x2F;一亿测试rtl生成"></a>十万训练&#x2F;一亿测试rtl生成</h3><h3 id="gen-ram-py分析"><a href="#gen-ram-py分析" class="headerlink" title="gen_ram.py分析"></a>gen_ram.py分析</h3><p>不参与仿真运行本身，生成一个 .v 模块，默认输出<code>ram_genvar_style.v</code>,是一个参数化 Verilog RAM 生成器。</p>
+<hr>
+<ul>
+<li>核心功能<br>生成多读口、多写口、分bank的RAM<br>RAM 存储体用 <code>reg [DATA-1:0] bank_x [0:DEPTH-1]</code> 实现<br>写入是时序逻辑：<code>always @(posedge clk)。</code><br>普通读是组合逻辑：<code>always @(*)。</code><br>支持同拍写读 bypass：读地址命中本拍写端口时，读数据直接返回写数据，而不是旧 RAM 内容。<br>支持 <code>full-table read</code>：把整个 RAM 表展平成一个大向量输出。</li>
+</ul>
+<hr>
+<ul>
+<li>地址拆分</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bank_sel  = addr[bank_sel_width-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">bank_addr = addr[addr_width-<span class="number">1</span>:bank_sel_width]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<hr class="thick">
+
+<ul>
+<li><p><strong>prf和ram的交互</strong></p>
+</li>
+<li><p>PRF -&gt; RAM 读请求<br>PRF 发出 src1_preg&#x2F;src2_preg 地址，请 RAM 读对应物理寄存器值。</p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在 PrfOut 里：</span></span><br><span class="line">out.reg_file_addr_0[i]  <span class="comment">// src1 读地址</span></span><br><span class="line">out.reg_file_addr_1[i]  <span class="comment">// src2 读地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//来源在 comb_read()：</span></span><br><span class="line">out.reg_file_addr_0[i] = entry.uop.src1_preg;</span><br><span class="line">out.reg_file_addr_1[i] = entry.uop.src2_preg;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li>RAM -&gt; PRF 读数据返回<br>RAM 根据 reg_file_addr_0&#x2F;1 读出数据，再送回 PRF。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在 PrfIn 里：</span></span><br><span class="line">in.reg_file_data_0[i]  <span class="comment">// src1 读数据</span></span><br><span class="line">in.reg_file_data_1[i]  <span class="comment">// src2 读数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用位置：</span></span><br><span class="line">entry.uop.src1_rdata =</span><br><span class="line">    <span class="built_in">read_operand_with_bypass</span>(..., in.reg_file_data_0[i], ...);</span><br><span class="line"></span><br><span class="line">entry.uop.src2_rdata =</span><br><span class="line">    <span class="built_in">read_operand_with_bypass</span>(..., in.reg_file_data_1[i], ...);</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>PRF -&gt; RAM 写请求</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">在 PrfOut 里：</span><br><span class="line">out.reg_file_2_en[i]    <span class="comment">// 写使能</span></span><br><span class="line">out.reg_file_2_addr[i]  <span class="comment">// 写地址，也就是 dest_preg</span></span><br><span class="line">out.reg_file_2_data[i]  <span class="comment">// 写数据，也就是 result</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//来源在 comb_write()：</span></span><br><span class="line">out.reg_file_2_en[i] = <span class="literal">true</span>;</span><br><span class="line">out.reg_file_2_addr[i] = inst_r[i].uop.dest_preg;</span><br><span class="line">out.reg_file_2_data[i] = inst_r[i].uop.result;</span><br><span class="line"><span class="comment">//如果 dest_preg == 0，写数据强制为 0。</span></span><br></pre></td></tr></table></figure>
+
+
+<hr class="thick">
+
+<ul>
+<li><strong>ram&#x2F;prf连接关系</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PRF.out.reg_file_addr_0[i]  -&gt; RAM.r_addr_0[i]</span><br><span class="line">PRF.out.reg_file_addr_1[i]  -&gt; RAM.r_addr_1[i]</span><br><span class="line"></span><br><span class="line">RAM.r_data_0[i]             -&gt; PRF.in.reg_file_data_0[i]</span><br><span class="line">RAM.r_data_1[i]             -&gt; PRF.in.reg_file_data_1[i]</span><br><span class="line"></span><br><span class="line">PRF.out.reg_file_2_en[i]    -&gt; RAM.w_en[i]</span><br><span class="line">PRF.out.reg_file_2_addr[i]  -&gt; RAM.w_addr[i]</span><br><span class="line">PRF.out.reg_file_2_data[i]  -&gt; RAM.w_data[i]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>  下面这些不是 RAM 存储本体信号，但会影响 PRF 最终读出的值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">out.writeb_equal_logic_out_1/<span class="number">2</span></span><br><span class="line">in.writeb_equal_give_in_1/<span class="number">2</span></span><br><span class="line"></span><br><span class="line">out.bypass_equal_logic_out_1/<span class="number">2</span></span><br><span class="line">in.bypass_equal_give_in_1/<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>  它们判断当前读地址是否等于写回&#x2F;旁路目的寄存器。如果命中，<code>read_operand_with_bypass()</code> 会优先用写回或 EXU bypass 数据，而不是 RAM 读出的旧数据。</p>
+<hr class="thick">
+
+<h3 id="小结-明日计划"><a href="#小结-明日计划" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天进行一亿测试集的BSD训练和ram学习，先前学长千万测试集的prf很完善，开展起来很顺利，目前训出的acc均为1，耗时差不多是千万测试的两到三倍。</p>
+<p>暂无待解决的问题。</p>
+<hr>
+<p>如果今晚全部训练结果都符合要求，计划明天给这个模块包组合top和时序top，连上ram表。</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidj_qPFSVc1BbkXQOCP06ha" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidgRS9RZiHH_IFc-GMYOn_U" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

@@ -14,7 +14,7 @@
 <meta property="og:description" content="概述数据库的概念 数据库 database   存储和管理一组数据，通常按照某种数据模型来组织   数据库系统 database management system   管理数据库的系统   关系模型 relational model   关系模型中的实体和联系都可以用“表”来表示   关系数据库 relational database   采用关系模型的数据库   关系数据库系统 relatio">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-05T05:38:30.000Z">
-<meta property="article:modified_time" content="2026-04-23T06:56:14.737Z">
+<meta property="article:modified_time" content="2026-04-30T06:48:18.891Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="database">
 <meta name="twitter:card" content="summary">
@@ -683,7 +683,35 @@
 <li>纯粹设计为多维度</li>
 </ul>
 <p>网格：<br>最近邻查询</p>
-<h3 id="网格文件"><a href="#网格文件" class="headerlink" title="网格文件"></a>网格文件</h3><h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
+<h3 id="网格文件"><a href="#网格文件" class="headerlink" title="网格文件"></a>网格文件</h3><h2 id="数据库存储与访问4"><a href="#数据库存储与访问4" class="headerlink" title="数据库存储与访问4"></a>数据库存储与访问4</h2><ul>
+<li>分段散列</li>
+</ul>
+<p>计算哈希函数，映射到桶</p>
+<p>目标:<code>hash(key x,key y)%S</code><br>不是拼接之后再哈希，而是哈希之后再拼接</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">h1=<span class="built_in">hash</span>(key1)%size_1</span><br><span class="line">h2=<span class="built_in">hash</span>(key2)%size_2</span><br><span class="line">...</span><br><span class="line"><span class="comment">//size一般为2的倍数</span></span><br></pre></td></tr></table></figure>
+
+<p>可以简化：部分匹配；<br>无法简化：范围查询，最近邻匹配</p>
+<p>grid file(网格索引)</p>
+<hr>
+<ul>
+<li>四叉树(quad tree)</li>
+</ul>
+<p>认为一个长方形包括其左边和下边</p>
+<ul>
+<li><p>KD tree</p>
+</li>
+<li><p>R-tree</p>
+</li>
+</ul>
+<p>包含关系，父亲节点包含孩子节点</p>
+<ul>
+<li>引入外接长方形</li>
+</ul>
+<p>最小外接矩形</p>
+<p>(minimum bounding rectangle)</p>
+<p>允许重叠区域</p>
+<p>删除用加入来实现</p>
+<h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
 <p>region 大区 5个</p>
 <p>分数：<br>建表1分<br>加载数据、运行TPCH 1分<br>查询SQL语句的解释 3分</p>
 <p>密码：dbms-stu</p>
@@ -713,11 +741,12 @@
 
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- $ID$</span></span><br><span class="line"><span class="comment">-- TPC-H/TPC-R Small-Quantity-Order Revenue Query (Q17)</span></span><br><span class="line"><span class="comment">-- Functional Query Definition</span></span><br><span class="line"><span class="comment">-- Approved February 1998</span></span><br><span class="line">:x</span><br><span class="line">:o</span><br><span class="line"><span class="keyword">select</span></span><br><span class="line">	<span class="built_in">sum</span>(l_extendedprice) <span class="operator">/</span> <span class="number">7.0</span> <span class="keyword">as</span> avg_yearly</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	lineitem,</span><br><span class="line">	part</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">	p_partkey <span class="operator">=</span> l_partkey</span><br><span class="line">	<span class="keyword">and</span> p_brand <span class="operator">=</span> <span class="string">&#x27;:1&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> p_container <span class="operator">=</span> <span class="string">&#x27;:2&#x27;</span></span><br><span class="line">	<span class="keyword">and</span> l_quantity <span class="operator">&lt;</span> (</span><br><span class="line">		<span class="keyword">select</span></span><br><span class="line">			<span class="number">0.2</span> <span class="operator">*</span> <span class="built_in">avg</span>(l_quantity)</span><br><span class="line">		<span class="keyword">from</span></span><br><span class="line">			lineitem</span><br><span class="line">		<span class="keyword">where</span></span><br><span class="line">			l_partkey <span class="operator">=</span> p_partkey</span><br><span class="line">	);</span><br><span class="line"><span class="comment">-- 计算某类商品中，“小批量订单”带来的平均年收入</span></span><br></pre></td></tr></table></figure>
 
+
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/database/" data-id="cuid75RXwMu-dHWiHbckFEfbL" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidJG2ZHVWRcVgTk9m8wSFXp" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
