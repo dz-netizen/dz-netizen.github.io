@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Quant | DZ_Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="基础知识ETL提取（extract）、转换（transform）、加载（load），数据处理流程中的核心环节，本质是一套数据处理框架，通过三个连贯的步骤，实现从数据源到目标存储的高效数据流转。 PostgreSQLhttps:&#x2F;&#x2F;www.runoob.com&#x2F;postgresql&#x2F;postgresql-tutorial.html 一个免费的对象-关系数据库服务器(ORDBMS) PandasPan">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quant">
+<meta property="og:url" content="https://dz-netizen.github.io/Quant/index.html">
+<meta property="og:site_name" content="DZ_Blog">
+<meta property="og:description" content="基础知识ETL提取（extract）、转换（transform）、加载（load），数据处理流程中的核心环节，本质是一套数据处理框架，通过三个连贯的步骤，实现从数据源到目标存储的高效数据流转。 PostgreSQLhttps:&#x2F;&#x2F;www.runoob.com&#x2F;postgresql&#x2F;postgresql-tutorial.html 一个免费的对象-关系数据库服务器(ORDBMS) PandasPan">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-01T02:26:55.000Z">
+<meta property="article:modified_time" content="2026-05-01T12:41:04.142Z">
+<meta property="article:author" content="Zhang Chaochao">
+<meta property="article:tag" content="stock&#x2F;etf&#x2F;future">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-nav-wrap">
+    <div class="outer">
+      <div id="header-inner" class="inner">
+        <nav id="main-nav">
+          <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+          <a id="nav-logo" class="nav-logo" href="/">DzBlog</a>
+          
+          
+            
+            <a class="main-nav-link" href="/">
+              <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
+              Home
+            </a>
+          
+            
+            <a class="main-nav-link" href="/archives">
+              <span class="fa fa-archive main-nav-icon" aria-hidden="true"></span>
+              Archives
+            </a>
+          
+            
+            <a class="main-nav-link" href="/categories">
+              <span class="fa fa-folder-open-o main-nav-icon" aria-hidden="true"></span>
+              Categories
+            </a>
+          
+            
+            <a class="main-nav-link" href="/tags">
+              <span class="fa fa-tags main-nav-icon" aria-hidden="true"></span>
+              Tags
+            </a>
+          
+            
+            <a class="main-nav-link" href="/">
+              <span class="fa fa-clock-o main-nav-icon" aria-hidden="true"></span>
+              Recent Posts
+            </a>
+          
+        </nav>
+        <nav id="sub-nav">
+          
+          
+            <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+          
+          <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dz-netizen.github.io"></form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="-wrap">
+        <a href="/" id="logo" data-typing="true" data-text="爱你的命运_">爱你的命运_</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+
+      
+  <aside id="post-toc" aria-label="Table of contents">
+    <div class="widget-wrap">
+      <h3 class="widget-title">目录</h3>
+      <div class="widget widget-toc">
+        <nav class="post-toc-nav"></nav>
+      </div>
+    </div>
+  </aside>
+
+
+      <div class="outer">
+        <section id="main"><article id="post-Quant" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/Quant/" class="article-date">
+  <time class="dt-published" datetime="2026-05-01T02:26:55.000Z" itemprop="datePublished">2026-05-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Quant
+    </h1>
+  
+
+      </header>
+    
+    
+    
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="ETL"><a href="#ETL" class="headerlink" title="ETL"></a>ETL</h2><p>提取（extract）、转换（transform）、加载（load），数据处理流程中的核心环节，本质是一套数据处理框架，通过三个连贯的步骤，实现从数据源到目标存储的高效数据流转。</p>
+<h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><p><a target="_blank" rel="noopener" href="https://www.runoob.com/postgresql/postgresql-tutorial.html">https://www.runoob.com/postgresql/postgresql-tutorial.html</a></p>
+<p>一个免费的对象-关系数据库服务器(ORDBMS)</p>
+<h2 id="Pandas"><a href="#Pandas" class="headerlink" title="Pandas"></a>Pandas</h2><p>Pandas 是 Python 语言的一个扩展程序库，用于数据分析。</p>
+<p>其名字衍生自术语 “panel data”（面板数据）和 “Python data analysis”（Python 数据分析）。</p>
+<p>是一个开放源码、BSD 许可的库，提供高性能、易于使用的数据结构和数据分析工具。</p>
+<p>是一个强大的分析结构化数据的工具集，基础是 Numpy（提供高性能的矩阵运算）。</p>
+<h2 id="Parquet"><a href="#Parquet" class="headerlink" title="Parquet"></a>Parquet</h2><p>Apache Parquet是一种高效的列式存储格式，旨在提供在大数据处理环境中的高性能和可扩展性。它使用了一个自描述的、存储效率高的、高度可扩展的列式存储格式，以便有效地存储和处理大规模数据集。</p>
+<hr>
+<ul>
+<li>优势</li>
+</ul>
+<p>在数据分析的日常工作中，我们常常需要处理 CSV、Parquet 等格式的文件，用 Pandas 做数据探索，或者快速搭建一个轻量的分析环境。但问题也随之而来：</p>
+<p>Pandas 虽然灵活，但在处理大规模数据时显得吃力；<br>传统数据库（如 PostgreSQL、MySQL）需要独立安装、维护服务，部署复杂；<br>一些内存计算工具虽快，但缺少完整 SQL 支持，难以扩展。</p>
+<p>DuckDB 作为“数据界的 SQLite”走进了越来越多开发者的视野。它不需要单独的服务进程，可以直接嵌入到 Python、R 或者应用程序中使用；同时支持 SQL 的完整能力，还能高效读取和写入常见文件格式。</p>
+<h2 id="FastAPI"><a href="#FastAPI" class="headerlink" title="FastAPI"></a>FastAPI</h2><p>FastAPI 是一个现代、快速（高性能）的 Web 框架，用于基于标准 Python 类型提示构建 API。</p>
+<h2 id="APScheduler"><a href="#APScheduler" class="headerlink" title="APScheduler"></a>APScheduler</h2><p><strong>Advanced Python Scheduler</strong></p>
+<p>一个轻量级的 Python 定时任务调度框架。APScheduler 支持三种调度任务：固定时间间隔，固定时间点（日期），Linux 下的 Crontab 命令。同时，它还支持异步执行、后台执行调度任务。</p>
+<h2 id="React"><a href="#React" class="headerlink" title="React"></a>React</h2><p>React 是一个用于构建用户界面的 JAVASCRIPT 库，主要用于构建 UI</p>
+<h2 id="TypeScript"><a href="#TypeScript" class="headerlink" title="TypeScript"></a>TypeScript</h2><p>TypeScript 是 JavaScript 的一个超集，在 JavaScript 的基础上增加了静态类型检查的超集。<br>其设计目标是开发大型应用，它可以编译成纯 JavaScript，编译出来的 JavaScript 可以运行在任何浏览器上。</p>
+<h2 id="ECharts"><a href="#ECharts" class="headerlink" title="ECharts"></a>ECharts</h2><p>ECharts 是一个使用 JavaScript 实现的开源可视化库，涵盖各行业图表，满足各种需求。</p>
+<p>ECharts 提供了丰富的图表类型和交互能力，使用户能够通过简单的配置生成各种各样的图表，包括但不限于折线图、柱状图、散点图、饼图、雷达图、地图等。</p>
+<h2 id="JupyterLab"><a href="#JupyterLab" class="headerlink" title="JupyterLab"></a>JupyterLab</h2><p>Jupyter源于Ipython Notebook，是使用Python（也有R、Julia、Node等其他语言的内核）进行代码演示、数据分析、可视化、教学的很好的工具，对Python的愈加流行和在AI领域的领导地位有很大的推动作用。</p>
+<h2 id="SQLAlchemy"><a href="#SQLAlchemy" class="headerlink" title="SQLAlchemy"></a>SQLAlchemy</h2><p>SQL 工具包和对象关系映射器是一套全面的工具，用于处理数据库和 Python。它有几个不同的功能领域，可以单独使用或组合使用。</p>
+<h1 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h1><ul>
+<li>总体架构</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">行情数据 / 财务数据 / 合约数据 / 指数成分 / 宏观数据</span><br><span class="line">        ↓</span><br><span class="line">     ETL 任务</span><br><span class="line">        ↓</span><br><span class="line">PostgreSQL + Parquet</span><br><span class="line">        ↓</span><br><span class="line">因子计算、策略研究、回测引擎、组合分析(DuckDB)</span><br><span class="line">        ↓</span><br><span class="line">      后端(python+FastAPI)</span><br><span class="line">        ↓</span><br><span class="line">      前端(react,typescript,echart)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">quant-system/</span><br><span class="line">  backend/    <span class="comment">// 负责 HTTP API、数据库读写、任务调度</span></span><br><span class="line">  frontend/   <span class="comment">//  负责展示和交互</span></span><br><span class="line">  quant/      <span class="comment">// 负责量化核心逻辑</span></span><br><span class="line">  data/</span><br><span class="line">  notebooks/</span><br><span class="line">  scripts/</span><br><span class="line">  configs/</span><br></pre></td></tr></table></figure>
+
+<p>  其中 quant&#x2F; 是真正的策略、因子、回测核心；backend&#x2F; 只是把能力暴露出去；frontend&#x2F; 只是展示和交互。这样以后无论是做研究平台、模拟盘，还是实盘系统，都不会推倒重来。</p>
+<p>具体为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">quant-system/</span><br><span class="line">    pyproject.toml</span><br><span class="line">    README.md</span><br><span class="line">    .env.example</span><br><span class="line"></span><br><span class="line">    configs/</span><br><span class="line">      app.yaml</span><br><span class="line">      data.yaml</span><br><span class="line">      backtest.yaml</span><br><span class="line"></span><br><span class="line">    data/</span><br><span class="line">      raw/</span><br><span class="line">      parquet/</span><br><span class="line">        bars/</span><br><span class="line">          freq=1d/</span><br><span class="line">          freq=1m/</span><br><span class="line">        factors/</span><br><span class="line">        calendar/</span><br><span class="line">      cache/</span><br><span class="line"></span><br><span class="line">    notebooks/</span><br><span class="line">      research_momentum.ipynb</span><br><span class="line">      factor_analysis.ipynb</span><br><span class="line"></span><br><span class="line">    quant/</span><br><span class="line">      __init__.py</span><br><span class="line">      data/</span><br><span class="line">        datasource.py</span><br><span class="line">        repository.py</span><br><span class="line">        calendar.py</span><br><span class="line">        adjustment.py</span><br><span class="line">      assets/</span><br><span class="line">        instrument.py</span><br><span class="line">        stock.py</span><br><span class="line">        etf.py</span><br><span class="line">        future.py</span><br><span class="line">      factors/</span><br><span class="line">        base.py</span><br><span class="line">        momentum.py</span><br><span class="line">        volatility.py</span><br><span class="line">      strategy/</span><br><span class="line">        base.py</span><br><span class="line">        examples/</span><br><span class="line">          ma_cross.py</span><br><span class="line">          momentum_rotation.py</span><br><span class="line">      backtest/</span><br><span class="line">        engine.py</span><br><span class="line">        broker.py</span><br><span class="line">        portfolio.py</span><br><span class="line">        account.py</span><br><span class="line">        position.py</span><br><span class="line">        order.py</span><br><span class="line">        trade.py</span><br><span class="line">        cost.py</span><br><span class="line">        slippage.py</span><br><span class="line">        metrics.py</span><br><span class="line">      analysis/</span><br><span class="line">        performance.py</span><br><span class="line">        risk.py</span><br><span class="line">        report.py</span><br><span class="line">      utils/</span><br><span class="line">        config.py</span><br><span class="line">        logging.py</span><br><span class="line">        time.py</span><br><span class="line"></span><br><span class="line">    backend/</span><br><span class="line">      app/</span><br><span class="line">        main.py</span><br><span class="line">        api/</span><br><span class="line">          instruments.py</span><br><span class="line">          bars.py</span><br><span class="line">          backtests.py</span><br><span class="line">          factors.py</span><br><span class="line">        schemas/</span><br><span class="line">          backtest.py</span><br><span class="line">          market.py</span><br><span class="line">        services/</span><br><span class="line">          data_service.py</span><br><span class="line">          backtest_service.py</span><br><span class="line">        db/</span><br><span class="line">          session.py</span><br><span class="line">          models.py</span><br><span class="line">          migrations/</span><br><span class="line">        tasks/</span><br><span class="line">          ingest.py</span><br><span class="line">          compute_factors.py</span><br><span class="line"></span><br><span class="line">    frontend/</span><br><span class="line">      package.json</span><br><span class="line">      src/</span><br><span class="line">        pages/</span><br><span class="line">          Dashboard.tsx</span><br><span class="line">          Data.tsx</span><br><span class="line">          Backtest.tsx</span><br><span class="line">          Factors.tsx</span><br><span class="line">        components/</span><br><span class="line">          EquityCurve.tsx</span><br><span class="line">          DrawdownChart.tsx</span><br><span class="line">          KlineChart.tsx</span><br><span class="line">          BacktestTable.tsx</span><br><span class="line">        api/</span><br><span class="line">          client.ts</span><br><span class="line">          backtest.ts</span><br><span class="line">          market.ts</span><br><span class="line"></span><br><span class="line">    scripts/</span><br><span class="line">      init_db.py</span><br><span class="line">      ingest_daily.py</span><br><span class="line">      run_backtest.py</span><br><span class="line">      compute_factors.py</span><br><span class="line"></span><br><span class="line">    tests/</span><br><span class="line">      test_backtest_engine.py</span><br><span class="line">      test_cost.py</span><br><span class="line">      test_portfolio.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="data"><a href="#data" class="headerlink" title="data"></a>data</h2><h3 id="PostgreSQL-1"><a href="#PostgreSQL-1" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h3><ul>
+<li>存元数据、策略配置、回测结果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">instruments</span><br><span class="line">trading_calendar</span><br><span class="line">backtest_runs</span><br><span class="line">backtest_orders</span><br><span class="line">backtest_trades</span><br><span class="line">backtest_positions</span><br><span class="line">backtest_metrics</span><br><span class="line">strategy_configs</span><br></pre></td></tr></table></figure>
+
+<h3 id="Parquet-1"><a href="#Parquet-1" class="headerlink" title="Parquet"></a>Parquet</h3><ul>
+<li>存行情、因子、较大的时间序列结果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">daily_bars</span><br><span class="line">minute_bars</span><br><span class="line">adjusted_bars</span><br><span class="line">factor_values</span><br><span class="line">large_equity_curves</span><br></pre></td></tr></table></figure>
+
+<p>  行情数据建议按频率和日期分区：</p>
+<p>  data&#x2F;parquet&#x2F;bars&#x2F;freq&#x3D;1d&#x2F;year&#x3D;2025&#x2F;month&#x3D;01&#x2F;part.parquet<br>  data&#x2F;parquet&#x2F;bars&#x2F;freq&#x3D;1m&#x2F;year&#x3D;2025&#x2F;month&#x3D;01&#x2F;part.parquet</p>
+<p>  字段统一成：</p>
+<p>  symbol<br>  exchange<br>  asset_type<br>  datetime<br>  open<br>  high<br>  low<br>  close<br>  volume<br>  amount<br>  adj_factor</p>
+<p>  期货额外字段可以在独立表里存：</p>
+<p>  contract<br>  underlying<br>  expiry_date<br>  multiplier<br>  margin_rate<br>  price_tick</p>
+<h3 id="DuckDB"><a href="#DuckDB" class="headerlink" title="DuckDB"></a>DuckDB</h3><p>本地快速查询 Parquet</p>
+<h2 id="quant"><a href="#quant" class="headerlink" title="quant"></a>quant</h2><h3 id="Instrument"><a href="#Instrument" class="headerlink" title="Instrument"></a>Instrument</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@dataclass</span><br><span class="line">  <span class="keyword">class</span> <span class="title class_">Instrument</span>:</span><br><span class="line">      symbol: str</span><br><span class="line">      exchange: str</span><br><span class="line">      asset_type: str  <span class="meta"># stock / etf / future</span></span><br><span class="line">      name: str</span><br><span class="line">      multiplier: <span class="type">float</span> = <span class="number">1.0</span></span><br><span class="line">      price_tick: <span class="type">float</span> = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 期货可以扩展：</span></span><br><span class="line"></span><br><span class="line">  @dataclass</span><br><span class="line">  <span class="keyword">class</span> <span class="built_in">FutureInstrument</span>(Instrument):</span><br><span class="line">      underlying: str = <span class="string">&quot;&quot;</span></span><br><span class="line">      expiry_date: date | None = None</span><br><span class="line">      margin_rate: <span class="type">float</span> = <span class="number">0.1</span></span><br></pre></td></tr></table></figure>
+<h3 id="DataRepository"><a href="#DataRepository" class="headerlink" title="DataRepository"></a>DataRepository</h3><ul>
+<li>所有行情读取统一走这里，不要让策略自己读文件。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DataRepository</span>:</span><br><span class="line">    <span class="function">def <span class="title">get_bars</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        self,</span></span></span><br><span class="line"><span class="params"><span class="function">        symbols: list[str],</span></span></span><br><span class="line"><span class="params"><span class="function">        start: str,</span></span></span><br><span class="line"><span class="params"><span class="function">        end: str,</span></span></span><br><span class="line"><span class="params"><span class="function">        freq: str = <span class="string">&quot;1d&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    )</span> -&gt; pd.DataFrame:</span></span><br><span class="line"><span class="function">        ...</span></span><br></pre></td></tr></table></figure>
+<p>  这样以后从 Parquet 换成 ClickHouse，只需要改 repository。</p>
+<h3 id="Strategy"><a href="#Strategy" class="headerlink" title="Strategy"></a>Strategy</h3><p>使用“目标权重”模式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Strategy</span>:</span><br><span class="line">    <span class="function">def <span class="title">generate_weights</span><span class="params">(self, context, data)</span> -&gt; dict[str, <span class="type">float</span>]:</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="BacktestEngine"><a href="#BacktestEngine" class="headerlink" title="BacktestEngine"></a>BacktestEngine</h3><p>  回测引擎负责：</p>
+<p>  读取行情<br>  逐日&#x2F;逐分钟推进时间<br>  调用策略<br>  生成目标仓位<br>  撮合成交<br>  更新账户<br>  记录净值、订单、成交、持仓<br>  计算指标<br>  保存结果</p>
+<h3 id="Portfolio-Account"><a href="#Portfolio-Account" class="headerlink" title="Portfolio &#x2F; Account"></a>Portfolio &#x2F; Account</h3><p>  账户和组合单独建模：</p>
+<p>  Account</p>
+<ul>
+<li>cash</li>
+<li>total_value</li>
+<li>frozen_cash</li>
+<li>margin_used</li>
+</ul>
+<p>  Position</p>
+<ul>
+<li>symbol</li>
+<li>quantity</li>
+<li>avg_cost</li>
+<li>market_value</li>
+<li>unrealized_pnl</li>
+</ul>
+<p>  Portfolio</p>
+<ul>
+<li>positions</li>
+<li>cash</li>
+<li>equity</li>
+</ul>
+<p>  股票&#x2F;ETF 第一版逻辑：</p>
+<p>  买入扣现金<br>  卖出加现金<br>  不能做空<br>  手续费按成交金额计算<br>  股票可加印花税</p>
+<p>  期货第一版逻辑：</p>
+<p>  可多可空<br>  按合约乘数计算名义金额<br>  占用保证金<br>  按每日价格变化计算盈亏</p>
+<h2 id="backend"><a href="#backend" class="headerlink" title="backend"></a>backend</h2><p>  FastAPI 只做“调用服务 + 返回 JSON”。</p>
+<p>  推荐 API：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET  /api/instruments</span><br><span class="line">GET  /api/bars</span><br><span class="line">POST /api/backtests</span><br><span class="line">GET  /api/backtests</span><br><span class="line">GET  /api/backtests/&#123;run_id&#125;</span><br><span class="line">GET  /api/backtests/&#123;run_id&#125;/equity</span><br><span class="line">GET  /api/backtests/&#123;run_id&#125;/trades</span><br><span class="line">GET  /api/backtests/&#123;run_id&#125;/positions</span><br><span class="line">GET  /api/factors</span><br></pre></td></tr></table></figure>
+
+<p>  POST &#x2F;api&#x2F;backtests 请求体：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;strategy_name&quot;</span>: <span class="string">&quot;momentum_rotation&quot;</span>,</span><br><span class="line">  <span class="string">&quot;symbols&quot;</span>: [<span class="string">&quot;510300.SH&quot;</span>, <span class="string">&quot;159915.SZ&quot;</span>],</span><br><span class="line">  <span class="string">&quot;start&quot;</span>: <span class="string">&quot;2020-01-01&quot;</span>,</span><br><span class="line">  <span class="string">&quot;end&quot;</span>: <span class="string">&quot;2025-12-31&quot;</span>,</span><br><span class="line">  <span class="string">&quot;initial_cash&quot;</span>: <span class="number">1000000</span>,</span><br><span class="line">  <span class="string">&quot;params&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;lookback&quot;</span>: <span class="number">60</span>,</span><br><span class="line">    <span class="string">&quot;top_n&quot;</span>: <span class="number">2</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  后端服务层：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BacktestService</span>:</span><br><span class="line">    <span class="function">def <span class="title">run_backtest</span><span class="params">(self, request: BacktestRequest)</span> -&gt; BacktestSummary:</span></span><br><span class="line"><span class="function">        strategy =</span> strategy_registry.<span class="built_in">create</span>(</span><br><span class="line">            request.strategy_name,</span><br><span class="line">            request.params,</span><br><span class="line">        )</span><br><span class="line">        result = self.engine.<span class="built_in">run</span>(strategy, request.<span class="built_in">to_config</span>())</span><br><span class="line">        self.repository.<span class="built_in">save_result</span>(result)</span><br><span class="line">        <span class="keyword">return</span> BacktestSummary.<span class="built_in">from_result</span>(result)</span><br></pre></td></tr></table></figure>
+
+<h2 id="forend"><a href="#forend" class="headerlink" title="forend"></a>forend</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1.</span> 数据管理</span><br><span class="line">- 标的列表</span><br><span class="line">- 数据完整性检查</span><br><span class="line">- 最近更新时间</span><br><span class="line">- 缺失数据扫描</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> 策略管理</span><br><span class="line">- 策略列表</span><br><span class="line">- 参数配置</span><br><span class="line">- 策略版本</span><br><span class="line">- 运行回测</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> 回测分析</span><br><span class="line">- 净值曲线</span><br><span class="line">- 回撤曲线</span><br><span class="line">- 年化收益</span><br><span class="line">- Sharpe</span><br><span class="line">- Calmar</span><br><span class="line">- 胜率</span><br><span class="line">- 换手率</span><br><span class="line">- 手续费</span><br><span class="line">- 滑点</span><br><span class="line">- 交易明细</span><br><span class="line">- 持仓明细</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> 因子分析</span><br><span class="line">- 因子分布</span><br><span class="line">- IC / Rank IC</span><br><span class="line">- 分组收益</span><br><span class="line">- 多空组合</span><br><span class="line">- 因子相关性</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> 组合管理</span><br><span class="line">- 当前模拟组合</span><br><span class="line">- 历史权重</span><br><span class="line">- 风险暴露</span><br><span class="line">- 行业/品种分布</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>图表库用ECharts：金融图表、净值曲线、K线</p>
+<hr>
+<p>  前端设计</p>
+<p>  第一版只做 4 个页面就够：</p>
+<ol>
+<li><p>Dashboard<br>展示数据更新时间、最近回测、系统状态</p>
+</li>
+<li><p>Data<br>标的列表、行情覆盖范围、缺失数据</p>
+</li>
+<li><p>Backtest<br>选择策略、选择标的、配置参数、启动回测</p>
+</li>
+<li><p>Result<br>净值曲线、回撤曲线、指标、交易记录、持仓记录</p>
+</li>
+</ol>
+<p>  前端组件：</p>
+<p>  EquityCurve<br>  DrawdownChart<br>  MetricsPanel<br>  TradeTable<br>  PositionTable<br>  StrategyForm<br>  InstrumentSelector<br>  DateRangePicker</p>
+<p>  图表优先用 ECharts。</p>
+<h2 id="回测"><a href="#回测" class="headerlink" title="回测"></a>回测</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">quant/</span><br><span class="line">  data/</span><br><span class="line">  engine/</span><br><span class="line">  strategy/</span><br><span class="line">  portfolio/</span><br><span class="line">  risk/</span><br><span class="line">  execution/</span><br><span class="line">  analysis/</span><br><span class="line"></span><br><span class="line">核心接口：</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Strategy</span>:</span><br><span class="line">    <span class="function">def <span class="title">on_bar</span><span class="params">(self, context, data)</span>:</span></span><br><span class="line"><span class="function">        pass</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">class BacktestEngine:</span></span><br><span class="line"><span class="function">    def run(self, strategy, config):</span></span><br><span class="line"><span class="function">        pass</span></span><br></pre></td></tr></table></figure>
+
+
+<p>  回测系统至少要处理：</p>
+<p>  交易日历<br>  复权价格<br>  停牌<br>  涨跌停<br>  手续费<br>  滑点<br>  成交量约束<br>  期货保证金<br>  期货主力合约切换<br>  ETF 分红&#x2F;拆分<br>  股票退市<br>  调仓频率<br>  权重约束</p>
+<p>  如果你做 ETF&#x2F;股票&#x2F;期货混合，资产模型要一开始分清楚：</p>
+<p>  Stock:</p>
+<ul>
+<li>T+1</li>
+<li>涨跌停</li>
+<li>停牌</li>
+<li>手续费&#x2F;印花税</li>
+<li>复权</li>
+</ul>
+<p>  ETF:</p>
+<ul>
+<li>T+0 或 T+1，取决于市场和品种</li>
+<li>管理费可暂时忽略</li>
+<li>流动性和折溢价可后续处理</li>
+</ul>
+<p>  Future:</p>
+<ul>
+<li>保证金</li>
+<li>合约乘数</li>
+<li>到期换月</li>
+<li>夜盘</li>
+<li>逐日盯市</li>
+<li>多空都可开</li>
+</ul>
+<p>演进路线</p>
+<p>  第一阶段：本地研究系统</p>
+<p>  Parquet 存行情<br>  DuckDB 查询<br>  Jupyter 做研究<br>  简单回测引擎<br>  保存回测结果</p>
+<p>  第二阶段：内部平台</p>
+<p>  PostgreSQL 存元数据和回测结果<br>  FastAPI 提供 API<br>  React 展示数据和回测结果<br>  任务调度自动更新数据</p>
+<p>最小可用版本 MVP</p>
+<p>  我建议第一版就做这些：</p>
+<ol>
+<li>导入 ETF&#x2F;股票&#x2F;期货日线数据到 Parquet</li>
+<li>PostgreSQL 存标的信息和回测结果</li>
+<li>实现 DataRepository</li>
+<li>实现目标权重型 Strategy</li>
+<li>实现日线 BacktestEngine</li>
+<li>支持手续费和滑点</li>
+<li>保存净值、交易、持仓、指标</li>
+<li>FastAPI 暴露回测接口</li>
+<li>React 展示回测结果</li>
+</ol>
+<p>  MVP 路径：</p>
+<p>  先只支持日线<br>  先只支持收盘价调仓<br>  先只支持目标权重策略<br>  先只支持单账户<br>  先把 ETF&#x2F;股票跑通<br>  再加期货保证金和换月</p>
+<p>  这个顺序比较稳。期货比股票&#x2F;ETF复杂，尤其是合约换月、保证金、夜盘、主力连续合约，所以建议放在第二阶段。</p>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">python -m venv quant</span><br><span class="line"><span class="comment">//virtual environment</span></span><br><span class="line"></span><br><span class="line"># <span class="number">1.</span> 创建</span><br><span class="line">dz@LAPTOP-HVL0IQBD:~/quant$ python3 -m venv venv</span><br><span class="line"></span><br><span class="line"># <span class="number">2.</span> 激活</span><br><span class="line">dz@LAPTOP-HVL0IQBD:~/quant$ source venv/bin/<span class="built_in">activate</span></span><br><span class="line">(venv) dz@LAPTOP-HVL0IQBD:~/quant$ which python</span><br><span class="line">/home/dz/quant/venv/bin/<span class="built_in">python</span></span><br><span class="line">(venv) dz@LAPTOP-HVL0IQBD:~/quant$ which pip</span><br><span class="line">/home/dz/quant/venv/bin/pip</span><br><span class="line"></span><br><span class="line"># <span class="number">3.</span> 安装依赖</span><br><span class="line">pip install fastapi uvicorn pandas numpy duckdb sqlalchemy pyarrow</span><br><span class="line"></span><br><span class="line"><span class="meta"># postgresql</span></span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install postgresql postgresql-contrib</span><br><span class="line"></span><br><span class="line"># 后端</span><br><span class="line"></span><br><span class="line">pip install psycopg2-binary</span><br><span class="line">pip install fastapi uvicorn psycopg2-binary sqlalchemy</span><br><span class="line"></span><br><span class="line"><span class="meta"># node.js(react+ts+echarts)</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># echarts</span></span><br><span class="line">npm install echarts-<span class="keyword">for</span>-react</span><br><span class="line"></span><br><span class="line"># <span class="number">4.</span> 退出</span><br><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+        
+      </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://dz-netizen.github.io/Quant/" data-id="cuid9a_gm2cWbG6meNF1hsXrG" data-title="Quant" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stock-etf-future/" rel="tag">stock&#x2F;etf&#x2F;future</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/vscode-ssh/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">vscode-ssh</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Zhang Chaochao<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+  
+    
+    <a href="/" class="mobile-nav-link">
+      <span class="fa fa-home mobile-nav-icon" aria-hidden="true"></span>
+      Home
+    </a>
+  
+    
+    <a href="/archives" class="mobile-nav-link">
+      <span class="fa fa-archive mobile-nav-icon" aria-hidden="true"></span>
+      Archives
+    </a>
+  
+    
+    <a href="/categories" class="mobile-nav-link">
+      <span class="fa fa-folder-open-o mobile-nav-icon" aria-hidden="true"></span>
+      Categories
+    </a>
+  
+    
+    <a href="/tags" class="mobile-nav-link">
+      <span class="fa fa-tags mobile-nav-icon" aria-hidden="true"></span>
+      Tags
+    </a>
+  
+    
+    <a href="/" class="mobile-nav-link">
+      <span class="fa fa-clock-o mobile-nav-icon" aria-hidden="true"></span>
+      Recent Posts
+    </a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  <script src="https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default'
+      });
+    }
+  </script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
