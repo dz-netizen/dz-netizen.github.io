@@ -18,8 +18,9 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/adder32.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
+<meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-01T16:47:38.244Z">
+<meta property="article:modified_time" content="2026-05-05T17:00:56.303Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -551,14 +552,91 @@
 <img src="/QimengFlow/prf_420_451.png" class="" title="img">
 
 <p>估计还得一天才能完全训好。</p>
-<h3 id="小结-明日计划-1"><a href="#小结-明日计划-1" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天了解了prf逻辑切分的两个地方，以及他们后续rtl如何连接。</p>
+<h3 id="小结-明日计划-1"><a href="#小结-明日计划-1" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天分析了prf逻辑切分的两个地方，以及他们后续rtl如何连接。</p>
 <p>明天计划了解“组合逻辑使用aag_to_cpp转换成c++带回到模拟器做验证”的相关流程并做好配置。</p>
+<h2 id="zhangchaochao-5-5"><a href="#zhangchaochao-5-5" class="headerlink" title="zhangchaochao(5&#x2F;5)"></a>zhangchaochao(5&#x2F;5)</h2><h3 id="rtl训练"><a href="#rtl训练" class="headerlink" title="rtl训练"></a>rtl训练</h3><p>训练出的变量在一亿测试集下acc均为1，部分变量比较难训，耗时较长，先前脚本并行设置为32进程、8线程，现改为4进程、64线程继续跑。</p>
+<img src="/QimengFlow/outoftime.png" class="" title="outoftime">
+
+<h3 id="yosys"><a href="#yosys" class="headerlink" title="yosys"></a>yosys</h3><p>核心：把 Verilog（描述电路的代码）转换成“标准化的电路结构”（网表 &#x2F; AIG）</p>
+<hr>
+<h3 id="后续流程-codex"><a href="#后续流程-codex" class="headerlink" title="后续流程(codex)"></a>后续流程(codex)</h3><hr>
+<ul>
+<li>.v 加组合 Top<br>把所有变量 .v 和组合 top 放进：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /nfs_global/I/qimeng3/zhangchaochao/BSD/src/aag_to_cpp</span><br><span class="line">mkdir -p input_verilog</span><br></pre></td></tr></table></figure>
+<p>  目录形态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">input_verilog/</span><br><span class="line">  function_layer_0_nodes_0.v</span><br><span class="line">  function_layer_0_nodes_553.v</span><br><span class="line">  ...</span><br><span class="line">  function_top.v</span><br></pre></td></tr></table></figure>
+<p>  组合 top 需要是纯组合逻辑，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module function_top(</span><br><span class="line">    input  [PI_WIDTH-1:0] PI,</span><br><span class="line">    output [PO_WIDTH-1:0] PO</span><br><span class="line">);</span><br><span class="line">    // 实例化每个变量/片段模块</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li>生成 bit wrapper 和 base_design<br>不要跑完整 zstart.sh，手动跑：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /nfs_global/I/qimeng3/zhangchaochao/BSD/src/aag_to_cpp</span><br><span class="line"></span><br><span class="line">mkdir -p work/aag_bits work/cpp_bits work/netlist work/vec_bits work/verilog_bits work/yosys_bits output_cpp io_genrator_head</span><br><span class="line"></span><br><span class="line">python execute.py function_top</span><br></pre></td></tr></table></figure>
+<p>  这一步生成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">work/netlist/function_top_flat.v</span><br><span class="line">work/verilog_bits/function_top_flat_o0.v</span><br><span class="line">work/verilog_bits/function_top_flat_o1.v</span><br><span class="line">work/yosys_bits/yosys.ys</span><br><span class="line">aag_to_cpp_bits.py</span><br><span class="line">output_cpp/function_top.h   # 只用于拿 PI_WIDTH/PO_WIDTH</span><br></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>生成 Yosys 公共设计</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yosys work/yosys_bits/yosys.ys</span><br></pre></td></tr></table></figure>
+<p>  得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">work/yosys_bits/base_design.il</span><br></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>多进程 .v -&gt; .aag</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python parallel_yosys.py</span><br></pre></td></tr></table></figure>
+<p>  得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">work/aag_bits/function_top_flat_o0.aag</span><br><span class="line">work/aag_bits/function_top_flat_o1.aag</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>.aag -&gt; bit cpp</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">python aag_to_cpp_bits.py</span><br><span class="line"></span><br><span class="line">得到：</span><br><span class="line"></span><br><span class="line">work/cpp_bits/function_top_flat_o0.cpp</span><br><span class="line">work/cpp_bits/function_top_flat_o1.cpp</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li>bit cpp -&gt; chunk header<br>例如每 256 个输出 bit 一个 header：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python generate_chunk_headers.py \</span><br><span class="line">  --module function_top \</span><br><span class="line">  --cpp-dir work/cpp_bits \</span><br><span class="line">  --out-dir io_genrator_head \</span><br><span class="line">  --chunk-size 256 \</span><br><span class="line">  --width-header output_cpp/function_top.h</span><br></pre></td></tr></table></figure>
+<p>  得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">io_genrator_head/function_top_o_0_255.h</span><br><span class="line">io_genrator_head/function_top_o_256_511.h</span><br><span class="line">io_genrator_head/function_top_o_512_767.h</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>  后续模拟器每个进程只 include 一个这种小 header。</p>
+<hr>
+<ul>
+<li>模拟器 Makefile 接法<br>Makefile 需要支持这些变量：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CXXFLAGS += -DTOP_HEADER=\&quot;$(TOP_HEADER)\&quot;</span><br><span class="line">CXXFLAGS += -DCHECK_HEADER=\&quot;$(CHECK_HEADER)\&quot;</span><br><span class="line">CXXFLAGS += -DMISS_DIR=\&quot;$(MISS_DIR)\&quot;</span><br><span class="line">CXXFLAGS += -DBEGIN_IDX=$(BEGIN_IDX)</span><br><span class="line">CXXFLAGS += -DEND_IDX=$(END_IDX)</span><br><span class="line"></span><br><span class="line">run_python:</span><br><span class="line">      $(CXX) $(CXXFLAGS) $(SRCS) -o $(TARGET)</span><br><span class="line">      $(TARGET)</span><br></pre></td></tr></table></figure>
+<p>  你的 Python 启动命令保持这种形式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">make_cmd = (</span><br><span class="line">    f&#x27;make -j&#123;MAKE_JOBS&#125; &#x27;</span><br><span class="line">    f&#x27;TARGET=&quot;../&#123;exe_path&#125;&quot; &#x27;</span><br><span class="line">    f&#x27;BUILD_DIR=&quot;&#123;build_dir&#125;&quot; &#x27;</span><br><span class="line">    f&#x27;TOP_HEADER=&quot;../../../io_genrator_head/&#123;header_file&#125;&quot; &#x27;</span><br><span class="line">    f&#x27;CHECK_HEADER=&quot;../../../check_head/&#123;check_file&#125;&quot; &#x27;</span><br><span class="line">    f&#x27;MISS_DIR=&quot;./&#123;mismatch_log_path&#125;&quot; &#x27;</span><br><span class="line">    f&#x27;BEGIN_IDX=&#123;begin_idx&#125; &#x27;</span><br><span class="line">    f&#x27;END_IDX=&#123;end_idx&#125; &#x27;</span><br><span class="line">    f&#x27;run_python&#x27;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>  注意 BUILD_DIR 每个进程必须不同。</p>
+<hr>
+<ul>
+<li>C++ 里避免函数名冲突<br>TOP_HEADER 和 CHECK_HEADER 里可能都叫 io_generator_outer，include 时要宏改名：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#define PI_WIDTH AAG_PI_WIDTH</span><br><span class="line">#define PO_WIDTH AAG_PO_WIDTH</span><br><span class="line">#define io_generator_outer aag_io_generator_outer</span><br><span class="line">#define io_generator_outer_single aag_io_generator_outer_single</span><br><span class="line">#include TOP_HEADER</span><br><span class="line">#undef io_generator_outer_single</span><br><span class="line">#undef io_generator_outer</span><br><span class="line">#undef PO_WIDTH</span><br><span class="line">#undef PI_WIDTH</span><br><span class="line"></span><br><span class="line">#define PI_WIDTH CHECK_PI_WIDTH</span><br><span class="line">#define PO_WIDTH CHECK_PO_WIDTH</span><br><span class="line">#define io_generator_outer check_io_generator_outer</span><br><span class="line">#include CHECK_HEADER</span><br><span class="line">#undef io_generator_outer</span><br><span class="line">#undef PO_WIDTH</span><br><span class="line">#undef PI_WIDTH</span><br></pre></td></tr></table></figure>
+<p>  验证时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">bool* pi = new bool[AAG_PI_WIDTH];</span><br><span class="line">bool* aag_po = new bool[END_IDX - BEGIN_IDX];</span><br><span class="line">bool* check_po = new bool[END_IDX - BEGIN_IDX];</span><br><span class="line"></span><br><span class="line">aag_io_generator_outer(pi, aag_po);</span><br><span class="line">check_io_generator_outer(pi, check_po);</span><br><span class="line"></span><br><span class="line">for (int i = 0; i &lt; END_IDX - BEGIN_IDX; i++) &#123;</span><br><span class="line">    int global_bit = BEGIN_IDX + i;</span><br><span class="line">    if (aag_po[i] != check_po[i]) &#123;</span><br><span class="line">        // 写 MISS_DIR</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>Python 多进程分发<br>按 io_genrator_head 文件名解析区间：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">function_top_o_0_255.h       -&gt; BEGIN_IDX=0,   END_IDX=256</span><br><span class="line">function_top_o_256_511.h     -&gt; BEGIN_IDX=256, END_IDX=512</span><br></pre></td></tr></table></figure>
+<p>  每个任务传：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TOP_HEADER=io_genrator_head/function_top_o_0_255.h</span><br><span class="line">CHECK_HEADER=check_head/check_o_0_255.h</span><br><span class="line">BUILD_DIR=build/run_0_255</span><br><span class="line">MISS_DIR=mismatch_log/miss_0_255.log</span><br><span class="line">BEGIN_IDX=0</span><br><span class="line">END_IDX=256</span><br></pre></td></tr></table></figure>
+<p>  最重要的执行链</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /nfs_global/I/qimeng3/zhangchaochao/BSD/src/aag_to_cpp</span><br><span class="line"></span><br><span class="line">python execute.py function_top</span><br><span class="line">yosys work/yosys_bits/yosys.ys</span><br><span class="line">python parallel_yosys.py</span><br><span class="line">python aag_to_cpp_bits.py</span><br><span class="line">python generate_chunk_headers.py --module function_top --chunk-size 256 --width-header output_cpp/function_top.h</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="小结-明日计划-2"><a href="#小结-明日计划-2" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天进行yosys安装和学习，以及后续验证流程。</p>
+<p>明日计划：等超时的rtl训练完成后，开始连接和验证。</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuid6JOnew6Iay2rMFzTIMnSB" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidGqXIO3MGaVR-2YgMRjMEb" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
