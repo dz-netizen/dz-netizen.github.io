@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-06T00:30:57.349Z">
+<meta property="article:modified_time" content="2026-05-06T14:12:25.168Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -631,13 +631,43 @@
 
 <h3 id="小结-明日计划-2"><a href="#小结-明日计划-2" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天进行yosys安装和学习，以及后续验证流程。</p>
 <p>明日计划：等超时的rtl训练完成后，开始连接和验证。</p>
-<p>─</p>
+<h2 id="zhangchaochao-5-6"><a href="#zhangchaochao-5-6" class="headerlink" title="zhangchaochao(5&#x2F;6)"></a>zhangchaochao(5&#x2F;6)</h2><h3 id="BSD训练-1"><a href="#BSD训练-1" class="headerlink" title="BSD训练"></a>BSD训练</h3><p><code>516_547</code>ok</p>
+<h3 id="组合top"><a href="#组合top" class="headerlink" title="组合top"></a>组合top</h3><p>借助<code>/simulator_script/gen_top/generate_top.py</code>生成千万测试集得出rtl的组合top</p>
+<blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;gen_top&#x2F;top_function_layer.v</p>
+</blockquote>
+<h3 id="ram"><a href="#ram" class="headerlink" title="ram"></a>ram</h3><blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;ram_generator&#x2F;prf_ram.v</p>
+</blockquote>
+<p>  关键接口映射<br>  Prf_cpp.h 里已经把 PRF 表访问拆成外部接口：</p>
+<p>  读 PRF：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">out.reg_file_addr_0[i] = entry.uop.src1_preg;</span><br><span class="line">out.reg_file_addr_1[i] = entry.uop.src2_preg;</span><br><span class="line"></span><br><span class="line">src1_base = in.reg_file_data_0[i];</span><br><span class="line">src2_base = in.reg_file_data_1[i];</span><br></pre></td></tr></table></figure>
+<p>  写 PRF：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">out.reg_file_2_en[i]</span><br><span class="line">out.reg_file_2_addr[i]</span><br><span class="line">out.reg_file_2_data[i]</span><br></pre></td></tr></table></figure>
+<p>根据config.h,这个 PRF 需要：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">depth       = 512</span><br><span class="line">data_width  = 32</span><br><span class="line">read_ports  = 30   // 15 src1 + 15 src2</span><br><span class="line">write_ports = 15   // ISSUE_WIDTH = 15</span><br><span class="line">addr_width  = 9</span><br></pre></td></tr></table></figure>
+<p>就此修改<code>gen_ram.py</code>,得到<code>/simulator_script/ram_generator/prf_ram.v</code></p>
+<hr>
+<h3 id="时序top"><a href="#时序top" class="headerlink" title="时序top"></a>时序top</h3><blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;gen_top&#x2F;prf_big_top.v</p>
+</blockquote>
+<p>核心结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">i_ext + inst_r_state</span><br><span class="line">    -&gt; 第一次 top_function_layer</span><br><span class="line">    -&gt; 生成 PRF 读地址、equal/killed/load 反馈、写口控制</span><br><span class="line"></span><br><span class="line">PRF RAM</span><br><span class="line">    -&gt; 根据读地址读出 reg_file_data_0/1</span><br><span class="line"></span><br><span class="line">i_ext + RAM读数据 + feedback + inst_r_state</span><br><span class="line">    -&gt; 第二次 top_function_layer</span><br><span class="line">    -&gt; 得到最终 o_index、PRF 写口、inst_r_1</span><br><span class="line"></span><br><span class="line">时钟沿：</span><br><span class="line">    -&gt; PRF RAM 写回 reg_file</span><br><span class="line">    -&gt; inst_r_state &lt;= inst_r_1</span><br><span class="line"></span><br><span class="line">它实现了两类状态：</span><br><span class="line"></span><br><span class="line">1. reg_file/reg_file_1</span><br><span class="line">    - 用 prf_ram 实现。</span><br><span class="line">    - 读地址来自 out.reg_file_addr_0/1。</span><br><span class="line">    - 读数据回填到 in.reg_file_data_0/1。</span><br><span class="line">    - 写口来自 out.reg_file_2_en/addr/data。</span><br><span class="line">    - reset 时通过 flush_en_0(!rst_n) 清零 RAM。</span><br><span class="line">2. inst_r/inst_r_1</span><br><span class="line">    - 用 inst_r_state 寄存器实现。</span><br><span class="line">    - inst_r_state 回填到 PI 的 9043..10722。</span><br><span class="line">    - o_index 中的 inst_r_1 字段在时钟沿写回 inst_r_state。</span><br><span class="line"></span><br><span class="line">同时还把 Prf_cpp.h 中注释掉的内部连线补上了，包括：</span><br><span class="line"></span><br><span class="line">- reg_file_data_0/1</span><br><span class="line">- writeb_equal_give_in_1/2</span><br><span class="line">- bypass_equal_give_in_1/2</span><br><span class="line">- is_killed_in_0/1</span><br><span class="line">- load_wb_gate_in</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="等价性验证"><a href="#等价性验证" class="headerlink" title="等价性验证"></a>等价性验证</h3><ul>
+<li>&#x2F;share&#x2F;personal&#x2F;S&#x2F;lichongxiao&#x2F;to_csy&#x2F;verileq_dist.tar.gz</li>
+</ul>
+<p>打包了yosys和kissat环境，不用额外安装。cp到自己路径下，tar -xvf verileq_dist.tat.gz解压，然后参考README.md运行，默认使用kissat进行sat求解，仅当要形式化证明两个复杂的组合电路等价时才可能有速度优势，若两个组合电路不等价，通常yosys自带的sat求解就能较快求出反例。</p>
+<p>kissat如果验证不等价，可以直接输出反例了。然后多了两个命令行选项，-n可以指定最多输出多少个反例，–json可以指定把反例输出到一个jsonl文件</p>
+<h3 id="小结-明日计划-3"><a href="#小结-明日计划-3" class="headerlink" title="小结 &amp; 明日计划"></a>小结 &amp; 明日计划</h3><p>今天进行了 完成了组合逻辑包top、接上时序逻辑和ram的大top。</p>
+<p>明天进行复核及等价性验证。</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidft3Ru2-9UrFfdUF4E69vQ" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidgygJtyHYnsOqpIevKIccT" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
