@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-06T14:12:25.168Z">
+<meta property="article:modified_time" content="2026-05-07T15:40:40.011Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -662,12 +662,42 @@
 <p>kissat如果验证不等价，可以直接输出反例了。然后多了两个命令行选项，-n可以指定最多输出多少个反例，–json可以指定把反例输出到一个jsonl文件</p>
 <h3 id="小结-明日计划-3"><a href="#小结-明日计划-3" class="headerlink" title="小结 &amp; 明日计划"></a>小结 &amp; 明日计划</h3><p>今天进行了 完成了组合逻辑包top、接上时序逻辑和ram的大top。</p>
 <p>明天进行复核及等价性验证。</p>
+<h2 id="zhangchaochao-5-7"><a href="#zhangchaochao-5-7" class="headerlink" title="zhangchaochao(5&#x2F;7)"></a>zhangchaochao(5&#x2F;7)</h2><h3 id="BSD训练-2"><a href="#BSD训练-2" class="headerlink" title="BSD训练"></a>BSD训练</h3><p>105个十万训练1亿测试的变量超时严重，修改为一万训练1亿测试</p>
+<h3 id="ram修改"><a href="#ram修改" class="headerlink" title="ram修改"></a>ram修改</h3><blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;ram_generator&#x2F;prf_ram.v</p>
+</blockquote>
+<p>纯30个读15个写</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line">                <span class="keyword">if</span> (w_en_ext_0 &amp;&amp; (w_addr_ext_0 == i)) <span class="keyword">begin</span></span><br><span class="line">                    ram[i] &lt;= w_data_ext_0;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">        <span class="comment">// --- Port 0 Read ---</span></span><br><span class="line">            <span class="comment">// Default: Read from SRAM array</span></span><br><span class="line">        r_data_0 = ram[r_addr_0];</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="时序top修改"><a href="#时序top修改" class="headerlink" title="时序top修改"></a>时序top修改</h3><blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;gen_top&#x2F;prf_bsd_top.v</p>
+</blockquote>
+<ul>
+<li><p>pi_ext[7002:0] 是外部输入，只包含模拟器里真正顶层输入部分：<br>  iss2prf + exe2prf + dec_bcast + rob_bcast</p>
+</li>
+<li><p>po_ext[3944:0] 是外部输出，只包含：<br>  prf2exe + prf_awake</p>
+</li>
+<li><p>内部仍保留完整 pi_pre&#x2F;pi_final [10722:0] 和 po_pre&#x2F;po_final [7604:0]，用于适配 top_function_layer</p>
+</li>
+<li><p>top_function_layer 实例化两次：<br>- u_prf_pre_comb：第一遍组合逻辑，生成 RAM 读地址、equal&#x2F;killed&#x2F;load helper<br>- u_prf_final_comb：第二遍组合逻辑，输入回填后的 RAM 数据和 helper，生成最终输出</p>
+</li>
+<li><p>prf_ram 是内部寄存器堆 RAM：<br>- 30 个读口全部展开<br>- 15 个写口全部展开</p>
+</li>
+<li><p>内部 PRF 状态命名现在对齐模拟器：<br>- inst_r：对应 Prf_cpp.h 的 inst_r[]<br>- inst_r_1：对应 inst_r_1[]<br>- 时序上 inst_r &lt;&#x3D; inst_r_1</p>
+</li>
+<li><p>RAM 读数据回填到：<br>- pi_final[7003 + i<em>32 +: 32] 对应 reg_file_data_0[i]<br>- pi_final[7483 + i</em>32 +: 32] 对应 reg_file_data_1[i]</p>
+</li>
+<li><p>helper feedback 内部回填：<br>- writeback equal<br>- bypass equal<br>- killed&#x2F;load gate</p>
+</li>
+</ul>
+<h3 id="小结-明日计划-4"><a href="#小结-明日计划-4" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天进行ram、时序top的修改和完善</p>
+<p>明天计划开始等价性验证</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidgygJtyHYnsOqpIevKIccT" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidZWKwP8dv7AXsir89krNs0" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
