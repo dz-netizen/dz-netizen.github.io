@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-07T15:40:40.011Z">
+<meta property="article:modified_time" content="2026-05-08T16:15:22.562Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -692,12 +692,41 @@
 </ul>
 <h3 id="小结-明日计划-4"><a href="#小结-明日计划-4" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天进行ram、时序top的修改和完善</p>
 <p>明天计划开始等价性验证</p>
+<h2 id="zhangchaochao-5-8"><a href="#zhangchaochao-5-8" class="headerlink" title="zhangchaochao(5&#x2F;8)"></a>zhangchaochao(5&#x2F;8)</h2><h3 id="BSD训练-3"><a href="#BSD训练-3" class="headerlink" title="BSD训练"></a>BSD训练</h3><p>一万训练1亿测试rtl训练当中（补训练105个变量，4进程，64线程，普遍耗时4-6小时）</p>
+<h3 id="时序top修改-1"><a href="#时序top修改-1" class="headerlink" title="时序top修改"></a>时序top修改</h3><blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;gen_top&#x2F;prf_bsd_top.v</p>
+</blockquote>
+<ul>
+<li><p>pi[7002:0] &#x3D; pi_ext</p>
+<ul>
+<li><p>pi[7003:9042] 是内部回填：RAM 读数据 + equal&#x2F;killed&#x2F;load helper feedback</p>
+</li>
+<li><p>pi[10722:9043] &#x3D; inst_r</p>
+</li>
+<li><p>po[3944:0] 直接作为 po_ext</p>
+</li>
+<li><p>po[3945:4214] 生成 30 个 RAM 读地址</p>
+</li>
+<li><p>po[4215…] 生成 RAM 写口</p>
+</li>
+<li><p>po[4845:5924] 回填 helper feedback 到 pi[7963:9042]</p>
+</li>
+<li><p>po[5925:7604] 生成 inst_r_1</p>
+</li>
+</ul>
+</li>
+<li><p>组合路径关键路径：</p>
+<p>pi_ext&#x2F;inst_r -&gt; top_function_layer -&gt; po addr<br>po addr -&gt; prf_ram async read -&gt; reg_file_data<br>reg_file_data -&gt; pi -&gt; top_function_layer -&gt; po_ext&#x2F;inst_r_1&#x2F;write</p>
+</li>
+</ul>
+<h3 id="小结-计划"><a href="#小结-计划" class="headerlink" title="小结&amp;计划"></a>小结&amp;计划</h3><p>今天修改时序top和打包prf模块供后端调用。</p>
+<p>明日计划整理rtl文件，准备等价性验证</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidZWKwP8dv7AXsir89krNs0" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidwvFzcKEvztyy4GIh0z-4-" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
