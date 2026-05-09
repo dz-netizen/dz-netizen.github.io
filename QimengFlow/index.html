@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-08T16:15:22.562Z">
+<meta property="article:modified_time" content="2026-05-09T17:07:13.957Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -721,12 +721,25 @@
 </ul>
 <h3 id="小结-计划"><a href="#小结-计划" class="headerlink" title="小结&amp;计划"></a>小结&amp;计划</h3><p>今天修改时序top和打包prf模块供后端调用。</p>
 <p>明日计划整理rtl文件，准备等价性验证</p>
+<h2 id="zhangchaochao-5-9"><a href="#zhangchaochao-5-9" class="headerlink" title="zhangchaochao(5&#x2F;9)"></a>zhangchaochao(5&#x2F;9)</h2><h3 id="BSD训练-4"><a href="#BSD训练-4" class="headerlink" title="BSD训练"></a>BSD训练</h3><p>重训的105个变量目前训好了46个，acc均为1。</p>
+<h3 id="等价性验证-1"><a href="#等价性验证-1" class="headerlink" title="等价性验证"></a>等价性验证</h3><p>利用<code>verileq</code>进行千万测试集rtl和亿测试集rtl的等价性。</p>
+<p>除了还没训练好的59个变量，其余全部都<code>EQUIVALENT</code></p>
+<blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;verileq_dist&#x2F;verileq_batch_results&#x2F;summary.tsv</p>
+</blockquote>
+<h3 id="小结-明日计划-5"><a href="#小结-明日计划-5" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><ul>
+<li><strong>问题</strong></li>
+</ul>
+<p>在本prf中，全部变量等价 和 组合top等价 之间是充要关系吗。</p>
+<p>还是说组合top也得严格验证：$\forall input: output_{gold}(input) &#x3D; output_{gate}(input)$</p>
+<hr>
+<p>明天计划继续等价性验证，同时逐步开始yosys综合流程。</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidwvFzcKEvztyy4GIh0z-4-" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidE5e8mV_-A_FWdtV2v2FD1" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

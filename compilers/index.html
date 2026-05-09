@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/annoted_parse_tree3times5.png">
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/dependency_graph_fig3-5.png">
 <meta property="article:published_time" content="2026-03-05T02:28:00.000Z">
-<meta property="article:modified_time" content="2026-05-07T02:37:44.796Z">
+<meta property="article:modified_time" content="2026-05-09T15:08:39.682Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="compilers">
 <meta name="twitter:card" content="summary">
@@ -899,7 +899,7 @@ N_A1 -->T_2[b]</pre>
 <hr>
 <p>非终结符</p>
 <p>T-&gt;T*F<br>&#x3D;&gt;<br>T-&gt;FT<code> T</code>-&gt;*FT&#96;|epsilon</p>
-<h2 id="语法制导的翻译方案"><a href="#语法制导的翻译方案" class="headerlink" title="语法制导的翻译方案"></a>语法制导的翻译方案</h2><p><strong>语法制导的翻译方案（syntax-directed translation scheme, SDT）</strong></p>
+<h2 id="SDT"><a href="#SDT" class="headerlink" title="SDT"></a>SDT</h2><p><strong>语法制导的翻译方案（syntax-directed translation scheme, SDT）</strong></p>
 <h3 id="后缀翻译方案"><a href="#后缀翻译方案" class="headerlink" title="后缀翻译方案"></a>后缀翻译方案</h3><p>考虑利用自底向上分析，且SDD是S属性的情况</p>
 <p>构造一个对应的SDT<br>每个语义动作都放在产生式的末端，在归约时执行该动作<br>这种形式的SDT称为后缀翻译方案</p>
 <hr>
@@ -914,11 +914,11 @@ N_A1 -->T_2[b]</pre>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 通过改写文法将嵌入产生式右部中间的动作移到产生式的右端</span><br><span class="line">E→TR</span><br><span class="line">R→ + T &#123; <span class="built_in">print</span>(‘+’) &#125; R | - T &#123; <span class="built_in">print</span>(‘-’) &#125; R | ε</span><br><span class="line">T→num &#123; <span class="built_in">print</span>( num.val) &#125;</span><br><span class="line">改写后：</span><br><span class="line">E→TR</span><br><span class="line">R→ + T M R | - T N R | ε</span><br><span class="line">T→num &#123; <span class="built_in">print</span>( num.val) &#125;</span><br><span class="line">M→ε &#123; <span class="built_in">print</span>(‘+’) &#125;</span><br><span class="line">N→ε &#123; <span class="built_in">print</span>(‘-’) &#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="实现L属性的SDD"><a href="#实现L属性的SDD" class="headerlink" title="实现L属性的SDD"></a>实现L属性的SDD</h3><h1 id=""><a href="#" class="headerlink" title=""></a></h1><ul>
-<li><p>类型表达式的等价</p>
-</li>
-<li></li>
-</ul>
+
+
+
+
+<p>- </p>
 <h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
 <ul>
 <li>第一次测验跟理计差不多</li>
@@ -930,7 +930,7 @@ N_A1 -->T_2[b]</pre>
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidzPIFd0oyJ1iEGUB03TekM" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuiddil4ymrbTLSU-IrPLQH2E" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
