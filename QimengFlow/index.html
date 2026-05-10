@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-09T17:07:13.957Z">
+<meta property="article:modified_time" content="2026-05-10T16:51:56.026Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -734,12 +734,47 @@
 <p>还是说组合top也得严格验证：$\forall input: output_{gold}(input) &#x3D; output_{gate}(input)$</p>
 <hr>
 <p>明天计划继续等价性验证，同时逐步开始yosys综合流程。</p>
+<h2 id="zhangchaochao-5-11"><a href="#zhangchaochao-5-11" class="headerlink" title="zhangchaochao(5&#x2F;11)"></a>zhangchaochao(5&#x2F;11)</h2><h3 id="BSD训练-5"><a href="#BSD训练-5" class="headerlink" title="BSD训练"></a>BSD训练</h3><p>重训的105个变量目前训好了86个，acc均为1。</p>
+<hr>
+<h3 id="aag-to-cpp"><a href="#aag-to-cpp" class="headerlink" title="aag_to_cpp"></a>aag_to_cpp</h3><p><strong>基本思路</strong></p>
+<ul>
+<li>把 Verilog 放入 aag_to_cpp&#x2F;input_verilog</li>
+</ul>
+<hr>
+<ul>
+<li>用 aag_to_cpp 生成 bit 级 C 代码</li>
+</ul>
+<p>把 zstart.sh 改成：</p>
+<p>filename&#x3D;”top_function_layer”<br>使用本地 yosys：&#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;verileq_dist&#x2F;env&#x2F;bin&#x2F;yosys<br>停在 bit 级 C + 分片 header，不再合并生成 2G 大头文件</p>
+<p>后续目标不是生成一个巨大的 top_function_layer.h，而是生成很多小 header。</p>
+<hr>
+<ul>
+<li>按模拟器字段拆分 header<br>generate_chunk_headers.py，支持读取：<br>&#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;BSD&#x2F;src&#x2F;io_generator&#x2F;simulator_include&#x2F;Prf_cpp.h<br>从 simulator_to_po() 里解析字段边界，生成：<br>top_function_layer_<start>_<end>.h</li>
+</ul>
+<hr>
+<ul>
+<li>生成 check 分片<br>&#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;sim_simulator&#x2F;check_head&#x2F;check_bits_<start>_<end>.h</li>
+</ul>
+<hr>
+<ul>
+<li>用模拟器外围多进程脚本验证<br>入口：<br>cd &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;sim_simulator<br>python run_sim.py</li>
+</ul>
+<hr>
+<p>当前状态：execute.py top_function_layer 已能快速生成 wrapper 和 7605 个 bit wrapper。<br>发现全设计 base_design.il 路线太慢</p>
+<hr>
+<h3 id="小结-明日计划-6"><a href="#小结-明日计划-6" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>由于等价性验证发现训好的变量中千万测试集和一亿集的rtl等价，故使用千万测试得到的rtl进行转化和验证。</p>
+<p>今天初步开始aag_to_cpp的流程。</p>
+<hr>
+<ul>
+<li><strong>问题</strong></li>
+</ul>
+<p>验证的是 top_function_layer 组合逻辑。RAM 和寄存器不在 C 里维护，而是由模拟器把当前周期需要的 regfile 数据、inst_r、helper feedback 等打包进 pi[10722:0]，对吗</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidE5e8mV_-A_FWdtV2v2FD1" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidGMBrQNxADVKfAjymGTxo4" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
