@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-12T00:30:55.840Z">
+<meta property="article:modified_time" content="2026-05-12T17:11:03.238Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -788,12 +788,63 @@
 
 <hr>
 <p>明天继续进行接回模拟器形式化验证。</p>
+<h2 id="zhangchaochao-5-12"><a href="#zhangchaochao-5-12" class="headerlink" title="zhangchaochao(5&#x2F;12)"></a>zhangchaochao(5&#x2F;12)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Token usage: total=54,765 input=46,999 (+ 358,528 cached) output=7,766 (reasoning 1,817)</span><br><span class="line">To continue this session, run codex resume 019e19a5-4eb8-7282-a6a6-4ea19fad2eec</span><br><span class="line">(base) [qimeng3@CentOS7-Login3 aag_to_cpp]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="aag-to-cpp-1"><a href="#aag-to-cpp-1" class="headerlink" title="aag_to_cpp"></a>aag_to_cpp</h3><h2 id="目录：-BSD-src-aag-to-cpp"><a href="#目录：-BSD-src-aag-to-cpp" class="headerlink" title="目录：&#x2F;BSD&#x2F;src&#x2F;aag_to_cpp"></a>目录：&#x2F;BSD&#x2F;src&#x2F;aag_to_cpp</h2><ul>
+<li><strong>根据README跑一遍.v-&gt;aag-&gt;cpp流程</strong><blockquote>
+<p>如果报错的说path里没有yosys的话，需要下载并将其置于path</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<ul>
+<li><strong>直接用top跑（filename&#x3D;”top_function_layer”）</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(zcc-eda) [qimeng3@eda-00 aag_to_cpp]$ sh zstart.sh</span><br><span class="line">命令行参数是： top_function_layer   </span><br><span class="line"><span class="comment">##卡住</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>“看起来卡住”的主要原因：resolve_dependencies() 对 1628 个文件建立模块表之后，在队列里每处理一个模块，都把所有模块名拿去对当前文件做一次正则搜索。依赖一多就是百万级正<br>  则扫描，而且没有进度输出。</p>
+</blockquote>
+<ul>
+<li><p><strong>解决方法</strong></p>
+<ol>
+<li>每个 function_layer_0_nodes_x_y.v 单独作为 top 生成 C++。</li>
+<li>每个小模块只负责自己的输出范围，比如 o_index[23:15]。</li>
+<li>最后自动生成一个 top_function_layer 的 C++ wrapper，把同一个输入 i&#x2F;pi 传给各个小模块，再把各自输出拼到总输出数组对应区间。</li>
+<li>io_generator_outer_single(bit_index) 也可以根据 bit_index 落在哪个区间，只调用对应的小模块，而不是全量跑。</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>新增一个 zstart_div.py 负责解析 top、跑每个子模块、重命名函数避免冲突、生成总 wrapper；<br>zstart_div.sh 作为入口包装它</p>
+</blockquote>
+<p>  建议先跑一个小测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh zstart_div.sh top_function_layer --<span class="built_in">limit</span> 1 --no-vec</span><br></pre></td></tr></table></figure>
+<p>  如果这个能完成，会生成：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output_cpp/div_modules/function_layer_0_nodes_0_0.h</span><br><span class="line">output_cpp/top_function_layer_div.h</span><br></pre></td></tr></table></figure>
+<p>  确认没问题后，再跑全量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh zstart_div.sh top_function_layer --no-vec</span><br></pre></td></tr></table></figure>
+<p>  如果中途断了，可以续跑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh zstart_div.sh top_function_layer --no-vec --skip-existing</span><br></pre></td></tr></table></figure>
+
+
+<p>Token usage: total&#x3D;114,289 input&#x3D;102,967 (+ 562,432 cached) output&#x3D;11,322 (reasoning 3,293)<br>To continue this session, run codex resume 019e1bf5-ed46-70b1-b918-6ea6224f8262<br>(base) [qimeng3@eda-01 aag_to_cpp]$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">完成的是：</span><br><span class="line"></span><br><span class="line">  PRF 的子模块 <span class="built_in">RTL</span> (.v) -&gt; 每个 function_layer_0_nodes_X_Y.h</span><br><span class="line"></span><br><span class="line">  下一步接模拟器验证，可以按这个链路走：</span><br><span class="line"></span><br><span class="line">  <span class="number">1.</span> 准备 simulator 目录</span><br><span class="line"></span><br><span class="line">  cd /nfs_global/I/qimeng3/zhangchaochao/simulator_script/sim_simulator</span><br><span class="line"></span><br><span class="line">  ln -s /nfs_global/I/qimeng3/zhangchaochao/simulator-main simulator</span><br><span class="line">  ln -s io_generator_head io_genrator_head</span><br><span class="line"></span><br><span class="line">  第二个软链接是因为 run_sim.py 里目录名拼成了 io_genrator_head。</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span> 生成 check_bits_X_Y.h</span><br><span class="line"></span><br><span class="line">  cd /nfs_global/I/qimeng3/zhangchaochao/simulator_script/sim_simulator/check_head</span><br><span class="line">  make run_python</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span> 把你的生成结果改名接入</span><br><span class="line"></span><br><span class="line">  你的文件现在是：</span><br><span class="line"></span><br><span class="line">  output_cpp/function_layer_0_nodes_0_<span class="number">0.</span>h</span><br><span class="line">  output_cpp/function_layer_0_nodes_15_<span class="number">23.</span>h</span><br><span class="line"></span><br><span class="line">  模拟器期望：</span><br><span class="line"></span><br><span class="line">  io_generator_head/top_function_layer_0_<span class="number">0.</span>h</span><br><span class="line">  io_generator_head/top_function_layer_15_<span class="number">23.</span>h</span><br><span class="line"></span><br><span class="line">  所以映射规则是：</span><br><span class="line"></span><br><span class="line">  function_layer_0_nodes_X_Y.h -&gt; top_function_layer_X_Y.h</span><br><span class="line"></span><br><span class="line">  可以先手动测一个：</span><br><span class="line"></span><br><span class="line">  cp /nfs_global/I/qimeng3/zhangchaochao/BSD/src/aag_to_cpp/output_cpp/function_layer_0_nodes_0_<span class="number">0.</span>h \</span><br><span class="line">     /nfs_global/I/qimeng3/zhangchaochao/simulator_script/sim_simulator/io_generator_head/top_function_layer_0_<span class="number">0.</span>h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="number">4.</span> 跑模拟器验证</span><br><span class="line"></span><br><span class="line">  cd /nfs_global/I/qimeng3/zhangchaochao/simulator_script/sim_simulator</span><br><span class="line">  python run_sim.py</span><br><span class="line"></span><br><span class="line">  它会找 top_function_layer_X_Y.h，再配套找 check_bits_X_Y.h，编译模拟器并跑 workload。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>(zcc-eda) [qimeng3@eda-02 sim_simulator]$ find &#x2F;usr&#x2F;include -name zlib.h<br>&#x2F;usr&#x2F;include&#x2F;zlib.h<br>(zcc-eda) [qimeng3@eda-02 sim_simulator]$ ln -s &#x2F;usr&#x2F;include&#x2F;zlib.h \</p>
+<blockquote>
+<p>$CONDA_PREFIX&#x2F;include&#x2F;zlib.h<br>(zcc-eda) [qimeng3@eda-02 sim_simulator]$</p>
+</blockquote>
+<p>  export EXTRA_CXXFLAGS&#x3D;”-I&#x2F;usr&#x2F;include”<br>  export LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;lib64:&#x2F;usr&#x2F;lib:$LIBRARY_PATH<br>  export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;lib64:&#x2F;usr&#x2F;lib:$LD_LIBRARY_PATH<br>  python run_sim.py</p>
+<p>─<br>Token usage: total&#x3D;289,710 input&#x3D;266,647 (+ 2,712,320 cached) output&#x3D;23,063 (reasoning 6,077)<br>To continue this session, run codex resume 019e1bf5-ed46-70b1-b918-6ea6224f8262<br>(base) [qimeng3@eda-01 aag_to_cpp]$</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidEPfpBPunJ6L6V9sHTDNyJ" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidpgEV-3KmekYhklb4ht3h5" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
