@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-12T17:40:48.595Z">
+<meta property="article:modified_time" content="2026-05-13T16:39:28.045Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -858,12 +858,43 @@
 <p>是我验证的流程有错误吗？</p>
 <hr>
 <p>明天继续cpp接回模拟器验证。</p>
+<h2 id="zhangchaochao-5-13"><a href="#zhangchaochao-5-13" class="headerlink" title="zhangchaochao(5&#x2F;13)"></a>zhangchaochao(5&#x2F;13)</h2><h3 id="aag-to-cpp-2"><a href="#aag-to-cpp-2" class="headerlink" title="aag_to_cpp"></a>aag_to_cpp</h3><p>截至目前，总共7000个输出bit里有2000个转换出了对应的cpp，其他的还在跑。</p>
+<h3 id="cpp接回模拟器验证-1"><a href="#cpp接回模拟器验证-1" class="headerlink" title="cpp接回模拟器验证"></a>cpp接回模拟器验证</h3><ul>
+<li><strong>昨天的问题是由于simulator仓库内有一个子module axi-interconnect-kit，需要：<code>git submodule update --init --recursive</code></strong></li>
+</ul>
+<hr>
+<ul>
+<li><strong>zlib.h没找到</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(zcc-eda) [qimeng3@eda<span class="number">-02</span> sim_simulator]$ find /usr/include -name zlib.h</span><br><span class="line">/usr/include/zlib.<span class="built_in">h</span></span><br><span class="line">(zcc-eda) [qimeng3@eda<span class="number">-02</span> sim_simulator]$<span class="keyword">export</span> EXTRA_CXXFLAGS=<span class="string">&quot;-I/usr/include&quot;</span></span><br><span class="line">(zcc-eda) [qimeng3@eda<span class="number">-02</span> sim_simulator]$<span class="keyword">export</span> LIBRARY_PATH=/usr/lib64:/usr/lib:$LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li><strong>bit0验证</strong><br>(zcc-eda) [qimeng3@eda-02 sim_simulator]$ make run_python</li>
+</ul>
+<p>IMG &#x3D; “.&#x2F;simulator&#x2F;baremetal&#x2F;sha-test.bin” 设置下运行成功<br>将bit0的cpp文件中 po &#x3D; ni;修改为po&#x3D;1;<br>能够mismatch</p>
+<hr>
+<blockquote>
+<p>codex resume 019e20a0-58c7-7453-95ce-a67d41ca9a87<br>(base) [qimeng3@eda-01 sim_simulator]$ date<br>Wed May 13 17:49:06 CST 2026</p>
+</blockquote>
+<hr>
+<h3 id="总结-明日计划"><a href="#总结-明日计划" class="headerlink" title="总结&amp;明日计划"></a>总结&amp;明日计划</h3><ul>
+<li>今天实现了单变量的接回模拟器验证</li>
+</ul>
+<hr>
+<ul>
+<li>后续计划：</li>
+</ul>
+<ol>
+<li>实现多变量并行验证</li>
+<li>实现linux dhystone，还有一些spec</li>
+<li>提速aag_to_cpp</li>
+</ol>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidkcda7t_XTyOWxQr7mESHL" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidcN3EGOsfIRCnZfBLkG2zn" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

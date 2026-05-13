@@ -35,8 +35,10 @@
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/ospf_protocol.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/bgp.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/ip_group_mac.png">
+<meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/vpn.png">
+<meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/tcp.png">
 <meta property="article:published_time" content="2026-03-04T00:41:07.000Z">
-<meta property="article:modified_time" content="2026-05-11T01:49:34.945Z">
+<meta property="article:modified_time" content="2026-05-13T02:05:47.421Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="networks">
 <meta name="twitter:card" content="summary">
@@ -498,7 +500,11 @@
 <li><p>例：RTT&#x3D;90ms的1.5Mbps链路<br>单向链路的延迟与带宽的乘积为67.5Kb，约8KB<br>发送方每个RTT仅能发送一帧，假设一帧为1KB，大约是链路容量的1&#x2F;8<br>为完全利用链路，希望发送方在等待一个ACK之前最多能够发送8帧</p>
 </li>
 </ul>
-<h3 id="滑动窗口算法-sliding-window"><a href="#滑动窗口算法-sliding-window" class="headerlink" title="滑动窗口算法(sliding-window)"></a>滑动窗口算法(sliding-window)</h3><p>发送方窗口大小：时延带宽积、接受方</p>
+<h3 id="滑动窗口算法-sliding-window"><a href="#滑动窗口算法-sliding-window" class="headerlink" title="滑动窗口算法(sliding-window)"></a>滑动窗口算法(sliding-window)</h3><blockquote>
+<p>显示编号消耗太大,因此使用隐式编号，传输一个数据包的首帧编号</p>
+</blockquote>
+<hr>
+<p>发送方窗口大小：时延带宽积、接受方</p>
 <p>接受方窗口大小：缓存有关</p>
 <p>累计确认-&gt;gobackN</p>
 <p>本质特征：异步处理&#x2F;异步执行</p>
@@ -1035,7 +1041,7 @@
 <h2 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h2><ul>
 <li>使用私有地址通信的内部网络，若分布在不同地方，如何相连<br>采用IP隧道技术实现虚拟专用网VPN(Virtual Private Network)</li>
 </ul>
-
+<img src="/ComputerNetworks/vpn.png" class="" title="vpn">
 
 <hr>
 <ul>
@@ -1083,13 +1089,39 @@
 <h2 id="传输层协议概述"><a href="#传输层协议概述" class="headerlink" title="传输层协议概述"></a>传输层协议概述</h2><h3 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h3><p><strong>user datagram protocol</strong></p>
 <p>端到端的，尽力而为的数据报传输服务</p>
 <h3 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h3><p><strong>transport contol protocol</strong></p>
-<p>往往利用</p>
+<p>往往利用隐式编号</p>
+<hr>
+<img src="/ComputerNetworks/tcp.png" class="" title="tcp">
+
+<hr>
+<ul>
+<li><p><strong>TCP建立连接</strong><br>使得每一方确知对方的存在<br>双方确定自己的初始序列号，并通知对端</p>
+</li>
+<li><p><strong>建立连接</strong></p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A   ---&gt;  B:      SYN=<span class="number">1</span>,seq=x</span><br><span class="line">A   &lt;---  B:      ACK=<span class="number">1</span>,seq=y;SYN=<span class="number">1</span>,ack=x<span class="number">+1</span>     <span class="comment">//ack=x+1表明下一次我接收从x+1开始,按理来说两个包，在这因为没数据，因此一起发送</span></span><br><span class="line">A   ---&gt;  B:      ACK=<span class="number">1</span>,,seq=x<span class="number">+1</span>,ack=y<span class="number">+1</span>        <span class="comment">//这个阶段实际中会直接带着数据了</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><strong>数据传输</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><strong>连接释放</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A   ---&gt;    B:  FIN=<span class="number">1</span>,seq=u</span><br><span class="line">A   &lt;---    B:  ACK=<span class="number">1</span>,seq=v,ack=u<span class="number">+1</span> <span class="comment">//ack=u+1,说明标志位占一个序号。原因是需要唯一无误的知道确认的是谁，如果没有，则ack=u,但是上一个B发往A的也是ack=u,混合在一起</span></span><br><span class="line">A   &lt;---    B:  FIN=<span class="number">1</span>,seq=m</span><br><span class="line">A   ---&gt;    B:  ACK=<span class="number">1</span>,seq=          <span class="comment">//需要等至少两次最大传输时间</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h1 id="网络应用"><a href="#网络应用" class="headerlink" title="网络应用"></a>网络应用</h1><h1 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h1><h1 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h1><h1 id="网络人工智能"><a href="#网络人工智能" class="headerlink" title="网络人工智能"></a>网络人工智能</h1>
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidQA2x2XRVeN0xuSWBb9TwW" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidmRklGkRgx1qYPxlR03cM7" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
