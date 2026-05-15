@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/annoted_parse_tree3times5.png">
 <meta property="og:image" content="https://dz-netizen.github.io/compilers/dependency_graph_fig3-5.png">
 <meta property="article:published_time" content="2026-03-05T02:28:00.000Z">
-<meta property="article:modified_time" content="2026-05-10T04:29:52.882Z">
+<meta property="article:modified_time" content="2026-05-15T08:59:33.434Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="compilers">
 <meta name="twitter:card" content="summary">
@@ -927,10 +927,34 @@ N_A1 -->T_2[b]</pre>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 通过改写文法将嵌入产生式右部中间的动作移到产生式的右端</span><br><span class="line">E→TR</span><br><span class="line">R→ + T &#123; <span class="built_in">print</span>(‘+’) &#125; R | - T &#123; <span class="built_in">print</span>(‘-’) &#125; R | ε</span><br><span class="line">T→num &#123; <span class="built_in">print</span>( num.val) &#125;</span><br><span class="line">改写后：</span><br><span class="line">E→TR</span><br><span class="line">R→ + T M R | - T N R | ε</span><br><span class="line">T→num &#123; <span class="built_in">print</span>( num.val) &#125;</span><br><span class="line">M→ε &#123; <span class="built_in">print</span>(‘+’) &#125;</span><br><span class="line">N→ε &#123; <span class="built_in">print</span>(‘-’) &#125;</span><br></pre></td></tr></table></figure>
 
 
-
-
-
-<p>- </p>
+<h1 id="中间代码生成-1"><a href="#中间代码生成-1" class="headerlink" title="中间代码生成"></a>中间代码生成</h1><ul>
+<li><strong>本章的结构</strong></li>
+</ul>
+<hr>
+<blockquote>
+<p>中间代码的形式：DAG(Directed Acyclic Graph)、三地址代码、SSA(Static Single Assignment form)</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>程序声明部分的翻译方法：类型、声明、定义</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>程序可执行部分的翻译</p>
+</blockquote>
+<ul>
+<li><p>简单的程序结构：表达式的翻译，包括赋值语句和数组元素引用</p>
+</li>
+<li><p>如何在表达式的翻译等阶段实现类型检查，给有需求的名字或者程序结构确定类型。</p>
+</li>
+<li><p>处理更复杂一点的程序结构：控制流语句即布尔表达式的翻译及优化</p>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>过程&#x2F;函数结构的翻译</p>
+</blockquote>
+<h2 id="语法树的变体"><a href="#语法树的变体" class="headerlink" title="语法树的变体"></a>语法树的变体</h2><h3 id="DAG"><a href="#DAG" class="headerlink" title="DAG"></a>DAG</h3><p>- </p>
 <h1 id="考试相关"><a href="#考试相关" class="headerlink" title="考试相关"></a>考试相关</h1><hr>
 <ul>
 <li>第一次测验跟理计差不多</li>
@@ -942,7 +966,7 @@ N_A1 -->T_2[b]</pre>
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidGBpr4xIuZpgbrVMpz5mYA" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/compilers/" data-id="cuidy-ECVFT72uPSFCPdyoQQs" data-title="compilers" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

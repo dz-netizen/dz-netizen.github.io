@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-14T18:36:38.430Z">
+<meta property="article:modified_time" content="2026-05-15T15:43:03.054Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -895,12 +895,25 @@
 </ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[Mismatch Detected] Variable: out.prf2exe-&gt;iss_entry[<span class="number">13</span>].uop.ftq_offset</span><br><span class="line">  Width    : <span class="number">4</span> bits</span><br><span class="line">  Expected : <span class="number">9</span> (From Struct)</span><br><span class="line">  Actual   : <span class="number">0</span> (From TOP_HEADER)</span><br><span class="line">  Diff Bit : <span class="number">0</span></span><br></pre></td></tr></table></figure>
 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(zcc-eda) [qimeng3@eda-05 sim_simulator]$ make -C check_head run_python</span><br><span class="line">(zcc-eda) [qimeng3@eda-05 sim_simulator]$ make -C check_head clean</span><br><span class="line">(zcc-eda) [qimeng3@eda-05 sim_simulator]$ CXX=/usr/bin/g++ CC=/usr/bin/gcc make run_python</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="zhangchaochao（5-15）"><a href="#zhangchaochao（5-15）" class="headerlink" title="zhangchaochao（5&#x2F;15）"></a>zhangchaochao（5&#x2F;15）</h2><h3 id="接回模拟器验证-1"><a href="#接回模拟器验证-1" class="headerlink" title="接回模拟器验证"></a>接回模拟器验证</h3><ul>
+<li><p>隔离对 15_23 单切片编译、短跑。</p>
+<p><code>check_head/prf_generated_check.h:16：当 out.prf2exe-&gt;iss_entry[0].uop.dest_preg mismatch</code> 时，额外打印：<br><code>pi[0] valid</code><br><code>pi[15:23] iss_entry[0].uop.dest_preg</code><br>发现 前 32 条隔离输出里 pi[0] valid 全是 0，但真实 simulator 的 Expected 仍然是 33&#x2F;128&#x2F;170&#x2F;213&#x2F;463…，而生成 cpp 输出 Actual 是 0。</p>
+<p>说明 15_23 mismatch 不是 cpp 逻辑错，而是 valid&#x3D;0 时 uop 字段属于 don’t-care，但当前 check 仍然在比较它。</p>
+<p><code>valid = 0</code><br>真实 <code>simulator: out.prf2exe-&gt;iss_entry[0].uop.dest_preg</code> 保留&#x2F;透传了某个值<br>生成 cpp: 输出 0<br>当前 check: 仍然比较 dest_preg<br>&#x3D;&gt; mismatch</p>
+<p>解决：把 check_bits 生成逻辑加 valid mask：例如 <code>out.prf2exe-&gt;iss_entry[i].uop.* </code>这些字段只在 <code>out.prf2exe-&gt;iss_entry[i].valid == 1 </code>时比较。否则这类 mismatch 应该忽略。</p>
+</li>
+</ul>
+<hr>
+<p>SIM_MAX_COMMIT设置为10000下运行，前2000个输出bit正常。<br>现运行全部输出bit</p>
+<h3 id="小结-明日计划-8"><a href="#小结-明日计划-8" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天使用隔离法分析，初步解决mismatch问题。后续看看全部bit是否正常。<br>如正常，则将SIM_MAX_COMMIT调高。<br>进一步则修改测试更复杂的程序。</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuid9dLrTmBxX-ffJl5TZq8dE" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidow84e0eIKZuQ7_KW8Ymwi" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
