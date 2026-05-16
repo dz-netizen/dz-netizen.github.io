@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-15T15:47:52.536Z">
+<meta property="article:modified_time" content="2026-05-16T16:54:31.227Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -908,12 +908,99 @@
 <hr>
 <p>SIM_MAX_COMMIT设置为10000下运行，前2000个输出bit正常。<br>现运行全部输出bit</p>
 <h3 id="小结-明日计划-8"><a href="#小结-明日计划-8" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天使用隔离法分析，初步解决mismatch问题。后续看看全部bit是否正常。<br>如正常，则将SIM_MAX_COMMIT调高。<br>进一步则修改测试更复杂的程序。</p>
+<h2 id="zhangchaochao-5-16"><a href="#zhangchaochao-5-16" class="headerlink" title="zhangchaochao(5&#x2F;16)"></a>zhangchaochao(5&#x2F;16)</h2><hr>
+<h3 id="接回模拟器验证-2"><a href="#接回模拟器验证-2" class="headerlink" title="接回模拟器验证"></a>接回模拟器验证</h3><hr>
+<ul>
+<li>debug<br>5940_5948 在 inst_r_1[0].valid &#x3D;&#x3D; 1 出错，且序列是 Expected[n] &#x3D;&#x3D; Actual[n-1] 的一拍错位；5925_5925 是 inst_r_1.valid 自身错。也就是说<br>inst_r_1 这一段不是 payload invalid do not care，而是 next-state 临时寄存器观测点和 TOP_HEADER 输出对齐方式不一致。我会把 inst_r_1[*] 整段从 split check 中跳过，只保留真实输出&#x2F;<br>组合观测点比较。</li>
+</ul>
+<blockquote>
+<p>现在的修正逻辑是：<br>out.prf2exe-&gt;iss_entry[<em>].uop.</em>：按 valid mask。<br>out.prf_awake-&gt;wake[<em>].preg：按 wake[</em>].valid mask。<br>inst_r_1[*]：只 cursor_po +&#x3D; width，不比较，因为它在当前接入点不是稳定同拍输出。</p>
+</blockquote>
+<hr>
+<ul>
+<li><p><strong>具体接回模拟器验证的链路</strong></p>
+<ol>
+<li><strong>生成的 C++ 逻辑作为 TOP_HEADER 编进 simulator</strong></li>
+</ol>
+<p>生成出来的单 slice 头文件在：</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io_genrator_head/top_function_layer_&lt;begin&gt;_&lt;end&gt;.h</span><br></pre></td></tr></table></figure>
+<p>  例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io_genrator_head/top_function_layer_3918_3926.h</span><br></pre></td></tr></table></figure>
+<p>  里面提供核心函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">io_generator_outer(pi, po);</span><br></pre></td></tr></table></figure>
+<p>  run_sim.py 在 process_simulation() 里对每个 slice 编译 simulator，传入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TOP_HEADER=io_genrator_head/top_function_layer_x_y.h</span><br><span class="line">CHECK_HEADER=check_head/check_bits_x_y.h</span><br><span class="line">PRF_CHECK_HELPER=check_head/prf_generated_check.h</span><br><span class="line">MISS_DIR=sim_miss/module_b_mismatch_x_y.txt</span><br><span class="line">BEGIN_IDX=x</span><br></pre></td></tr></table></figure>
+<p>  对应文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run_sim.py</span><br></pre></td></tr></table></figure>
+<hr>
+<ol start="2">
+<li><strong>simulator&#x2F;Makefile 把这些路径变成编译宏</strong></li>
+</ol>
+<p>  在 simulator&#x2F;Makefile:22 里：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-DTOP_HEADER_PATH=&quot;...&quot;</span><br><span class="line">-DCHECK_HEADER_PATH=&quot;...&quot;</span><br><span class="line">-DPRF_GENERATED_CHECK_HEADER=&quot;...&quot;</span><br><span class="line">-DMISS_FILE_PATH=&quot;...&quot;</span><br><span class="line">-DGENERATED_BEGIN_IDX=...</span><br></pre></td></tr></table></figure>
+<p>  也就是说，单 slice 的 generated cpp 不是运行时加载，而是直接 #include 进 simulator 重新编译。</p>
+<hr>
+<ol start="3">
+<li><strong>Prf.cpp 把 generated cpp 和 check helper include 进来</strong></li>
+</ol>
+<p>  在 simulator&#x2F;back-end&#x2F;Prf.cpp:10：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ifdef TOP_HEADER_PATH</span><br><span class="line">#include TOP_HEADER_PATH</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<p>  所以 top_function_layer_x_y.h 里的 io_generator_outer() 被编进 Prf.cpp。</p>
+<p>  在同一个文件约 simulator&#x2F;back-end&#x2F;Prf.cpp:68：</p>
+<p>  #include PRF_GENERATED_CHECK_HEADER</p>
+<p>  也就是接入：</p>
+<p>  check_head&#x2F;prf_generated_check.h</p>
+<hr>
+<ol start="4">
+<li><strong>验证触发点在 Prf::comb_read()</strong></li>
+</ol>
+<p>  在 simulator&#x2F;back-end&#x2F;Prf.cpp:121 末尾：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#if defined(TOP_HEADER_PATH) &amp;&amp; defined(CHECK_HEADER_PATH)</span><br><span class="line">  check_generated_prf_slice(*this);</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<p>  也就是说，每拍 simulator 正常跑 PRF 的 comb_read() 后，会调用 generated check。</p>
+<p>  整体 phase 顺序在 simulator&#x2F;back-end&#x2F;BackTop.cpp:305 附近：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">prf-&gt;comb_begin();</span><br><span class="line">prf-&gt;comb_awake();</span><br><span class="line">...</span><br><span class="line">prf-&gt;comb_read();</span><br><span class="line">...</span><br><span class="line">prf-&gt;comb_pipeline();</span><br></pre></td></tr></table></figure>
+<p>  这也是为什么 inst_r_1 那批 bit 有问题：它属于 later pipeline next-state，comb_read() 时比较它会和 TOP_HEADER 的观测时序不一致。</p>
+<hr>
+<ol start="5">
+<li><strong>check_generated_prf_slice() 做 PI&#x2F;PO 比较</strong></li>
+</ol>
+<blockquote>
+<p>pack_generated_prf_pi(prf, pi)<br>&#x3D;&gt;从真实 simulator 的 Prf 对象里打包输入 PI。<br>io_generator_outer(pi, po)<br>&#x3D;&gt;调用生成出来的 C++ slice，算出 generated cpp 的 PO。<br>#include CHECK_HEADER_PATH<br>&#x3D;&gt;展开对应的 check_bits_x_y.h，只比较当前 slice 的 PO bit。<br>compare_and_pack()<br>&#x3D;&gt;比较 simulator struct 里的 Expected 和 generated PO 里的 Actual，不一致就写：<br>sim_miss&#x2F;module_b_mismatch_x_y.txt</p>
+</blockquote>
+<hr>
+<ul>
+<li><p><strong>linux&#x2F;dhrystone运行</strong></p>
+</li>
+<li><p>run_sim.py&#x3D;默认 workload 是：</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- linux: ./simulator/baremetal/linux.bin，max_commit=1000000，timeout=900s</span><br><span class="line">- dhrystone: ./simulator/baremetal/dhrystone/build/dhrystone.bin，max_commit=500000，timeout=180s</span><br></pre></td></tr></table></figure>
+<ul>
+<li>dhrystone 的 .bin 如果不存在，会自动从 build&#x2F;dhrystone 用 objcopy 生成。</li>
+<li>后续 SPEC 直接按 WORKLOADS 里的注释格式追加即可。</li>
+<li>check_head&#x2F;prf_generated_check.h 改成优先读运行时环境变量 PRF_MISS_FILE，所以每个 workload 都会有独立 mismatch 文件。</li>
+</ul>
+<p>  运行命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /nfs_global/I/qimeng3/zhangchaochao/simulator_script/sim_simulator</span><br><span class="line"></span><br><span class="line">make -C check_head clean</span><br><span class="line">make -C check_head run_python</span><br><span class="line"></span><br><span class="line">env -u CXX -u CC -u CFLAGS -u CXXFLAGS -u CPPFLAGS -u LDFLAGS -u CONDA_BUILD_SYSROOT \</span><br><span class="line">  CXX=/usr/bin/g++ CC=/usr/bin/gcc \</span><br><span class="line">  make run_python</span><br></pre></td></tr></table></figure>
+<p>  只跑 dhrystone：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SIM_WORKLOADS=dhrystone \</span><br><span class="line">env -u CXX -u CC -u CFLAGS -u CXXFLAGS -u CPPFLAGS -u LDFLAGS -u CONDA_BUILD_SYSROOT \</span><br><span class="line">  CXX=/usr/bin/g++ CC=/usr/bin/gcc \</span><br><span class="line">  make run_python</span><br></pre></td></tr></table></figure>
+<p>  当前我检查到 simulator&#x2F;baremetal&#x2F;linux.bin 还不存在，所以默认运行时 linux 会提示缺失并跳过；放好这个文件后会自动参与验证。日志现在是 sim_logs&#x2F;sim_<workload><em><bitrange>.log，<br>  mismatch 是 sim_miss&#x2F;module_b_mismatch</em><workload>_<bitrange>.txt。验证过 run_sim.py 语法，并已生成 dhrystone.bin。</p>
+<ul>
+<li>示例（bit0）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[0_0] ✅ 编译成功！开始运行 1 个 workload ...</span><br><span class="line">[0_0][dhrystone] 运行 ./simulator/baremetal/dhrystone/build/dhrystone.bin (max_commit=500000, <span class="built_in">timeout</span>=180s) ...</span><br><span class="line">[0_0][dhrystone] 🎉 仿真结束，日志已保存至 ./sim_logs/sim_dhrystone_0_0.<span class="built_in">log</span></span><br><span class="line">[0_0] 🎉 所有 workload 仿真结束。</span><br><span class="line">所有仿真任务全部执行完毕！</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结-明日计划-9"><a href="#小结-明日计划-9" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天对于check进一步修正，实现全部bit的初步验证。<br>bit0在dhrystone下比对正确。</p>
+<hr>
+<p>今晚对全部bit在dhrystone下进行接回验证。<br>明天查看情况并进一步运行linux</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuiduElN6ppI8OZK1Eo69gcYw" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidxnsue4feK9Yd4S36TFeIT" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
