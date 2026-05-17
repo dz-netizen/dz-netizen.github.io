@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-16T16:54:31.227Z">
+<meta property="article:modified_time" content="2026-05-17T17:25:46.191Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -995,12 +995,35 @@
 <h3 id="小结-明日计划-9"><a href="#小结-明日计划-9" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天对于check进一步修正，实现全部bit的初步验证。<br>bit0在dhrystone下比对正确。</p>
 <hr>
 <p>今晚对全部bit在dhrystone下进行接回验证。<br>明天查看情况并进一步运行linux</p>
+<h2 id="zhangchaochao-5-17"><a href="#zhangchaochao-5-17" class="headerlink" title="zhangchaochao(5&#x2F;17)"></a>zhangchaochao(5&#x2F;17)</h2><h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3><p>之前把check 放在 comb_read 末尾，而inst_r_1 真正作为本拍 next-state 更新发生在 comb_pipeline，最后是seq，所以执行顺序变成comb_read-&gt;check-&gt;pipeline-&gt;seq，po和inst_r_1(pipeline前)错了一拍。<br>换回去之后验证对了。</p>
+<h3 id="memory-linux测试"><a href="#memory-linux测试" class="headerlink" title="memory-linux测试"></a>memory-linux测试</h3><ul>
+<li>对比测试</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ SIM_WORKLOADS=memory-linux \</span><br><span class="line"><span class="built_in">env</span> -u CXX -u CC -u CFLAGS -u CXXFLAGS -u CPPFLAGS -u LDFLAGS -u CONDA_BUILD_SYSROOT \</span><br><span class="line">  CXX=/usr/bin/g++ CC=/usr/bin/gcc \</span><br><span class="line">  make run_python</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>&#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;test&#x2F;memory-linux，256M，模拟器跑起来比较慢，四五个小时没有启动到 shell 阶段。</p>
+</blockquote>
+<hr>
+<ul>
+<li>纯模拟器运行</li>
+</ul>
+<p>sim_simulator 目录执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> -p sim_logs</span><br><span class="line">$ make -C simulator -j8 BUILD_DIR=build_pure</span><br><span class="line"></span><br><span class="line">$/usr/bin/time -v ./simulator/build_pure/simulator \</span><br><span class="line">  --mode run \</span><br><span class="line">  --max-commit 200000000 \</span><br><span class="line">  /share/personal/S/liuguilan/test/memory-linux \</span><br><span class="line">  &gt; sim_logs/pure_memory_linux_200m.<span class="built_in">log</span> 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>不传 TOP_HEADER、CHECK_HEADER、PRF_CHECK_HELPER，这样就是不接 RTL 生成 cpp&#x2F;头文件的纯 simulator 跑法。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">OpenSBI v0.6</span><br><span class="line">   ____                    _____ ____ _____</span><br><span class="line">  / __ \                  / ____|  _ \_   _|</span><br><span class="line"> | |  | |_ __   ___ _ __ | (___ | |_) || |</span><br><span class="line"> | |  | | <span class="string">&#x27;_ \ / _ \ &#x27;</span>_ \ \___ \|  _ &lt; | |</span><br><span class="line"> | |__| | |_) |  __/ | | |____) | |_) || |_</span><br><span class="line">  \____/| .__/ \___|_| |_|_____/|____/_____|</span><br><span class="line">        | |</span><br><span class="line">        |_|</span><br><span class="line"></span><br><span class="line">Platform Name          : QEMU Virt Machine</span><br><span class="line">Platform HART Features : RV32ABIMSU</span><br><span class="line">Platform Max HARTs     : 8</span><br><span class="line">Current Hart           : 0</span><br><span class="line">Firmware Base          : 0x80000000</span><br><span class="line">Firmware Size          : 128 KB</span><br><span class="line">Runtime SBI Version    : 0.2</span><br><span class="line"></span><br><span class="line">MIDELEG : 0x00000222</span><br><span class="line">MEDELEG : 0x0000b109</span><br><span class="line">[    0.000000] Linux version 5.15.12-02172-g9b62b5e80305-dirty (jinpengwei@OurEdaNode) (riscv32-unknown-linux-gnu-gcc (GCC) 11.1.0, GNU ld (GNU Binutils) 2.37) <span class="comment">#66 Fri Jul 7 16:20:14 CST 2023</span></span><br><span class="line">[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000</span><br><span class="line">[    0.000000] Machine model: riscv-virtio,qemu</span><br><span class="line">[    0.000000] earlycon: sbi0 at I/O port 0x0 (options <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">[    0.000000] printk: bootconsole [sbi0] enabled</span><br><span class="line">[    0.000000] Zone ranges:</span><br><span class="line">[    0.000000]   Normal   [mem 0x0000000080400000-0x000000008fffffff]</span><br><span class="line">[    0.000000] Movable zone start <span class="keyword">for</span> each node</span><br><span class="line">[    0.000000] Early memory node ranges</span><br><span class="line">[    0.000000]   node   0: [mem 0x0000000080400000-0x000000008fffffff]</span><br></pre></td></tr></table></figure>
+
+<p>还是很慢，Linux没启动到 shell 阶段</p>
+<h3 id="小结-明日计划-10"><a href="#小结-明日计划-10" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天进行linux测试<br>明天查找跑的慢的原因，将Linux进入用户态</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidxnsue4feK9Yd4S36TFeIT" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidA6Z_9uX4hHePg_G2ot4aR" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
