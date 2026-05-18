@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-17T17:25:46.191Z">
+<meta property="article:modified_time" content="2026-05-18T16:35:03.559Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1018,12 +1018,24 @@
 
 <p>还是很慢，Linux没启动到 shell 阶段</p>
 <h3 id="小结-明日计划-10"><a href="#小结-明日计划-10" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天进行linux测试<br>明天查找跑的慢的原因，将Linux进入用户态</p>
+<h2 id="zhangchaochao-5-18"><a href="#zhangchaochao-5-18" class="headerlink" title="zhangchaochao(5&#x2F;18)"></a>zhangchaochao(5&#x2F;18)</h2><h3 id="memory-linux测试-1"><a href="#memory-linux测试-1" class="headerlink" title="memory-linux测试"></a>memory-linux测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[    0.000000] Freeing initrd memory: 54252K</span><br><span class="line">[    0.000000] workingset: timestamp_bits=30 max_order=16 bucket_order=0</span><br><span class="line">[    0.000000] io scheduler mq-deadline registered</span><br><span class="line">[    0.000000] io scheduler kyber registered</span><br><span class="line">210000000</span><br><span class="line">220000000</span><br><span class="line">[    0.000000] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled</span><br><span class="line">[    0.000000] printk: console [ttyS0] disabled</span><br><span class="line">[    0.000000] 10000000.uart: ttyS0 at MMIO 0x10000000 (irq = 2, base_baud = 8312500) is a 16550A</span><br><span class="line">$[    0.000000] printk: console [ttyS0] enabled</span><br><span class="line">[    0.000000] printk: console [ttyS0] enabled</span><br><span class="line">[    0.000000] printk: bootconsole [sbi0] disabled</span><br><span class="line">[    0.000000] printk: bootconsole [sbi0] disabled</span><br><span class="line">[    0.000000] loop: module loaded</span><br><span class="line">230000000</span><br><span class="line">240000000</span><br><span class="line">250000000</span><br><span class="line">260000000</span><br><span class="line">270000000</span><br><span class="line">280000000</span><br><span class="line">290000000</span><br><span class="line">300000000</span><br><span class="line">310000000</span><br><span class="line">320000000</span><br><span class="line">330000000</span><br><span class="line">[sim] Reached MAX_COMMIT_INST=200000000</span><br><span class="line">-----------------------------</span><br><span class="line">Success!!!!</span><br><span class="line">-----------------------------</span><br><span class="line">-----------------------------</span><br><span class="line">Simulation Exited. Printing Perf Stats...</span><br><span class="line">sim-time(cycle)= 331753926, committed(total/load/store)= 200000001 / 49643267 / 57235512</span><br><span class="line">instruction num: 200000001</span><br><span class="line">cycle       num: 331753926</span><br><span class="line">ipc            : 0.602856</span><br><span class="line"></span><br><span class="line">*********L1D COUNTER***************</span><br><span class="line">L1D_REQ_INITIAL      : 0</span><br><span class="line">L1D_REQ_ALL          : 0</span><br><span class="line">L1D_MISS_MSHR_ALLOC  : 0</span><br></pre></td></tr></table></figure>
+
+<p>两亿条指令耗时3-4个小时，没有进入用户态</p>
+<hr>
+<p>今晚运行4亿条指令试试。</p>
+<h3 id="小结-明日计划-11"><a href="#小结-明日计划-11" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>目前思路：</p>
+<ul>
+<li><p>准备看看.&#x2F;build&#x2F;simulator  &#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;test&#x2F;memory-linux执行进入用户态需要多少条指令，后面的训练直接跳过 OpenSBI、Linux kernel 初始化、解 initramfs 这些很慢的阶段 开始运行(这一步还不确定能够成功)。<br>如果往后再运行2亿条指令没有mismatch，则认为cpp代码接回正确。</p>
+</li>
+<li><p>或者找到运行慢的原因，解决之</p>
+</li>
+</ul>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidA6Z_9uX4hHePg_G2ot4aR" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidiupeVCM3mVsdVwzFedgdK" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
