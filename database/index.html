@@ -13,11 +13,14 @@
 <meta property="og:site_name" content="DZ_Blog">
 <meta property="og:description" content="概述数据库的概念数据库 database 存储和管理一组数据，通常按照某种数据模型来组织  数据库系统 database management system 管理数据库的系统   关系模型 relational model   关系模型中的实体和联系都可以用“表”来表示   关系数据库 relational database   采用关系模型的数据库   关系数据库系统 relational da">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dz-netizen.github.io/database/rdbms.png">
+<meta property="og:image" content="https://dz-netizen.github.io/database/operator_tree.png">
 <meta property="article:published_time" content="2026-03-05T05:38:30.000Z">
-<meta property="article:modified_time" content="2026-05-17T07:20:53.799Z">
+<meta property="article:modified_time" content="2026-05-19T15:48:02.553Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="database">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dz-netizen.github.io/database/rdbms.png">
   
     <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
   
@@ -585,7 +588,7 @@
 <p>注意这不是充要的</p>
 <hr>
 <p>如何无损分解为BCNF</p>
-<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><h2 id="磁盘阵列"><a href="#磁盘阵列" class="headerlink" title="磁盘阵列"></a>磁盘阵列</h2><p>Redundant Array of Independent Disks</p>
+<h1 id="数据存储与访问"><a href="#数据存储与访问" class="headerlink" title="数据存储与访问"></a>数据存储与访问</h1><h2 id="磁盘阵列"><a href="#磁盘阵列" class="headerlink" title="磁盘阵列"></a>磁盘阵列</h2><p>Redundant Array of Independent Disks</p>
 <p>地址如何映射<br>可见空间<br>读操作<br>写操作<br>故障恢复</p>
 <hr>
 <h3 id="RAID0"><a href="#RAID0" class="headerlink" title="RAID0"></a>RAID0</h3><p><code>N%nuber=磁盘块号</code><br><code>N/number = 磁盘内块号</code></p>
@@ -603,156 +606,158 @@
 <h3 id="RAID6"><a href="#RAID6" class="headerlink" title="RAID6"></a>RAID6</h3><p>与RAID5类似，每组有两个校验块，可以容忍两个磁盘坏</p>
 <h3 id="组合RAID"><a href="#组合RAID" class="headerlink" title="组合RAID"></a>组合RAID</h3><p>RAID 1+0<br>下层时RAID1，上层是RAID0</p>
 <p>RAID 5+0<br>下层RAID5，上层RAID0</p>
-<h2 id="数据访问的局部性"><a href="#数据访问的局部性" class="headerlink" title="数据访问的局部性"></a>数据访问的局部性</h2><p>时间局部性<br>同一个数据元素可能在一段时间内多次被访问</p>
-<p>空间局部性<br>相邻的元素可能接连被访问</p>
-<hr>
-<h3 id="本地文件系统"><a href="#本地文件系统" class="headerlink" title="本地文件系统"></a>本地文件系统</h3><ul>
-<li>索引<br>希望不需要顺序扫描整个表就可以找到对应需要的</li>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><h3 id="数据库vs文件系统"><a href="#数据库vs文件系统" class="headerlink" title="数据库vs文件系统"></a>数据库vs文件系统</h3><p>从数据存储角度比较</p>
+<table>
+<thead>
+<tr>
+<th>文件系统</th>
+<th>数据库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储文件</td>
+<td>存储数据表</td>
+</tr>
+<tr>
+<td>通用，存储任何数据和程序</td>
+<td>专用，针对关系型数据进行存储</td>
+</tr>
+<tr>
+<td>文件无结构，一串字节</td>
+<td>数据表由多个记录组成，每个记录由多个属性组成</td>
+</tr>
+<tr>
+<td>操作系统内核中实现</td>
+<td>用户态程序中实现</td>
+</tr>
+<tr>
+<td>提供基本的编程接口</td>
+<td>提供SQL接口</td>
+</tr>
+</tbody></table>
+<ul>
+<li>共同点<br>数据存储在外存，根据硬盘特征，分块存储</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">key --- index --- value(record/recordID)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="磁盘空闲块的管理"><a href="#磁盘空闲块的管理" class="headerlink" title="磁盘空闲块的管理"></a>磁盘空闲块的管理</h3><ul>
+<li><p>数据库自己管理空间<br>下层是raw partition，数据库管理记录每个块的具体情况，并进行分配、释放等</p>
+</li>
+<li><p>依托文件系统实现<br>每个table&#x2F;index存储成为单独的文件<br>文件系统对磁盘块进行管理</p>
+</li>
+</ul>
+<h2 id="记录文件格式"><a href="#记录文件格式" class="headerlink" title="记录文件格式"></a>记录文件格式</h2><h3 id="行式记录结构"><a href="#行式记录结构" class="headerlink" title="行式记录结构"></a>行式记录结构</h3><p>记录的所有属性都连续存储在一个字节串中</p>
+<hr>
+<ul>
+<li>对于一个tuple<br>定长列的长度存储在system catelog中<br>变长列的长度存储在记录中</li>
+</ul>
+<h3 id="跨块记录"><a href="#跨块记录" class="headerlink" title="跨块记录"></a>跨块记录</h3><p>当一个记录比一个数据页大时，分为多个子记录存储<br>同时子记录间相互指向</p>
+<h2 id="缓冲池"><a href="#缓冲池" class="headerlink" title="缓冲池"></a>缓冲池</h2><h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>减少I&#x2F;O，提高性能</p>
+<hr>
+<ul>
+<li>原因<br>时间局部性、空间局部性</li>
+</ul>
+<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p>主存中一个frame可以缓存一个page</p>
+<hr>
+<p>记录元信息</p>
+<h3 id="eg-替换过程"><a href="#eg-替换过程" class="headerlink" title="eg&#x2F;替换过程"></a>eg&#x2F;替换过程</h3><ul>
+<li>给定pageid&#x3D;A，访问page A过程：</li>
+</ul>
+<ol>
+<li>查找index</li>
+<li>buffer pool hit：直接访问buffer pool中的frame</li>
+<li>buffer pool not hit：从缓冲池中找到一个可用的frame，从磁盘中读出page A并替换填入这个frame</li>
+</ol>
+<h3 id="替换算法"><a href="#替换算法" class="headerlink" title="替换算法"></a>替换算法</h3><ul>
+<li><p>LRU</p>
+</li>
+<li><p>CLOCK算法</p>
+</li>
+</ul>
+<h2 id="index"><a href="#index" class="headerlink" title="index"></a>index</h2><p>数据顺序访问IO代价太大</p>
+<p>希望不需要扫描整个表就可以找到相关记录<br>于是引入索引</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key ---&gt; index ---&gt; value:记录 record /记录位置 record id</span><br></pre></td></tr></table></figure>
 
-<p>哈希只能支持等值比较</p>
-<p>树结构能支持 大于小于操作</p>
-<hr>
-<ul>
-<li>clustered index&#x2F;primary index<br>索引顺序与数据记录顺序一致<br>每个表上只能有一个</li>
-</ul>
-<hr>
-<ul>
-<li><p>B+数索引</p>
+<h3 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h3><ul>
+<li><p>索引结构<br>树结构索引<br>哈希索引</p>
 </li>
-<li><p>二叉查找树</p>
+<li><p>数据页与索引的顺序一致吗</p>
 </li>
 </ul>
-<hr>
-<p>B+树叶子节点永远在同一层</p>
-<p>内部节点仅仅是为了支持搜索</p>
-<hr>
-<ul>
-<li><p>search</p>
+<p>聚簇索引&#x2F;主索引：索引顺序与数据记录顺序一致</p>
+<p>二级索引：顺序不一致</p>
+<h3 id="B-树索引"><a href="#B-树索引" class="headerlink" title="B+树索引"></a>B+树索引</h3><hr>
+<h3 id="hash索引"><a href="#hash索引" class="headerlink" title="hash索引"></a>hash索引</h3><ul>
+<li>解决冲突</li>
+</ul>
+<ol>
+<li><p>拓展hash bucket（每个hash bucket可以存储多个key&#x2F;value）</p>
 </li>
-<li><p>insertion</p>
+<li><p>增加额外的空间：链式哈希；增加溢出桶；放入其他索引</p>
 </li>
-</ul>
-<h2 id="数据库存储与访问"><a href="#数据库存储与访问" class="headerlink" title="数据库存储与访问"></a>数据库存储与访问</h2><h3 id="哈希索引扩容（rehashing）"><a href="#哈希索引扩容（rehashing）" class="headerlink" title="哈希索引扩容（rehashing）"></a>哈希索引扩容（rehashing）</h3><p>哈希索引，插入失败，需要扩容来存储更多的key</p>
-<p>例如：链式哈希<br>平均长度&#x3D;（总索引项个数&#x2F;每页索引项个数）&#x2F;size</p>
-<p>链长太长-&gt;性能下降</p>
-<p>需要扩容来提高性能</p>
-<ul>
-<li>基础方法</li>
-</ul>
-<p>创建一个新的哈希索引，把数组size变大为原索引的两倍：$new_size&#x3D;2*size$<br>遍历原哈希索引，填入到新哈希索引中</p>
-<p>缺点：过程耗时，期间可能不能使用</p>
-<hr>
-<ul>
-<li>可拓展哈希(extendible hashing)</li>
-</ul>
-<p>把单次rehashing分解为多个小步骤<br>每个小步骤仅rehashing一个hash bucket<br>从而降低单次索引的尾数延迟</p>
+<li><p>开放定址</p>
+</li>
+</ol>
+<p>一个key有多个可以选择的bucket</p>
+<p>线性探测（平方探测，robin hood hashing）</p>
+<p>二选hash</p>
+<h2 id="rehash（hash扩容）"><a href="#rehash（hash扩容）" class="headerlink" title="rehash（hash扩容）"></a>rehash（hash扩容）</h2><p>哈希索引插入失败时，需要扩容来存储更多的key<br>用链式hash时，当链长太大时，性能下降，需要扩容</p>
+<h3 id="基础方法"><a href="#基础方法" class="headerlink" title="基础方法"></a>基础方法</h3><p><code>new_size=2*size</code></p>
+<p>遍历每个key，插入到新的hash索引中<br>释放原hash索引</p>
 <blockquote>
-<p>难点：每个小步骤后依然是hash索引（合法）<br>基本方案：采用特殊的hash函数</p>
+<p>存在问题：rehashing时间长，尾延迟很高</p>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hash(key1) = 10010 ---&gt; 1,0010  ----&gt; G=1,bucket = 0010 </span><br><span class="line"></span><br><span class="line">如果又要插入一个key且超出了，则再分裂</span><br><span class="line"></span><br><span class="line">为标注到底前面分了几个组，用L表示（local depth，该page中前几位相同）</span><br></pre></td></tr></table></figure>
+<h3 id="extendible-hashing"><a href="#extendible-hashing" class="headerlink" title="extendible hashing"></a>extendible hashing</h3><ul>
+<li><strong>基本思想</strong><br>把整个rehashing分解为一个个小的步骤</li>
+</ul>
+<p>难点：每个小步骤后仍然是合法的hash index</p>
+<h2 id="多维索引"><a href="#多维索引" class="headerlink" title="多维索引"></a>多维索引</h2><h3 id="典型查询类型"><a href="#典型查询类型" class="headerlink" title="典型查询类型"></a>典型查询类型</h3><ul>
+<li><p>部分匹配</p>
+</li>
+<li><p>范围查询</p>
+</li>
+<li><p>最近邻查询</p>
+</li>
+</ul>
+<hr>
+<h3 id="编码索引"><a href="#编码索引" class="headerlink" title="编码索引"></a>编码索引</h3><ul>
+<li><p>简单拼接</p>
+</li>
+<li><p>Z-order编码</p>
+</li>
+</ul>
+<h3 id="网格文件"><a href="#网格文件" class="headerlink" title="网格文件"></a>网格文件</h3><h3 id="分段散列"><a href="#分段散列" class="headerlink" title="分段散列"></a>分段散列</h3><h3 id="四叉树"><a href="#四叉树" class="headerlink" title="四叉树"></a>四叉树</h3><h3 id="KD-tree"><a href="#KD-tree" class="headerlink" title="KD-tree"></a>KD-tree</h3><h3 id="R树"><a href="#R树" class="headerlink" title="R树"></a>R树</h3><h1 id="查询处理"><a href="#查询处理" class="headerlink" title="查询处理"></a>查询处理</h1><img src="/database/rdbms.png" class="" title="rdbms">
+
+<h2 id="系统目录"><a href="#系统目录" class="headerlink" title="系统目录"></a>系统目录</h2><p>存储数据的元信息</p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><ul>
+<li><p>table</p>
+</li>
+<li><p>index</p>
+</li>
+<li><p>view</p>
+</li>
+</ul>
+<h2 id="查询执行方式"><a href="#查询执行方式" class="headerlink" title="查询执行方式"></a>查询执行方式</h2><h3 id="operator-tree"><a href="#operator-tree" class="headerlink" title="operator tree"></a>operator tree</h3><img src="/database/operator_tree.png" class="" title="operator_tree">
+
+<p>调用过程分为：完整执行、迭代求解、多线程流水线求解</p>
+<h3 id="operator-at-a-time"><a href="#operator-at-a-time" class="headerlink" title="operator-at-a-time"></a>operator-at-a-time</h3><p>根据Operator Tree<br>先孩子，再父亲，自下向上调用查询算子<br>所有孩子分支计算完成可以计算父亲节点</p>
+<ul>
+<li>优点：实现简单</li>
+<li>缺点：中间结果表的代价</li>
+</ul>
+<h3 id="tuple-at-a-time"><a href="#tuple-at-a-time" class="headerlink" title="tuple-at-a-time"></a>tuple-at-a-time</h3><p>产生一个tuple就返回给父节点，减少中间结果</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">open</span>();<span class="comment">//初始化，设置参数</span></span><br><span class="line"><span class="built_in">getnext</span>();<span class="comment">//获得下一条结果记录</span></span><br><span class="line"><span class="built_in">close</span>();<span class="comment">//结束</span></span><br></pre></td></tr></table></figure>
 
 <hr>
 <ul>
-<li>字典树</li>
-</ul>
-<p>常见的span：1，8，64bit</p>
-<ul>
-<li><p>ISAM索引</p>
-</li>
-<li><p>支持多个重复的键</p>
-</li>
-<li><p>倒排索引</p>
-</li>
-</ul>
-<hr>
-<h3 id="多维索引"><a href="#多维索引" class="headerlink" title="多维索引"></a>多维索引</h3><p>多个列上的索引，一个key由多个列组成<br>（二维以上，十维一下）</p>
-<hr>
-<ul>
-<li>利用单维索引支持多维度索引</li>
-</ul>
-<p>最简单的想法：key拼接在一起，变成单维索引<br><strong>注意：这样的话两个字段重要性不一样</strong><br>即第一个字段必须要给出，可能退化成全数据的扫描</p>
-<h2 id="即简单拼接需要特定要求"><a href="#即简单拼接需要特定要求" class="headerlink" title="即简单拼接需要特定要求"></a>即简单拼接需要特定要求</h2><ul>
-<li>Z-order编码</li>
+<li>两类算子<br>non-blocking operator：不需要复杂的预处理<br>blocking operator：需要预处理</li>
 </ul>
 <hr>
 <ul>
-<li>纯粹设计为多维度</li>
+<li><strong>迭代求解</strong></li>
 </ul>
-<p>网格：<br>最近邻查询</p>
-<h3 id="网格文件"><a href="#网格文件" class="headerlink" title="网格文件"></a>网格文件</h3><h2 id="数据库存储与访问4"><a href="#数据库存储与访问4" class="headerlink" title="数据库存储与访问4"></a>数据库存储与访问4</h2><ul>
-<li>分段散列</li>
-</ul>
-<p>计算哈希函数，映射到桶</p>
-<p>目标:<code>hash(key x,key y)%S</code><br>不是拼接之后再哈希，而是哈希之后再拼接</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">h1=<span class="built_in">hash</span>(key1)%size_1</span><br><span class="line">h2=<span class="built_in">hash</span>(key2)%size_2</span><br><span class="line">...</span><br><span class="line"><span class="comment">//size一般为2的倍数</span></span><br></pre></td></tr></table></figure>
-
-<p>可以简化：部分匹配；<br>无法简化：范围查询，最近邻匹配</p>
-<p>grid file(网格索引)</p>
-<hr>
-<ul>
-<li>四叉树(quad tree)</li>
-</ul>
-<p>认为一个长方形包括其左边和下边</p>
-<ul>
-<li><p>KD tree</p>
-</li>
-<li><p>R-tree</p>
-</li>
-</ul>
-<p>包含关系，父亲节点包含孩子节点</p>
-<ul>
-<li>引入外接长方形</li>
-</ul>
-<p>最小外接矩形</p>
-<p>(minimum bounding rectangle)</p>
-<p>允许重叠区域</p>
-<p>删除用加入来实现</p>
-<h1 id=""><a href="#" class="headerlink" title=""></a></h1><hr>
-<ul>
-<li>两类算子</li>
-</ul>
-<p>Non-blocking operator</p>
-<ul>
-<li>dbms中哪些地方需要排序</li>
-</ul>
-<p>order by<br>B+树<br>算法需要</p>
-<hr>
-<p>内存排序算法</p>
-<p>$O(N^2)$:选择，冒泡，插入</p>
-<p>$O(N log^(N))$：快速排序，归并排序，堆排序</p>
-<p>$O(N)$:基数排序</p>
-<h1 id="查询处理"><a href="#查询处理" class="headerlink" title="查询处理"></a>查询处理</h1><h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><p>join</p>
-<ul>
-<li><strong>思路1：嵌套循环</strong></li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>()&#123;</span><br><span class="line">    <span class="keyword">for</span>()&#123;</span><br><span class="line">        <span class="keyword">if</span>()&#123;</span><br><span class="line">            ;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>block nested loop join</p>
-<p>$\frac{M_R} {M-2} \times M_S$</p>
-<ul>
-<li><p><strong>思路2：排序</strong></p>
-</li>
-<li><p><strong>思路3：哈希</strong></p>
-</li>
-</ul>
-<p>grace hash join</p>
-<p>对于R进行I&#x2F;O partition<br>对于S进行I&#x2F;O partition</p>
-<p>性能而言，hash有很大优势</p>
-<h2 id="外部连接"><a href="#外部连接" class="headerlink" title="外部连接"></a>外部连接</h2><h2 id="去重-1"><a href="#去重-1" class="headerlink" title="去重"></a>去重</h2><h2 id="分组聚集"><a href="#分组聚集" class="headerlink" title="分组聚集"></a>分组聚集</h2><h3 id="基于sort"><a href="#基于sort" class="headerlink" title="基于sort"></a>基于sort</h3><ul>
-<li><p>内部排序</p>
-</li>
-<li><p>外存排序</p>
-</li>
-</ul>
-<h3 id="基于hash"><a href="#基于hash" class="headerlink" title="基于hash"></a>基于hash</h3><ul>
-<li><p>组的数目特别少</p>
-</li>
-<li></li>
-</ul>
-<h2 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h2><h2 id="并"><a href="#并" class="headerlink" title="并"></a>并</h2><h2 id="交"><a href="#交" class="headerlink" title="交"></a>交</h2><p>特殊连接</p>
-<h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2><h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
+<p>open：<br>初始化，分配资源，建立数据结构<br>传递操作参数：下层输入schema，上层输出schema，过滤条件，投影列等</p>
+<p>getnext：<br>调用子operator的getnext获得输入<br>在输入记录上，运行本operator所设定的关系运算<br>返回一条结果的执行结果</p>
+<p>close：<br>结束、释放资源</p>
+<h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
 <p>region 大区 5个</p>
 <p>分数：<br>建表1分<br>加载数据、运行TPCH 1分<br>查询SQL语句的解释 3分</p>
 <p>密码：dbms-stu</p>
@@ -787,7 +792,7 @@
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/database/" data-id="cuid9kJFuzsQMwKwEySvXUJP9" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidJDgD1Jh6JW7STMj1y-9dl" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
