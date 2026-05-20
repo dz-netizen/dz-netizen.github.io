@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-19T17:34:41.496Z">
+<meta property="article:modified_time" content="2026-05-20T16:20:27.917Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1079,12 +1079,30 @@
 <h3 id="总结-明日计划-1"><a href="#总结-明日计划-1" class="headerlink" title="总结&amp;明日计划"></a>总结&amp;明日计划</h3><p>今天继续运行2亿条commit下的接回模拟器验证。<br>目前比较得出的变量均无mismatch</p>
 <hr>
 <p>明天计划寻找运行提速的方法；同时再次分析 2亿条指令linux还是没进入用户态（即使4亿也没进入）。</p>
+<h2 id="zhangchaochao-5-20"><a href="#zhangchaochao-5-20" class="headerlink" title="zhangchaochao(5&#x2F;20)"></a>zhangchaochao(5&#x2F;20)</h2><hr>
+<h3 id="prf接回模拟器验证"><a href="#prf接回模拟器验证" class="headerlink" title="prf接回模拟器验证"></a>prf接回模拟器验证</h3><p>目前0_3326 bit验证没有问题。</p>
+<hr>
+<h3 id="c-rtl形式化验证-example"><a href="#c-rtl形式化验证-example" class="headerlink" title="c-rtl形式化验证(example)"></a>c-rtl形式化验证(example)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(zcc-prf) [qimeng3@eda-06 qm3_rtl_top]$ <span class="built_in">cd</span> hw-cbmc/examples/adder32_equiv/</span><br><span class="line">(zcc-prf) [qimeng3@eda-06 adder32_equiv]$ <span class="built_in">ls</span></span><br><span class="line">adder32_buggy.v  adder32.v  harness.cpp  README.md</span><br><span class="line">(zcc-prf)[qimeng3@eda-06 adder32_equiv]$ ../../src/hw-cbmc/hw-cbmc harness.cpp adder32.v --module adder32 --bound 1 <span class="comment"># c/cpp参考模型；rtl；顶层模块；BMC展开周期数</span></span><br><span class="line">HW-CBMC version 6.9.0 (0656298e)</span><br><span class="line">Type-checking Verilog::adder32  <span class="comment">#解析rtl</span></span><br><span class="line">Type-checking harness           <span class="comment">#解析cpp</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#...</span></span><br><span class="line"></span><br><span class="line">** Results:</span><br><span class="line">[array_bounds.1] file harness.cpp line 18 array <span class="string">&#x27;adder32_array&#x27;</span> lower bound <span class="keyword">in</span> adder32_array[timeframe]: SUCCESS</span><br><span class="line">[array_bounds.2] file harness.cpp line 18 array <span class="string">&#x27;adder32_array&#x27;</span> upper bound <span class="keyword">in</span> adder32_array[timeframe]: SUCCESS</span><br><span class="line">harness.cpp <span class="keyword">function</span> main</span><br><span class="line">[main.assertion.1] line 56 assertion adder32.sum == ref.sum: SUCCESS</span><br><span class="line">[main.assertion.2] line 57 assertion adder32.cout == ref.cout: SUCCESS</span><br><span class="line"></span><br><span class="line">** 0 of 4 failed (1 iterations)</span><br><span class="line">VERIFICATION SUCCESSFUL</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="c-rtl形式化验证（bit0）"><a href="#c-rtl形式化验证（bit0）" class="headerlink" title="c-rtl形式化验证（bit0）"></a>c-rtl形式化验证（bit0）</h3><ul>
+<li><strong>问题 hw-cbmc C++ 前端限制</strong></li>
+</ul>
+<p>hw-cbmc 不是完整的 g++&#x2F;clang C++ 编译器。它前面有一个解析 C&#x2F;C++ 的模块，把 C&#x2F;C++ 代码翻译成形式化验证内部表示。<br>这个模块支持的是 C&#x2F;C++ 的一个子集。</p>
+<p>hw-cbmc 还没成功理解&#x2F;翻译这份 C++ 参考模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./run.sh: line 77: 2115683 Aborted                 (core dumped) ../../src/hw-cbmc/hw-cbmc <span class="variable">$&#123;CPP_FLAGS&#125;</span> <span class="variable">$&#123;REF_FLAGS&#125;</span> -DPRF_PI_WIDTH=<span class="string">&quot;<span class="variable">$&#123;PI_WIDTH&#125;</span>&quot;</span> -DPRF_PO_WIDTH=<span class="string">&quot;<span class="variable">$&#123;PO_WIDTH&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;HARNESS&#125;</span>&quot;</span> prf_rtl_wrap.v <span class="string">&quot;<span class="variable">$&#123;RTL&#125;</span>&quot;</span> --module prf_rtl_wrap --bound 1</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h3 id="小结-明日计划-12"><a href="#小结-明日计划-12" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天开始利用c-rtl形式化验证 进一步验证BSD生成代码的准确性。</p>
+<hr>
+<p>c-rtl形式化验证：下一步继续把PRF 参考模型降到 hw-cbmc 更稳定的 C++ 子集</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidI1Ms2_ofO3ZnHZmD5N22q" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidvc295Mt2aFwgko4r4LsmH" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
