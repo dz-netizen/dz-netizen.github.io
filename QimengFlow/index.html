@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-20T16:20:27.917Z">
+<meta property="article:modified_time" content="2026-05-21T17:22:41.995Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1084,6 +1084,7 @@
 <hr>
 <h3 id="c-rtl形式化验证-example"><a href="#c-rtl形式化验证-example" class="headerlink" title="c-rtl形式化验证(example)"></a>c-rtl形式化验证(example)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(zcc-prf) [qimeng3@eda-06 qm3_rtl_top]$ <span class="built_in">cd</span> hw-cbmc/examples/adder32_equiv/</span><br><span class="line">(zcc-prf) [qimeng3@eda-06 adder32_equiv]$ <span class="built_in">ls</span></span><br><span class="line">adder32_buggy.v  adder32.v  harness.cpp  README.md</span><br><span class="line">(zcc-prf)[qimeng3@eda-06 adder32_equiv]$ ../../src/hw-cbmc/hw-cbmc harness.cpp adder32.v --module adder32 --bound 1 <span class="comment"># c/cpp参考模型；rtl；顶层模块；BMC展开周期数</span></span><br><span class="line">HW-CBMC version 6.9.0 (0656298e)</span><br><span class="line">Type-checking Verilog::adder32  <span class="comment">#解析rtl</span></span><br><span class="line">Type-checking harness           <span class="comment">#解析cpp</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#...</span></span><br><span class="line"></span><br><span class="line">** Results:</span><br><span class="line">[array_bounds.1] file harness.cpp line 18 array <span class="string">&#x27;adder32_array&#x27;</span> lower bound <span class="keyword">in</span> adder32_array[timeframe]: SUCCESS</span><br><span class="line">[array_bounds.2] file harness.cpp line 18 array <span class="string">&#x27;adder32_array&#x27;</span> upper bound <span class="keyword">in</span> adder32_array[timeframe]: SUCCESS</span><br><span class="line">harness.cpp <span class="keyword">function</span> main</span><br><span class="line">[main.assertion.1] line 56 assertion adder32.sum == ref.sum: SUCCESS</span><br><span class="line">[main.assertion.2] line 57 assertion adder32.cout == ref.cout: SUCCESS</span><br><span class="line"></span><br><span class="line">** 0 of 4 failed (1 iterations)</span><br><span class="line">VERIFICATION SUCCESSFUL</span><br></pre></td></tr></table></figure>
 
+
 <hr>
 <h3 id="c-rtl形式化验证（bit0）"><a href="#c-rtl形式化验证（bit0）" class="headerlink" title="c-rtl形式化验证（bit0）"></a>c-rtl形式化验证（bit0）</h3><ul>
 <li><strong>问题 hw-cbmc C++ 前端限制</strong></li>
@@ -1097,12 +1098,30 @@
 <h3 id="小结-明日计划-12"><a href="#小结-明日计划-12" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天开始利用c-rtl形式化验证 进一步验证BSD生成代码的准确性。</p>
 <hr>
 <p>c-rtl形式化验证：下一步继续把PRF 参考模型降到 hw-cbmc 更稳定的 C++ 子集</p>
+<h2 id="zhangchaochao-5-21"><a href="#zhangchaochao-5-21" class="headerlink" title="zhangchaochao(5&#x2F;21)"></a>zhangchaochao(5&#x2F;21)</h2><h3 id="接回模拟器验证-3"><a href="#接回模拟器验证-3" class="headerlink" title="接回模拟器验证"></a>接回模拟器验证</h3><p>全部变量出现22个mismatch：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(zcc-prf) [qimeng3@eda-04 sim_miss]$ <span class="built_in">ls</span></span><br><span class="line">module_b_mismatch_memory_linux_3915_3915.txt  module_b_mismatch_memory_linux_5925_5925.txt  module_b_mismatch_memory_linux_5931_5931.txt  module_b_mismatch_memory_linux_7003_7066.txt</span><br><span class="line">module_b_mismatch_memory_linux_3916_3916.txt  module_b_mismatch_memory_linux_5926_5926.txt  module_b_mismatch_memory_linux_5932_5932.txt  module_b_mismatch_memory_linux_7067_7130.txt</span><br><span class="line">module_b_mismatch_memory_linux_3917_3917.txt  module_b_mismatch_memory_linux_5927_5927.txt  module_b_mismatch_memory_linux_5933_5933.txt  module_b_mismatch_memory_linux_7131_7194.txt</span><br><span class="line">module_b_mismatch_memory_linux_3918_3926.txt  module_b_mismatch_memory_linux_5928_5928.txt  module_b_mismatch_memory_linux_5934_5934.txt  module_b_mismatch_memory_linux_7195_7258.txt</span><br><span class="line">module_b_mismatch_memory_linux_3927_3935.txt  module_b_mismatch_memory_linux_5929_5929.txt  module_b_mismatch_memory_linux_5935_5935.txt</span><br><span class="line">module_b_mismatch_memory_linux_3936_3944.txt  module_b_mismatch_memory_linux_5930_5930.txt  module_b_mismatch_memory_linux_6939_7002.txt</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="c-rtl形式化验证"><a href="#c-rtl形式化验证" class="headerlink" title="c-rtl形式化验证"></a>c-rtl形式化验证</h3><ul>
+<li>pi_to_rtl</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">assign packed_i = i; 这种“unpacked <span class="type">bool</span> array 到 packed vector”的整体赋值，hw-cbmc 能接受但 bit 语义不等于原来的逐 bit 连接，所以产生了假的</span><br><span class="line">counterexample。</span><br><span class="line">把 wrapper 改成“只对 RTL 实际引用到的输入 bit 做显式连接”。这不是裁剪 C 模型变量：harness.cpp 仍然生成全量 pi[<span class="number">0.</span><span class="number">.10722</span>]，BSD 模型仍然吃全量 PI；</span><br><span class="line">只是 Verilogwrapper 不再为 RTL 根本不读取的输入生成 <span class="number">10723</span> 个无意义连接。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li>pi_to_cpp</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">现在 wrapper 顶层不再用 <span class="type">bool</span> array，而是 <span class="number">64</span>-bit word array；这避免了之前那个不可靠的 <span class="type">bool</span>-array 映射。先跑一次只保留 assertion 的验证。</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结-明日计划-13"><a href="#小结-明日计划-13" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天继续验证，<br>目前接回模拟器验证有22个mismatch，<br>c-rtl验证部分变量通过，目前进行全部变量验证</p>
+<hr>
+<p>明天解决mismatch问题，同时查看c-rtl验证情况</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidvc295Mt2aFwgko4r4LsmH" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidhgCwK8LidzfuokMM7c4PO" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

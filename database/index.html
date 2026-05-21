@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/database/rdbms.png">
 <meta property="og:image" content="https://dz-netizen.github.io/database/operator_tree.png">
 <meta property="article:published_time" content="2026-03-05T05:38:30.000Z">
-<meta property="article:modified_time" content="2026-05-19T15:48:02.553Z">
+<meta property="article:modified_time" content="2026-05-21T07:44:28.440Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="database">
 <meta name="twitter:card" content="summary">
@@ -757,6 +757,16 @@
 <p>open：<br>初始化，分配资源，建立数据结构<br>传递操作参数：下层输入schema，上层输出schema，过滤条件，投影列等</p>
 <p>getnext：<br>调用子operator的getnext获得输入<br>在输入记录上，运行本operator所设定的关系运算<br>返回一条结果的执行结果</p>
 <p>close：<br>结束、释放资源</p>
+<h2 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h2><h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><ul>
+<li><p>将查询分解为基本快</p>
+</li>
+<li><p>每块包含一个select from，where，order by，having，group by等</p>
+</li>
+<li><p>关系代数等价变换</p>
+</li>
+<li><p>估计每个算子的代价、规模等</p>
+</li>
+</ul>
 <h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
 <p>region 大区 5个</p>
 <p>分数：<br>建表1分<br>加载数据、运行TPCH 1分<br>查询SQL语句的解释 3分</p>
@@ -792,7 +802,7 @@
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/database/" data-id="cuid10vuYqjavGD3gOfV73S-q" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidC8ztd0SO4IhSSUxgdWZDN" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
