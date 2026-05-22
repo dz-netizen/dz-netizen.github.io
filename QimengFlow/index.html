@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-21T17:22:41.995Z">
+<meta property="article:modified_time" content="2026-05-22T14:30:32.242Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1116,12 +1116,22 @@
 <h3 id="小结-明日计划-13"><a href="#小结-明日计划-13" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天继续验证，<br>目前接回模拟器验证有22个mismatch，<br>c-rtl验证部分变量通过，目前进行全部变量验证</p>
 <hr>
 <p>明天解决mismatch问题，同时查看c-rtl验证情况</p>
+<h2 id="zhangchaochao-5-22"><a href="#zhangchaochao-5-22" class="headerlink" title="zhangchaochao(5&#x2F;22)"></a>zhangchaochao(5&#x2F;22)</h2><h3 id="接回模拟器验证-4"><a href="#接回模拟器验证-4" class="headerlink" title="接回模拟器验证"></a>接回模拟器验证</h3><p>全部变量验证通过。</p>
+<ul>
+<li>问题解决</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">1. out.prf_awake mismatch</span><br><span class="line"> - 3915: out.prf_awake-&gt;wake[0].valid</span><br><span class="line"> - 3916: out.prf_awake-&gt;wake[1].valid</span><br><span class="line"> - 3917: out.prf_awake-&gt;wake[2].valid</span><br><span class="line"> - 3918-3926: out.prf_awake-&gt;wake[0].preg</span><br><span class="line"> - 3927-3935: out.prf_awake-&gt;wake[1].preg</span><br><span class="line"> - 3936-3944: out.prf_awake-&gt;wake[2].preg</span><br><span class="line"></span><br><span class="line"> 根因是检查模型里给 comb_awake() 用了当前周期 dec_bcast kill 信息，但实际执行顺序里 Prf::comb_awake() 早于 IDU 发布本周期 dec_bcast。所以这组派生 PI kill bit 不能用当前 dec_bcast，应固定为 0。</span><br><span class="line"></span><br><span class="line"> 2. inst_r_1.valid mismatch</span><br><span class="line"> - 5925-5935: inst_r_1[0..10].valid</span><br><span class="line">     - 5925: inst_r_1[0].valid</span><br><span class="line">     - ...</span><br><span class="line">     - 5935: inst_r_1[10].valid</span><br><span class="line"></span><br><span class="line"> 根因是检查模型里计算 pipeline kill 时，用错了对象：原来用了旧的 prf.inst_r[i].uop，但 inst_r_1 是由新输入 in.exe2prf-&gt;entry[i] 生成的，所以 kill 判断必须基于 prf.in.exe2prf-&gt;entry[i].uop。</span><br><span class="line"></span><br><span class="line"> 3. inst_r_1.uop.br_mask mismatch</span><br><span class="line"> - 6939-7002: inst_r_1[6].uop.br_mask</span><br><span class="line"> - 7003-7066: inst_r_1[7].uop.br_mask</span><br><span class="line"> - 7067-7130: inst_r_1[8].uop.br_mask</span><br><span class="line"> - 7131-7194: inst_r_1[9].uop.br_mask</span><br><span class="line"> - 7195-7258: inst_r_1[10].uop.br_mask</span><br><span class="line"></span><br><span class="line"> 这类是 inst_r_1[i].valid == 0 时，uop payload 属于 don&#x27;t-care。</span><br><span class="line"> 如果变量名是 inst_r_1[i].uop.*，且当前 prf.inst_r_1[i].valid == false，就跳过比较。</span><br></pre></td></tr></table></figure>
+
+<h3 id="c-rtl验证"><a href="#c-rtl验证" class="headerlink" title="c-rtl验证"></a>c-rtl验证</h3><p>目前验证了6000多个变量，<br>存在97个VERIFICATION FAILED。</p>
+<h3 id="小结-明日计划-14"><a href="#小结-明日计划-14" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h3><p>今天解决了接回模拟器验证中遗留的mismatch，实现全变量正确</p>
+<hr>
+<p>明日计划进一步解决c-rtl验证中VERIFICATION FAILED问题</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidhgCwK8LidzfuokMM7c4PO" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuid4a_VImyZHaHtXUfKUzzoT" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
