@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-28T16:12:32.542Z">
+<meta property="article:modified_time" content="2026-05-29T14:10:40.395Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1158,12 +1158,116 @@
 <blockquote>
 <p>vim &#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;qm3dc&#x2F;prf_syn&#x2F;prf_bsd_top.v</p>
 </blockquote>
+<h1 id="Prf-zhangchaochao-5-29"><a href="#Prf-zhangchaochao-5-29" class="headerlink" title="Prf-zhangchaochao(5&#x2F;29)"></a>Prf-zhangchaochao(5&#x2F;29)</h1><h2 id="差异"><a href="#差异" class="headerlink" title="差异"></a>差异</h2><h3 id="Prf"><a href="#Prf" class="headerlink" title="Prf"></a>Prf</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">PrfOut</span> &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  FtqPrfPcReqIO *ftq_prf_pc_req;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PrfIn</span> &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  FtqPrfPcRespIO *ftq_prf_pc_resp;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  PRF 发给 EXE 的 uop 有些需要 pc 信息，比如：</p>
+<ul>
+<li>ALU 指令如果 src1_is_pc</li>
+<li>分支&#x2F;跳转类指令</li>
+</ul>
+<p>  但 PRF 自己不保存完整 PC，它只有 uop 里的：</p>
+<p>  ftq_idx<br>  ftq_offset</p>
+<p>  所以 PRF 要向 FTQ 查询真实 PC。</p>
+<p>  ftq_prf_pc_req 是请求端口，PRF 输出：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">out.ftq_prf_pc_req-&gt;req[slot].valid = <span class="literal">true</span>;</span><br><span class="line">out.ftq_prf_pc_req-&gt;req[slot].ftq_idx = uop.ftq_idx;</span><br><span class="line">out.ftq_prf_pc_req-&gt;req[slot].ftq_offset = uop.ftq_offset;</span><br></pre></td></tr></table></figure>
+<p>  意思是：我要查 FTQ 中某个 entry、某个 offset 对应的 PC。</p>
+<p>  ftq_prf_pc_resp 是响应端口，FTQ 返回：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">in.ftq_prf_pc_resp-&gt;resp[slot].valid</span><br><span class="line">in.ftq_prf_pc_resp-&gt;resp[slot].pc</span><br><span class="line">in.ftq_prf_pc_resp-&gt;resp[slot].pred_taken</span><br><span class="line">in.ftq_prf_pc_resp-&gt;resp[slot].next_pc</span><br></pre></td></tr></table></figure>
+<p>  PRF 收到后填进发给 EXE 的 uop：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">entry.uop.pc = resp.pc;</span><br><span class="line">entry.uop.ftq_resp_valid = <span class="literal">true</span>;</span><br><span class="line">entry.uop.ftq_pred_taken = resp.pred_taken;</span><br><span class="line">entry.uop.ftq_next_pc = resp.next_pc;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="config-h-large-vs-default"><a href="#config-h-large-vs-default" class="headerlink" title="config.h(large vs. default)"></a>config.h(large vs. default)</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TOTAL_FU_COUNT:<span class="number">19</span>-&gt;<span class="number">28</span></span><br><span class="line">ISSUE_WIDTH:<span class="number">15</span>-&gt;<span class="number">22</span></span><br></pre></td></tr></table></figure>
+<h2 id="切分"><a href="#切分" class="headerlink" title="切分"></a>切分</h2><p>把 PRF 内部的大块组合逻辑拆成“地址&#x2F;比较&#x2F;判定信号输出”和“外部反馈输入”两部分，让 BSD 训练可以把这些中间信号作为可学习&#x2F;可替换边界。</p>
+<h3 id="RAM-交互式切分"><a href="#RAM-交互式切分" class="headerlink" title="RAM 交互式切分"></a>RAM 交互式切分</h3><p><strong>读 PRF 从直接数组读改成 RAM 交互式切分</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// read_operand_with_bypass() 内部直接用 preg 访问 reg_file[preg]。</span></span><br><span class="line">  <span class="type">uint32_t</span> data = reg_file[preg];</span><br><span class="line"></span><br><span class="line"><span class="comment">// =&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="type">uint32_t</span> data = reg_file_data;</span><br><span class="line"></span><br><span class="line">  并且 <span class="built_in">read_operand_with_bypass</span>() 多了参数：</span><br><span class="line"></span><br><span class="line">  <span class="type">uint32_t</span> reg_file_data,</span><br><span class="line">  <span class="type">const</span> wire&lt;<span class="number">1</span>&gt; *writeb_equal_give_in,</span><br><span class="line">  <span class="type">const</span> wire&lt;<span class="number">1</span>&gt; *bypass_equal_give_in</span><br><span class="line"></span><br><span class="line">  对应在 <span class="built_in">comb_read</span>() 里：</span><br><span class="line"></span><br><span class="line">  out.reg_file_addr_0[i] = entry.uop.src1_preg;</span><br><span class="line">  out.reg_file_addr_1[i] = entry.uop.src2_preg;</span><br><span class="line">  ...</span><br><span class="line">  in.reg_file_data_0[i]</span><br><span class="line">  in.reg_file_data_1[i]</span><br></pre></td></tr></table></figure>
+
+<p>  含义是：</p>
+<ul>
+<li>PRF 不再直接在本组合逻辑里完成 reg_file[src_preg]。</li>
+<li>PRF 先输出读地址：reg_file_addr_0&#x2F;1。</li>
+<li>外部 RAM&#x2F;BSD 环境根据地址给回读数据：reg_file_data_0&#x2F;1。</li>
+<li>read_operand_with_bypass() 从反馈数据开始，再叠加 bypass。</li>
+</ul>
+<p>  “读数据转变为和 RAM 交互”。</p>
+<hr>
+<ul>
+<li><p><strong>写 PRF 从直接写数组改成写端口输出</strong></p>
+<ul>
+<li>原来 PRF 自己完成写寄存器堆。</li>
+<li>现在 PRF 输出写使能、写地址、写数据。</li>
+<li>外部 RAM&#x2F;BSD 负责根据这些写端口更新状态，并在下一轮通过 PI&#x2F;状态输入再喂回来。</li>
+</ul>
+</li>
+</ul>
+<h3 id="“-”切分"><a href="#“-”切分" class="headerlink" title="“&#x3D;&#x3D;”切分"></a>“&#x3D;&#x3D;”切分</h3><p><strong>bypass 比较从内部比较改成比较结果切分</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  原始 Prf 里 bypass 判断直接比较：</span><br><span class="line"></span><br><span class="line">  inst_r[j].uop.dest_preg == preg</span><br><span class="line">  bypass_uop.dest_preg == preg</span><br><span class="line"></span><br><span class="line"><span class="comment">// =&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  切分Prf.cpp 里先把比较逻辑输出出去：</span><br><span class="line"></span><br><span class="line">  out.writeb_equal_logic_out_1[i][j] =</span><br><span class="line">      inst_r[j].uop.dest_preg == entry.uop.src1_preg;</span><br><span class="line"></span><br><span class="line">  out.bypass_equal_logic_out_1[i][k] =</span><br><span class="line">      bypass_uop.dest_preg == entry.uop.src1_preg;</span><br><span class="line"></span><br><span class="line">  但真正使用时，用反馈输入：</span><br><span class="line"></span><br><span class="line">  writeb_equal_give_in[j]</span><br><span class="line">  bypass_equal_give_in[k]</span><br></pre></td></tr></table></figure>
+<p>  所以切分成：</p>
+<ul>
+<li>C++ simulator 计算 golden 中间信号：<em><em>logic_out</em></em></li>
+<li>BSD&#x2F;外部反馈给回：<em><em>give_in</em></em></li>
+<li>主数据通路使用反馈值，而不是直接比较值</li>
+</ul>
+<p>  这让 “寄存器号相等比较” 也成为可训练的切分点。</p>
+<hr>
+<h3 id="wakeup切分"><a href="#wakeup切分" class="headerlink" title="wakeup切分"></a>wakeup切分</h3><p>Load wakeup 判定被拆成 gate + kill 两级反馈</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  原始 Prf：</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (inst_r[i].valid &amp;&amp; inst_r[i].uop.dest_en &amp;&amp; <span class="built_in">is_load_wb</span>(inst_r[i].uop)) &#123;</span><br><span class="line">    <span class="type">bool</span> is_squashed = <span class="built_in">is_killed</span>(inst_r[i].uop, in.dec_bcast);</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// =&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line"></span><br><span class="line">  新 Prf.cpp 先输出 load wakeup gate：</span><br><span class="line"></span><br><span class="line">  out.load_wb_gate_out[i] =</span><br><span class="line">      (inst_r[i].valid &amp;&amp; inst_r[i].uop.dest_en &amp;&amp; <span class="built_in">is_load_wb</span>(inst_r[i].uop))</span><br><span class="line">          ? <span class="number">1</span></span><br><span class="line">          : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  实际使用时改成反馈：</span><br><span class="line"></span><br><span class="line">  <span class="type">bool</span> load_wb_gate = (in.load_wb_gate_in[i] &amp; <span class="number">1</span>) != <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  然后 kill 也切出来：</span><br><span class="line"></span><br><span class="line">  out.is_killed_out_0[i] = <span class="built_in">is_killed</span>(inst_r[i].uop, in.dec_bcast);</span><br><span class="line">  <span class="type">bool</span> is_squashed = in.is_killed_in_0[i];</span><br></pre></td></tr></table></figure>
+<p>  也就是说 wakeup 逻辑被切成：</p>
+<ul>
+<li>是否是有效 load 写回：load_wb_gate_out&#x2F;in</li>
+<li>是否被分支错误杀掉：is_killed_out_0&#x2F;in_0</li>
+<li>最终 wakeup 端口生成仍在 PRF 里顺序扫描</li>
+</ul>
+<h3 id="切分控制判断"><a href="#切分控制判断" class="headerlink" title="切分控制判断"></a>切分控制判断</h3><p>pipeline 写回寄存器killed指令判断也切出来</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  原始 Prf：</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">is_killed</span>(inst_r_1[i].uop, in.dec_bcast)) &#123;</span><br><span class="line">    inst_r_1[i].valid = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// =&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line">  新 Prf.cpp：</span><br><span class="line"></span><br><span class="line">  out.is_killed_out_1[i] = <span class="built_in">is_killed</span>(inst_r_1[i].uop, in.dec_bcast);</span><br><span class="line">  <span class="type">bool</span> killed = in.is_killed_in_1[i];</span><br></pre></td></tr></table></figure>
+
+<p>  所以 comb_pipeline() 里 mispred kill 判断也被拆成一个反馈切分点。</p>
+<hr>
+<p>  Prf.cpp 的切分策略可以概括为：</p>
+<ul>
+<li>大数组访问切出去：reg_file[preg] 变成 addr_out -&gt; data_in。</li>
+<li>写数组切出去：reg_file_1[dest] &#x3D; result 变成 we&#x2F;addr&#x2F;data out。</li>
+<li>大量相等比较切出去：dest_preg &#x3D;&#x3D; src_preg 变成 equal_out -&gt; equal_in。</li>
+<li>控制判定切出去：load_wb_gate、is_killed 变成 *_out -&gt; *_in。</li>
+<li>原 PRF 仍保留数据通路骨架：组装 prf2exe、生成 wakeup、推进 inst_r_1，但关键复杂逻辑通过 BSD feedback 替换。</li>
+</ul>
+<hr>
+<h2 id="调试-1"><a href="#调试-1" class="headerlink" title="调试"></a>调试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 run_batch_parallel.py</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="error-文件缺失"><a href="#error-文件缺失" class="headerlink" title="error:文件缺失"></a>error:文件缺失</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">io_generator/simulator_include/IO.h中</span><br><span class="line"></span><br><span class="line"><span class="comment">//#include &quot;wire_types.h&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="error-does-not-name-a-type"><a href="#error-does-not-name-a-type" class="headerlink" title="error:does not name a type"></a>error:does not name a type</h3><p>把别名补在当前 IO.h 的 include 区域</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">io_generator/simulator_include/IO.<span class="built_in">h</span> (<span class="number">+8</span> <span class="number">-0</span>)</span><br><span class="line">    <span class="number">11</span></span><br><span class="line">    <span class="number">12</span> +<span class="keyword">using</span> <span class="type">pcpn_t</span> = wire&lt;<span class="number">8</span>&gt;;</span><br><span class="line">    <span class="number">13</span> +<span class="keyword">using</span> <span class="type">tage_idx_t</span> = wire&lt;<span class="number">32</span>&gt;;</span><br><span class="line">    <span class="number">14</span> +<span class="keyword">using</span> <span class="type">tage_tag_t</span> = wire&lt;<span class="number">32</span>&gt;;</span><br><span class="line">    <span class="number">15</span> +<span class="keyword">using</span> <span class="type">tage_scl_meta_sum_t</span> = wire&lt;<span class="number">16</span>&gt;;</span><br><span class="line">    <span class="number">16</span> +<span class="keyword">using</span> <span class="type">tage_scl_meta_idx_t</span> = wire&lt;BPU_SCL_META_IDX_BITS&gt;;</span><br><span class="line">    <span class="number">17</span> +<span class="keyword">using</span> <span class="type">tage_loop_meta_idx_t</span> = wire&lt;BPU_LOOP_META_IDX_BITS&gt;;</span><br><span class="line">    <span class="number">18</span> +<span class="keyword">using</span> <span class="type">tage_loop_meta_tag_t</span> = wire&lt;BPU_LOOP_META_TAG_BITS&gt;;</span><br><span class="line">    <span class="number">19</span> +</span><br><span class="line">    <span class="number">20</span>  <span class="keyword">struct</span> <span class="title class_">DecRenIO</span> &#123;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="运行-1"><a href="#运行-1" class="headerlink" title="运行"></a>运行</h2><ul>
+<li>接口提取</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">const</span> <span class="type">int</span> PI_WIDTH = <span class="number">20752</span>;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">const</span> <span class="type">int</span> PO_WIDTH = <span class="number">17130</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li>变量拆分</li>
+</ul>
+<p>共3334个变量（bsd_x_x.h）</p>
+<hr>
+<ul>
+<li>BSD训练</li>
+</ul>
+<p>目前一万测试集下跑出了128个变量，acc均为1</p>
+<hr>
+<h2 id="小结-明日计划-19"><a href="#小结-明日计划-19" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h2><p>今天进行切分及变量提取</p>
+<hr>
+<p>明天查看运行情况，进一步执行BSD训练</p>
+<blockquote>
+<p>codex resume 019e739b-ae74-7521-82ea-41e72580ba1d</p>
+</blockquote>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuid5kDRf2hb2KzxKJhbIqZQf" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidW1163AnZrupNi4IgMe3Ao" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
