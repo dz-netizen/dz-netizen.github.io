@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-05-31T17:44:41.755Z">
+<meta property="article:modified_time" content="2026-06-01T17:04:01.591Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1289,13 +1289,35 @@
 <p>对应</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i0 = <span class="number">0</span>; i0 &lt; <span class="number">22</span>; i0++) &#123;</span><br><span class="line">    <span class="built_in">unpack_bits</span>(cursor, out.prf2exe-&gt;iss_entry[i0].uop.src1_rdata, <span class="number">32</span>); <span class="comment">//1936</span></span><br><span class="line">    cursor += <span class="number">32</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i0 = <span class="number">0</span>; i0 &lt; <span class="number">22</span>; i0++) &#123;</span><br><span class="line">    <span class="built_in">unpack_bits</span>(cursor, out.prf2exe-&gt;iss_entry[i0].uop.src2_rdata, <span class="number">32</span>); <span class="comment">//2640</span></span><br><span class="line">    cursor += <span class="number">32</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+
 <h2 id="小结-明日计划-21"><a href="#小结-明日计划-21" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h2><p>明天分析超时和acc&lt;1变量，解决对应问题。</p>
+<hr>
+<h1 id="zhangchaochao-6-1"><a href="#zhangchaochao-6-1" class="headerlink" title="zhangchaochao(6&#x2F;1)"></a>zhangchaochao(6&#x2F;1)</h1><h2 id="老版本prf"><a href="#老版本prf" class="headerlink" title="老版本prf"></a>老版本prf</h2><h3 id="接口相关"><a href="#接口相关" class="headerlink" title="接口相关"></a>接口相关</h3><p>老版本prf综合后与top接不上有两个问题：</p>
+<ol>
+<li></li>
+</ol>
+<figure class="highlight v"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//prf_top.v</span></span><br><span class="line">    prf_bsd_top #(</span><br><span class="line">        <span class="variable">.W_PrfIn</span>(W_PrfIn),</span><br><span class="line">        <span class="variable">.W_PrfOut</span>(W_PrfOut)</span><br><span class="line">    ) u_prf_bsd_top (</span><br><span class="line">        <span class="variable">.clk</span>(clk),</span><br><span class="line">        <span class="variable">.rst_n</span>(rst_n),</span><br><span class="line">        <span class="variable">.pi</span>(pi),</span><br><span class="line">        <span class="variable">.po</span>(po)</span><br><span class="line">    );</span><br><span class="line"><span class="comment">//=============================================</span></span><br><span class="line">    prf_bsd_top #(</span><br><span class="line">        <span class="variable">.W_PrfIn</span>(W_PrfIn),</span><br><span class="line">        <span class="variable">.W_PrfOut</span>(W_PrfOut)</span><br><span class="line">    ) u_prf_bsd_top (</span><br><span class="line">        <span class="variable">.clk</span>(clk),</span><br><span class="line">        <span class="variable">.rst_n</span>(rst_n),</span><br><span class="line">        <span class="variable">.pi_ext</span>(pi),</span><br><span class="line">        <span class="variable">.po_ext</span>(po)</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+
+<p>我的prf_bsd_top中命名是pi_ext,po_ext。</p>
+<ol start="2">
+<li></li>
+</ol>
+<figure class="highlight v"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//prf_top.v</span></span><br><span class="line">    <span class="keyword">assign</span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        iss2prf_iss_entry_uop_dbg <span class="comment">//W_DebugMeta(137) * ISSUE_WIDTH(15)</span></span><br><span class="line">    &#125; = iss2prf;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">assign</span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        prf2exe_iss_entry_uop_dbg <span class="comment">//W_DebugMeta(137) * ISSUE_WIDTH(15)</span></span><br><span class="line">    &#125; = prf2exe;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//IO.h</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">IssPrfIO</span> &#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">IssPrfUop</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    DebugMeta dbg;</span><br><span class="line">  &#125;&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PrfExeIO</span> &#123;</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">PrfExeUop</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    DebugMeta dbg;</span><br><span class="line">  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现以解决问题，prf_bsd_top位于：</p>
+<blockquote>
+<p>cd &#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;qm3dc&#x2F;prf_syn&#x2F; &amp;&amp; vim prf_bsd_top.v</p>
+</blockquote>
+<h2 id="BSD训练-8"><a href="#BSD训练-8" class="headerlink" title="BSD训练"></a>BSD训练</h2><p>对于src1_data和src2_data相关逻辑进行优化，目前正在跑</p>
+<h2 id="小结-明日计划-22"><a href="#小结-明日计划-22" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h2><p>解决BSD训练问题</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidWEqefixTv78lvEtEiiBLo" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidu4eSgd7z5nPxbZNczYZPJ" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
