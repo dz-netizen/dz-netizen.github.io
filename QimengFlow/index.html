@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-06-03T16:14:52.110Z">
+<meta property="article:modified_time" content="2026-06-04T15:51:23.451Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1323,12 +1323,24 @@
 <p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;gen_top&#x2F;top_function_layer.v</p>
 </blockquote>
 <h2 id="明日计划-1"><a href="#明日计划-1" class="headerlink" title="明日计划"></a>明日计划</h2><p>生成时序top</p>
+<p>─</p>
+<h1 id="zhangchaochao-6-4"><a href="#zhangchaochao-6-4" class="headerlink" title="zhangchaochao(6&#x2F;4)"></a>zhangchaochao(6&#x2F;4)</h1><h2 id="BSD训练-10"><a href="#BSD训练-10" class="headerlink" title="BSD训练"></a>BSD训练</h2><p>目前亿级测试训练出1560个变量，acc均为1</p>
+<h2 id="时序top-1"><a href="#时序top-1" class="headerlink" title="时序top"></a>时序top</h2><h3 id="ram生成"><a href="#ram生成" class="headerlink" title="ram生成"></a>ram生成</h3><p>default配置下，ISSUE_WIDTH &#x3D; 22</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i0 = <span class="number">0</span>; i0 &lt; <span class="number">22</span>; i0++) &#123;</span><br><span class="line">    <span class="built_in">unpack_bits</span>(cursor, out.reg_file_addr_0[i0], <span class="number">7</span>); <span class="comment">//7138</span></span><br><span class="line">    cursor += <span class="number">7</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i0 = <span class="number">0</span>; i0 &lt; <span class="number">22</span>; i0++) &#123;</span><br><span class="line">    <span class="built_in">unpack_bits</span>(cursor, out.reg_file_addr_1[i0], <span class="number">7</span>); <span class="comment">//7292</span></span><br><span class="line">    cursor += <span class="number">7</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i0 = <span class="number">0</span>; i0 &lt; <span class="number">22</span>; i0++) &#123;</span><br><span class="line">    <span class="built_in">unpack_bits</span>(cursor, out.reg_file_2_en[i0], <span class="number">1</span>); <span class="comment">//7446</span></span><br><span class="line">    cursor += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i0 = <span class="number">0</span>; i0 &lt; <span class="number">22</span>; i0++) &#123;</span><br><span class="line">    <span class="built_in">unpack_bits</span>(cursor, out.reg_file_2_addr[i0], <span class="number">7</span>); <span class="comment">//7468</span></span><br><span class="line">    cursor += <span class="number">7</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i0 = <span class="number">0</span>; i0 &lt; <span class="number">22</span>; i0++) &#123;</span><br><span class="line">    <span class="built_in">unpack_bits</span>(cursor, out.reg_file_2_data[i0], <span class="number">32</span>); <span class="comment">//7622</span></span><br><span class="line">    cursor += <span class="number">32</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成44个读端口，22个写端口 的ram</p>
+<h3 id="时序top-2"><a href="#时序top-2" class="headerlink" title="时序top"></a>时序top</h3><p>将ram和切口接回模拟器，给上层top pi&#x2F;po。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">parameter integer W_PrfIn  = <span class="number">10540</span>;</span><br><span class="line">parameter integer W_PrfOut = <span class="number">7138</span>;</span><br></pre></td></tr></table></figure>
+
+<p>接口和<a target="_blank" rel="noopener" href="https://github.com/Aporiza/top/blob/main/top/back_end/prf/prf_top.v%E5%AF%B9%E5%BA%94%E3%80%82">https://github.com/Aporiza/top/blob/main/top/back_end/prf/prf_top.v对应。</a></p>
+<blockquote>
+<p>vim &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;simulator_script&#x2F;gen_top&#x2F;prf_bsd_top.v</p>
+</blockquote>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuideV7ZztPiXQuHs8WpK6gvu" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidTdi6HC54SexmZwhVFVCLT" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

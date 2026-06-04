@@ -14,7 +14,7 @@
 <meta property="og:description" content="export ANTHROPIC_BASE_URL&#x3D;https:&#x2F;&#x2F;api.deepseek.com&#x2F;anthropicexport ANTHROPIC_AUTH_TOKEN&#x3D;sk-1111993b78ffa2d5464d95da0226da4d4384export ANTHROPIC_MODEL&#x3D;deepseek-v4-pro[1m]export ANTHROPIC">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-06-02T08:45:05.000Z">
-<meta property="article:modified_time" content="2026-06-03T07:04:59.516Z">
+<meta property="article:modified_time" content="2026-06-04T06:11:12.292Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta name="twitter:card" content="summary">
   
@@ -158,12 +158,25 @@
         
           <p>export ANTHROPIC_BASE_URL&#x3D;<a target="_blank" rel="noopener" href="https://api.deepseek.com/anthropic">https://api.deepseek.com/anthropic</a><br>export ANTHROPIC_AUTH_TOKEN&#x3D;sk-1111993b78ffa2d5464d95da0226da4d4384<br>export ANTHROPIC_MODEL&#x3D;deepseek-v4-pro[1m]<br>export ANTHROPIC_DEFAULT_OPUS_MODEL&#x3D;deepseek-v4-pro[1m]<br>export ANTHROPIC_DEFAULT_SONNET_MODEL&#x3D;deepseek-v4-pro[1m]<br>export ANTHROPIC_DEFAULT_HAIKU_MODEL&#x3D;deepseek-v4-flash<br>export CLAUDE_CODE_SUBAGENT_MODEL&#x3D;deepseek-v4-flash<br>export CLAUDE_CODE_EFFORT_LEVEL&#x3D;max</p>
 <p><a target="_blank" rel="noopener" href="https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code">https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code</a></p>
+<p>● 脚本能跑了。用法：</p>
+<p>  source .venv&#x2F;bin&#x2F;activate</p>
+<h1 id="全量回测（2998只，和V13报告一样）"><a href="#全量回测（2998只，和V13报告一样）" class="headerlink" title="全量回测（2998只，和V13报告一样）"></a>全量回测（2998只，和V13报告一样）</h1><p>  python scripts&#x2F;run_v13.py</p>
+<h1 id="先跑100只试试"><a href="#先跑100只试试" class="headerlink" title="先跑100只试试"></a>先跑100只试试</h1><p>  python scripts&#x2F;run_v13.py –limit 100</p>
+<h1 id="自定义日期-保存明细"><a href="#自定义日期-保存明细" class="headerlink" title="自定义日期 + 保存明细"></a>自定义日期 + 保存明细</h1><p>  python scripts&#x2F;run_v13.py –start 2024-01-01 –output reports&#x2F;my_report.txt</p>
+<h1 id="只看ETF"><a href="#只看ETF" class="headerlink" title="只看ETF"></a>只看ETF</h1><p>  python scripts&#x2F;run_v13.py –kind etf –limit 50</p>
+<p>  运行流程：</p>
+<ol>
+<li>自动寻优：在30只样本上测试5组参数，选最优（min_score_to_enter 在1~2之间搜索）</li>
+<li>全量回测：用最优参数跑全部标的，流式输出进度</li>
+<li>输出：Top 20 摘要 + 统计指标</li>
+</ol>
+<p>  –output 可以把每笔交易明细保存到文件，格式和 V13_trade_details.txt 一样。</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/ClaudeCode/" data-id="cuidQ4QROK9fx6wpgXNns1dbv" data-title="ClaudeCode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/ClaudeCode/" data-id="cuidZlE8aDh2Sa0xMjoSdOCKT" data-title="ClaudeCode" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
