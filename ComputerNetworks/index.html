@@ -22,13 +22,11 @@
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/freq_div_multiplexing.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/time_div_multiplexing.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/CDM_eg.png">
-<meta property="og:image" content="https://dz-netizen.github.io/%5Ccompilers%5Ccsma.png">
-<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Ccsma/cd.png">
 <meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Ceth.png">
-<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Cip.png">
+<meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/ip.png">
 <meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Cipaddr.png">
 <meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Carp.png">
-<meta property="og:image" content="https://dz-netizen.github.io/%5CComputerNetworks%5Cip_format.png">
+<meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/ip_format.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/icmp.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/ipo.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/rip.png">
@@ -38,7 +36,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/vpn.png">
 <meta property="og:image" content="https://dz-netizen.github.io/ComputerNetworks/tcp.png">
 <meta property="article:published_time" content="2026-03-04T00:41:07.000Z">
-<meta property="article:modified_time" content="2026-06-03T00:43:10.731Z">
+<meta property="article:modified_time" content="2026-06-09T07:16:20.040Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="networks">
 <meta name="twitter:card" content="summary">
@@ -598,11 +596,13 @@
 <li><p>p-坚持CSMA</p>
 </li>
 </ul>
-<p><img src="/%5Ccompilers%5Ccsma.png" alt="csma"></p>
+
+
 <hr>
 <p>（四）带碰撞检测(Collision Detection)的CSMA  (CSMA&#x2F;CD)</p>
 <p>碰撞检测<br>结点边发送数据边检测信道上的信号电压大小<br>几个结点同时发送数据时，总线上的信号电压摆动值将会增大(互相叠加)</p>
-<p><img src="/%5CComputerNetworks%5Ccsma/cd.png" alt="csma&#x2F;cd"></p>
+
+
 <p>由此引出帧必须足够长，能让发送方发送结束前检测到冲突。</p>
 <p>由此，之多经过$2T$，其中T为最远距离除以速度</p>
 <p>（五）带碰撞避免(Collision Avoidance)的CSMA  (CSMA&#x2F;CA)</p>
@@ -657,7 +657,8 @@
 <li><p>网际组管理协议 IGMP (Internet Group Management Protocol)<br> IP多播</p>
 </li>
 </ul>
-<p><img src="/%5CComputerNetworks%5Cip.png" alt="ip"></p>
+<img src="/ComputerNetworks/ip.png" class="" title="ip">
+
 <h3 id="ip地址及其表示方法"><a href="#ip地址及其表示方法" class="headerlink" title="ip地址及其表示方法"></a>ip地址及其表示方法</h3><p>IP地址 (IPv4) （位置&#x2F;身份 合二为一）<br>全球唯一的，32位，结点标识符<br>32位地址空间，理论上可提供约40亿个主机地址<br>由因特网名字与号码指派公司ICANN (Internet Corporation for Assigned Names and Numbers)进行分配</p>
 <ul>
 <li><strong>层次结构</strong></li>
@@ -713,10 +714,18 @@
 <ul>
 <li>ARP 分组不是IP 协议的一部分，不包括IP头<br>ARP分组直接放在以太网帧的数据部分<br>以太网中将ARP请求和响应分组定义为0x0806 以太类型</li>
 </ul>
-<h2 id="IP报文格式"><a href="#IP报文格式" class="headerlink" title="IP报文格式"></a>IP报文格式</h2><p><img src="/%5CComputerNetworks%5Cip_format.png" alt="ip_format"></p>
+<h2 id="IP报文格式"><a href="#IP报文格式" class="headerlink" title="IP报文格式"></a>IP报文格式</h2><img src="/ComputerNetworks/ip_format.png" class="" title="ip_format">
+
+
 <p>HLen：首部长度，4bits，可表示的最大数值是 15 个单位(1个单位为 4 字节)，即首部最长60字节；最小5，即20字节(仅包含首部的固定部分)</p>
 <blockquote>
+<p>位	名称	含义<br>bit 0	Reserved	保留位，必须为0<br>bit 1	DF (Don’t Fragment)	不允许分片<br>bit 2	MF (More Fragments)	后面还有分片</p>
+</blockquote>
+<blockquote>
 <p>标准 1500 的 MTU：不算链路层报头，算 IP 报头</p>
+</blockquote>
+<blockquote>
+<p>Length为16bit，故该数据报最大65535B，而offset为13bit，因此offset为1表示8B。</p>
 </blockquote>
 <h2 id="IP分片"><a href="#IP分片" class="headerlink" title="IP分片"></a>IP分片</h2><p>分片&#x2F;分段</p>
 <p>当一个router发现过不去(MTU_in&gt;MTU2_out)</p>
@@ -1133,7 +1142,19 @@
 <hr>
 <h1 id="5-3-8-拥塞控制"><a href="#5-3-8-拥塞控制" class="headerlink" title="5.3.8 拥塞控制"></a>5.3.8 拥塞控制</h1><p>A发出后需要等待RTT时间，B告诉A指示（关闭&#x2F;发送新的指示）</p>
 <h1 id="网络应用"><a href="#网络应用" class="headerlink" title="网络应用"></a>网络应用</h1><h2 id="基本模型"><a href="#基本模型" class="headerlink" title="基本模型"></a>基本模型</h2><p>互联网由边缘和核心组成</p>
-<h2 id="域名系统DNS"><a href="#域名系统DNS" class="headerlink" title="域名系统DNS"></a>域名系统DNS</h2><h3 id="引入原因"><a href="#引入原因" class="headerlink" title="引入原因"></a>引入原因</h3><ul>
+<h2 id="域名系统DNS"><a href="#域名系统DNS" class="headerlink" title="域名系统DNS"></a>域名系统DNS</h2><h3 id="引入原因"><a href="#引入原因" class="headerlink" title="引入原因"></a>引入原因</h3><p>用户倾向于使用可读的变长的名字<br>计算机更易处理定长的数字地址</p>
+<p>DNS将二者关联起来<br>为所有的互联网应用提供基础服务<br>将主机名映射成IP地址</p>
+<blockquote>
+<p>网络中其他转换<br>ARP（Address Resolution Protocol）：把 IP 地址转换成 MAC 地址。<br>NAT（Network Address Translation）：把一个IP地址转换成另一个IP地址。</p>
+</blockquote>
+<h3 id="工作位置"><a href="#工作位置" class="headerlink" title="工作位置"></a>工作位置</h3><pre class="mermaid">graph TD
+A[user] -->|google.com| B[邮件程序]
+B -->|google.com| C[name server]
+C -->|142.250.72.14| B
+B -->|142.250.72.14| D[TCP]
+D -->|142.250.72.14| E[IP]</pre>
+
+<ul>
 <li>广播<br>优点：不需要预先存储任何东西<br>缺点：得问全部节点</li>
 </ul>
 <pre class="mermaid">graph LR
@@ -1199,7 +1220,7 @@ A <--> B2</pre>
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidtjt-p5cETu6btc4vUEQyF" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/ComputerNetworks/" data-id="cuidMcvbWDIxRKrUxSLn_38kd" data-title="ComputerNetworks" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
