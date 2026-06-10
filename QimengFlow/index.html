@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-06-09T10:56:43.043Z">
+<meta property="article:modified_time" content="2026-06-10T16:03:00.641Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1346,12 +1346,28 @@
 <h2 id="小结-明日计划-24"><a href="#小结-明日计划-24" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h2><p>今天得到了最终版rtl，并进行aag_to_cpp</p>
 <hr>
 <p>明天进行接回模拟器验证</p>
+<h1 id="zhangchaochao-6-10"><a href="#zhangchaochao-6-10" class="headerlink" title="zhangchaochao(6&#x2F;10)"></a>zhangchaochao(6&#x2F;10)</h1><h2 id="aag-to-cpp-5"><a href="#aag-to-cpp-5" class="headerlink" title="aag_to_cpp"></a>aag_to_cpp</h2><p>目前进度334&#x2F;3074变量，速度较慢</p>
+<h2 id="verilator"><a href="#verilator" class="headerlink" title="verilator"></a>verilator</h2><p>验证的是时序版prf： prf_bsd_top.v(非 top_function_layer.v)</p>
+<p>RAM 在仿真链路里接入（因为 Verilator 编译时带了 -I…&#x2F;ram，prf_bsd_top 里的 RAM 子模块会一并建模）</p>
+<p>寄存器是接入（包括 PRF 内部时序状态），因为比对的是每拍的 prf_trace，本质上按周期对同一时刻 state 输出进行比。</p>
+<hr>
+<ul>
+<li>MAX_COMMIT_INST&#x3D;2000000目前无mismatch：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">OpenSBI v0.6^M</span><br><span class="line">   ____                    _____ ____ _____^M</span><br><span class="line">  / __ \                  / ____|  _ \_   _|^M</span><br><span class="line"> | |  | |_ __   ___ _ __ | (___ | |_) || |^M</span><br><span class="line"> | |  | | &#x27;_ \ / _ \ &#x27;_ \ \___ \|  _ &lt; | |^M</span><br><span class="line"> | |__| | |_) |  __/ | | |____) | |_) || |_^M</span><br><span class="line">  \____/| .__/ \___|_| |_|_____/|____/_____|^M</span><br><span class="line">        | |^M</span><br><span class="line">        |_|^M</span><br><span class="line">^M</span><br><span class="line">Platform Name          : QEMU Virt Machine^M</span><br><span class="line">Platform HART Features : RV32ABIMSU^M</span><br><span class="line">Platform Max HARTs     : 8^M</span><br><span class="line">Current Hart           : 0^M</span><br><span class="line">Firmware Base          : 0x80000000^M</span><br><span class="line">Firmware Size          : 128 KB^M</span><br><span class="line">Runtime SBI Version    : 0.2^M</span><br><span class="line">^M</span><br><span class="line">MIDELEG : 0x00000222^M</span><br><span class="line">MEDELEG : 0x0000b109^M</span><br><span class="line">[    0.000000] Linux version 5.15.12-02172-g9b62b5e80305-dirty (jinpengwei@OurEdaNode) (riscv32-unknown-linux-gnu-gcc (GCC) 11.1.0, GNU ld (GNU Binutils) 2.37) #66 Fri Jul 7 16:20:14 CST 2023^M^M</span><br><span class="line">[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000^M^M</span><br><span class="line">[    0.000000] Machine model: riscv-virtio,qemu^M^M</span><br><span class="line">[    0.000000] earlycon: sbi0 at I/O port 0x0 (options &#x27;&#x27;)^M^M</span><br><span class="line">[    0.000000] printk: bootconsole [sbi0] enabled^M^M</span><br><span class="line">[    0.000000] Zone ranges:^M^M</span><br><span class="line">[    0.000000]   Normal   [mem 0x0000000080400000-0x000000008fffffff]^M^M</span><br><span class="line">[    0.000000] Movable zone start for each node^M^M</span><br><span class="line">[    0.000000] Early memory node ranges^M^M</span><br><span class="line">[    0.000000]   node   0: [mem 0x0000000080400000-0x000000008fffffff]^M^M</span><br><span class="line">[    0.000000] Initmem setup node 0 [mem 0x0000000080400000-0x000000008fffffff]^M^M</span><br><span class="line">[sim] Reached MAX_COMMIT_INST=2000000</span><br><span class="line">^[[38;5;34m-----------------------------^[[0m</span><br><span class="line">^[[38;5;34mSuccess!!!!^[[0m</span><br></pre></td></tr></table></figure>
+
+<h2 id="小结-明日计划-25"><a href="#小结-明日计划-25" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h2><p>今天使用verilator将prf模块接回模拟器运行linux，MAX_COMMIT_INST&#x3D;2000000目前无mismatch</p>
+<hr>
+<p>今晚进行MAX_COMMIT_INST&#x3D;200000000验证，<br>明天进行综合</p>
+<blockquote>
+<p>eda-09 codex resume 019eb18c-9804-74e0-be0b-5c9b3e06f517</p>
+</blockquote>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuid8O7Mw_vXt_XwWjSUA5zXi" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidMsFI2LArM2glc9U-tpav7" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
