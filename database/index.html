@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/database/rdbms.png">
 <meta property="og:image" content="https://dz-netizen.github.io/database/operator_tree.png">
 <meta property="article:published_time" content="2026-03-05T05:38:30.000Z">
-<meta property="article:modified_time" content="2026-06-11T09:09:10.931Z">
+<meta property="article:modified_time" content="2026-06-11T09:15:35.861Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="database">
 <meta name="twitter:card" content="summary">
@@ -947,12 +947,15 @@ Q -- yes --> Q1{残留residual?}
 Q1 -- yes --> QN[FilterProject处理residual]
 QN --> Q2
 Q1 -- no --> Q2[OrderByOperator]
-Q2 --> S[SELECT 投影解析]
 
-Q -- no  --> S[SELECT 投影解析]
-S --> T[ResultTable 初始化]
+Q2 --> PQ1[operator tree建立完成]
 
-T --> U[执行阶段 init root]
+Q -- no  --> PQ1
+
+PQ1 -.-> S[SELECT 投影解析]
+S -.-> T[ResultTable 初始化]
+
+T -.-> U[执行阶段 init root]
 
 U --> V{produced < capacity?}
 
@@ -982,7 +985,7 @@ AC --> V</pre>
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidn7ohAU95v3lL2OY8L4qQh" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidnH7K3dvxhwRKaa9KZ9v45" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
