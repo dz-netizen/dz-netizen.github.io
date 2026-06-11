@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-06-10T16:03:00.641Z">
+<meta property="article:modified_time" content="2026-06-11T19:34:19.241Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1362,12 +1362,22 @@
 <blockquote>
 <p>eda-09 codex resume 019eb18c-9804-74e0-be0b-5c9b3e06f517</p>
 </blockquote>
+<p>Token usage: total&#x3D;196,651 input&#x3D;132,117 (+ 1,551,872 cached) output&#x3D;64,534 (reasoning 35,450)<br>To continue this session, run codex resume 019eb7e7-440b-7f31-8116-b81652f9befb<br>(base) [qimeng3@eda-10 simulator]$</p>
+<p>Token usage: total&#x3D;575,526 input&#x3D;470,970 (+ 14,859,776 cached) output&#x3D;104,556 (reasoning 69,528)<br>To continue this session, run codex resume 019eb807-ca46-7a70-add2-3a7fb99cfc10<br>(base) [qimeng3@eda-10 qm3_rtl_top]$</p>
+<h1 id="zhangchaochao-6-11"><a href="#zhangchaochao-6-11" class="headerlink" title="zhangchaochao(6&#x2F;11)"></a>zhangchaochao(6&#x2F;11)</h1><h2 id="verilator-1"><a href="#verilator-1" class="headerlink" title="verilator"></a>verilator</h2><p>使用verilator将prf模块接回模拟器运行linux，MAX_COMMIT_INST&#x3D;20000000目前无mismatch</p>
+<h2 id="c-rtl验证-3"><a href="#c-rtl验证-3" class="headerlink" title="c-rtl验证"></a>c-rtl验证</h2><p>开始c-rtl验证</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- 声明 <span class="type">bool</span> pi[<span class="number">14236</span>]、<span class="type">bool</span> po_ref[<span class="number">10614</span>]</span><br><span class="line">- 对每个 pi[k] 做 <span class="built_in">nondet_bool</span>() 赋值</span><br><span class="line">- 逐位映射到 prf_rtl_wrap.i_k</span><br><span class="line">- 调用 <span class="built_in">set_inputs</span>() 与 <span class="built_in">io_generator_outer</span>(pi, po_ref)</span><br><span class="line">- 对每个 o_k 做 <span class="built_in">assert</span>(prf_rtl_wrap.o_k == po_ref[k])</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuid2EUgm33k1fRt_A31xHw5c" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidZKxneB6VN0swDV-R8gjNg" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
