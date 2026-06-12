@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-06-11T19:34:19.241Z">
+<meta property="article:modified_time" content="2026-06-12T16:03:14.427Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1372,12 +1372,22 @@
 
 
 
+<h1 id="zhangchaochao-6-12"><a href="#zhangchaochao-6-12" class="headerlink" title="zhangchaochao(6&#x2F;12)"></a>zhangchaochao(6&#x2F;12)</h1><h2 id="c-rtl验证-4"><a href="#c-rtl验证-4" class="headerlink" title="c-rtl验证"></a>c-rtl验证</h2><p>对prf模块按变量进行c-rtl形式化验证。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">验证过程harness.cpp:</span><br><span class="line">    pi[i] = nondet_bool();</span><br><span class="line">    io_generator_outer(pi, po_ref);</span><br><span class="line">    top_function_layer.i[i] = pi[i];</span><br><span class="line">    set_inputs();</span><br><span class="line">    po_rtl[i] = top_function_layer.o_index[i];</span><br><span class="line">    assert(po_ref[i] == po_rtl[i]);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>后续接ram的话英爱： po_rtl[i] &#x3D; prf_bsd_top.o_index[i];</p>
+</blockquote>
+<p>目前io_generator_outer() 可用；部分验证成功<br>部分变量有问题，速度有待提高</p>
+<h2 id="小结-明日计划-26"><a href="#小结-明日计划-26" class="headerlink" title="小结&amp;明日计划"></a>小结&amp;明日计划</h2><p>本次c-rtl验证没有很好地利好前一次的验证，没做好备份，逐渐混杂在了一起，没预想中顺利。</p>
+<hr>
+<p>明天继续c-rtl验证</p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidZKxneB6VN0swDV-R8gjNg" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidoSOfEoADajnnIBPivypeK" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
