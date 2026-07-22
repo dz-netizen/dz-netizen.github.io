@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/database/rdbms.png">
 <meta property="og:image" content="https://dz-netizen.github.io/database/operator_tree.png">
 <meta property="article:published_time" content="2026-03-05T05:38:30.000Z">
-<meta property="article:modified_time" content="2026-06-11T09:15:35.861Z">
+<meta property="article:modified_time" content="2026-07-08T07:40:50.483Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="database">
 <meta name="twitter:card" content="summary">
@@ -848,7 +848,41 @@
 <ul>
 <li>Basic Time-stamp Ordering</li>
 </ul>
-<h2 id="缓冲池策略与奔溃恢复"><a href="#缓冲池策略与奔溃恢复" class="headerlink" title="缓冲池策略与奔溃恢复"></a>缓冲池策略与奔溃恢复</h2><h3 id="WAL"><a href="#WAL" class="headerlink" title="WAL"></a>WAL</h3><h2 id="数据仓库"><a href="#数据仓库" class="headerlink" title="数据仓库"></a>数据仓库</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h3 id="星型模式"><a href="#星型模式" class="headerlink" title="星型模式"></a>星型模式</h3><h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
+<h2 id="缓冲池策略与奔溃恢复"><a href="#缓冲池策略与奔溃恢复" class="headerlink" title="缓冲池策略与奔溃恢复"></a>缓冲池策略与奔溃恢复</h2><h3 id="WAL"><a href="#WAL" class="headerlink" title="WAL"></a>WAL</h3><h2 id="数据仓库"><a href="#数据仓库" class="headerlink" title="数据仓库"></a>数据仓库</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h3 id="星型模式"><a href="#星型模式" class="headerlink" title="星型模式"></a>星型模式</h3><p>分布式事务的支持</p>
+<ul>
+<li><p>并发控制</p>
+</li>
+<li><p>分布式</p>
+</li>
+</ul>
+<h1 id="考试"><a href="#考试" class="headerlink" title="考试"></a>考试</h1><p>内存&#x2F;硬盘发展趋势</p>
+<p>flash&#x2F;sdd不一样的地方</p>
+<p>事务处理<br>特征</p>
+<p>数据仓库</p>
+<p>三大数据库产品</p>
+<p>ER模型不考</p>
+<p>SQL语句怎么写<br>算子的符号得了解</p>
+<p>完整性约束-应用</p>
+<p>不考assertion&#x2F;trigger<br>得知道</p>
+<p>view&#x2F;基本表</p>
+<p>grant</p>
+<p>数据冗余和范式</p>
+<p>后端模块</p>
+<p>磁盘阵列<br>可见的空间<br>冗余<br>读写几次访问</p>
+<p>slotted page</p>
+<p>clock算法</p>
+<p>索引<br>填空简答<br>其他可能稍微上层陈述简答<br>B+树</p>
+<p>线性探测</p>
+<p>哈希扩容<br>原因<br>extendible hashing很重要和经典</p>
+<p>tuple at a timecc</p>
+<p>外排序<br>基于hash的连接&#x2F;双层嵌套的连接</p>
+<p>查询优化</p>
+<p>sql &#x3D;&gt; 关系代数表达式<br>代价估计<br>计划选择（不会细考）</p>
+<p>事务处理<br>ACID<br>并发控制 数据冲突，可串行化<br>崩溃恢复</p>
+<p>WAR<br>checkpoint</p>
+<p>并行分布式数据库<br>水平划分<br>陈述性的问题<br>分布式查询怎么并行起来</p>
+<p>分布式处理<br>云数据库（概念性&#x2F;顶层）</p>
+<h1 id="研讨课"><a href="#研讨课" class="headerlink" title="研讨课"></a>研讨课</h1><p>p7,SF,skill factor</p>
 <p>region 大区 5个</p>
 <p>分数：<br>建表1分<br>加载数据、运行TPCH 1分<br>查询SQL语句的解释 3分</p>
 <p>密码：dbms-stu</p>
@@ -980,12 +1014,125 @@ AA --> AB[write ResultTable]
 AB --> AC[produced++]
 
 AC --> V</pre>
+<pre><code class="language-cpp">class Operator &#123;
+  public:
+
+    virtual ~Operator() &#123;&#125;
+    virtual bool init() = 0;//初始化
+    virtual bool getNext() = 0;//获取下一条输出记录
+    virtual bool isEnd() = 0;// 判断算子是否已经结束
+    virtual char *getOutput() = 0;//获取当前输出记录
+    virtual int64_t getOutputLen() = 0;//获取输出记录长度
+    virtual bool close() = 0;//关闭算子并释放资源
+&#125;;
+
+
+
+
+dz@LAPTOP-HVL0IQBD:~/quant$ source venv/bin/activate
+(venv) dz@LAPTOP-HVL0IQBD:~/quant$ source .config/env.sh &amp;&amp; python scripts/download_all_tradingview.py --start 2024-01-01 --end 2026-06-24 --limit 10
+Target: 10 stocks, 2024-01-01 → 2026-06-24, ~935 bars each
+Source: TradingView  |  Delay: 1.0s  |  Flush every: 50
+
+  [   1/10] O 600000.SH 浦发银行  1.2s  |  ok=1 fail=0  |  51.7/min  ETA 0m
+  [   2/10] O 600004.SH 白云机场  1.1s  |  ok=2 fail=0  |  36.9/min  ETA 0m
+  [   3/10] O 600006.SH 东风股份  0.7s  |  ok=3 fail=0  |  36.5/min  ETA 0m
+  [   4/10] O 600007.SH 中国国贸  1.4s  |  ok=4 fail=0  |  32.9/min  ETA 0m
+  [   5/10] O 600008.SH 首创环保  1.8s  |  ok=5 fail=0  |  29.7/min  ETA 0m
+  [   6/10] O 600009.SH 上海机场  1.5s  |  ok=6 fail=0  |  28.5/min  ETA 0m
+  [   7/10] O 600010.SH 包钢股份  1.8s  |  ok=7 fail=0  |  27.2/min  ETA 0m
+  [   8/10] O 600011.SH 华能国际  0.9s  |  ok=8 fail=0  |  27.6/min  ETA 0m
+  [   9/10] O 600012.SH 皖通高速  1.0s  |  ok=9 fail=0  |  27.8/min  ETA 0m
+  [  10/10] O 600015.SH 华夏银行  1.1s  |  ok=10 fail=0  |  27.9/min  ETA 0m
+
+==================================================
+Done in 0.4 min.  Success: 10, Failed: 0
+(venv) dz@LAPTOP-HVL0IQBD:~/quant$ source .config/env.sh &amp;&amp; python scripts/download_all_tradingview.py --start 2024-01-01 --end 2026-06-24 
+
+
+
+  # 每次使用前先加载代理
+  source .config/env.sh
+
+  # 增量更新最新数据
+  python scripts/update_data.py --provider tradingview
+
+  # 批量下载全部 A 股日线
+  python scripts/download_all_tradingview.py --start 2024-01-01 --end 2026-06-24
+
+  # 先测试少量
+  python scripts/download_all_tradingview.py --start 2026-01-01 --end 2026-06-24 --limit 20
+
+
+  
+  # 增量更新（只拉本地没有的日期）
+  source .config/env.sh &amp;&amp; python scripts/update_data.py --provider tradingview --workers 4
+
+
+(venv) dz@LAPTOP-HVL0IQBD:~/quant$ python scripts/screen_hull.py
+Screening 4386 stocks (date=2026-06-24, length=55, lookback=200)
+
+for i in &#123;0..21&#125;; do
+    cp &quot;function_layer_0_nodes_$((10527+i))_$((10527+i)).v&quot; \
+       /nfs_global/I/qimeng3/zhangchaochao/BSD/src/rtl_set/
+done
+
+
+
+  Beginning Isolate Ports
+  -----------------------
+
+  Beginning Delay Optimization
+  ----------------------------
+    8:29:50  101106.3      0.65    3971.6       0.1                            528.1618
+    8:41:32  101621.5      0.42    3429.7       0.2                            532.2064
+    8:41:32  101621.5      0.42    3429.7       0.2                            532.2064
+    8:42:17  101621.7      0.42    3431.5       0.2                            531.2888
+
+  Beginning WLM Backend Optimization
+  --------------------------------------
+    9:54:14  101580.0      0.46    3432.3       0.2                            530.5859
+    9:55:35  101529.9      0.46    3433.8       0.2                            529.6068
+    9:56:53  101478.4      0.46    3433.8       0.2                            529.0593
+    9:58:01  101411.6      0.46    3433.8       0.2                            528.6567
+   10:01:31  101355.4      0.46    3434.3       0.2                            528.2344
+   10:02:26  101308.7      0.46    3435.5       0.2                            527.7248
+   10:03:39  101257.8      0.46    3435.9       0.2                            527.4557
+   10:09:12  101236.1      0.46    3436.1       0.2                            527.1268
+   10:12:50  101209.9      0.46    3437.0       0.2                            526.8304
+   10:13:45  101137.6      0.46    3434.5       0.2                            526.2433
+./run_dc_prf.sh: line 66: 431740 Killed                  &quot;$&#123;DC_BIN&#125;&quot; $&#123;DC_ARGS&#125; -f scripts/dc_prf.tcl
+     431741 Done                    | tee &quot;logs/dc_prf_$&#123;stamp&#125;.log&quot;
+(zcc-eda) [qimeng3@eda-09 prf_syn]$ ls
+
+
+[244836.618564] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0-3,global_oom,task_memcg=/user.slice/user-7076.slice/session-90.scope,task=common_shell_ex,pid=431740,uid=7076
+[244836.618577] Out of memory: Killed process 431740 (common_shell_ex) total-vm:569080768kB, anon-rss:567248960kB, file-rss:0kB, shmem-rss:0kB, UID:7076 pgtables:1111036kB oom_score_adj:0
+[244837.032448] Core dump to |/usr/lib/systemd/systemd-coredump 853059 6206 10000 6 1783483299 0 eda-09 simulator pipe failed
+[244837.032449] Core dump to |/usr/lib/systemd/systemd-coredump 853066 6206 10000 6 1783483299 0 eda-09 simulator pipe failed
+[244837.146347] Core dump to |/usr/lib/systemd/systemd-coredump 852763 6206 10000 6 1783483299 0 eda-09 simulator pipe failed
+[244837.237333] Core dump to |/usr/lib/systemd/systemd-coredump 853065 6206 10000 6 1783483300 0 eda-09 simulator pipe failed
+[244837.449049] Core dump to |/usr/lib/systemd/systemd-coredump 852768 6206 10000 6 1783483300 0 eda-09 simulator pipe failed
+[244837.494482] Core dump to |/usr/lib/systemd/systemd-coredump 853080 6206 10000 6 1783483300 0 eda-09 simulator pipe failed
+[244837.532476] Core dump to |/usr/lib/systemd/systemd-coredump 853020 6206 10000 6 1783483300 0 eda-09 simulator pipe failed
+[244837.568596] Core dump to |/usr/lib/systemd/systemd-coredump 853014 6206 10000 6 1783483300 0 eda-09 simulator pipe failed
+[244837.590245] Core dump to |/usr/lib/systemd/systemd-coredump 853026 6206 10000 6 1783483300 0 eda-09 simulator pipe failed
+[244837.598513] Core dump to |/usr/lib/systemd/systemd-coredump 852765 6206 10000 6 1783483300 0 eda-09 simulator pipe failed
+[244866.993997] oom_reaper: reaped process 431740 (common_shell_ex), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
+(zcc-eda) [qimeng3@eda-09 results]$ current_design prf
+bash: current_design: command not found...
+(zcc-eda) [qimeng3@eda-09 results]$ free -h
+              total        used        free      shared  buff/cache   available
+Mem:          1.0Ti       284Gi       666Gi        28Mi        55Gi       716Gi
+Swap:         4.0Gi       3.9Gi        94Mi
+(zcc-eda) [qimeng3@eda-09 results]$
+</code></pre>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidCJvAqNdfvwbezIpoFZVsu" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/database/" data-id="cuidIcXjZl6x7XUslfxITjDbr" data-title="database" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

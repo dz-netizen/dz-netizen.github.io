@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-06-15T10:30:57.351Z">
+<meta property="article:modified_time" content="2026-07-21T16:56:08.382Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1428,7 +1428,7 @@
 <p>明天查看综合情况<br>撰写交接文档</p>
 <h1 id="PRF交接文档"><a href="#PRF交接文档" class="headerlink" title="PRF交接文档"></a>PRF交接文档</h1><h2 id="目录概览"><a href="#目录概览" class="headerlink" title="目录概览"></a>目录概览</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/nfs_global/I/qimeng3/zhangchaochao</span><br><span class="line">├── BSD</span><br><span class="line">│   └── src       <span class="comment">//BSD训练</span></span><br><span class="line">├── prf_syn       <span class="comment">//综合</span></span><br><span class="line">│   ├── filelist</span><br><span class="line">│   ├── results</span><br><span class="line">│   └── run_dc_prf.sh</span><br><span class="line">├── qm3_rtl_top   <span class="comment">//c-rtl验证</span></span><br><span class="line">│   └── prf_crtl</span><br><span class="line">├── simulator</span><br><span class="line">├── simulator-<span class="keyword">final</span> <span class="comment">//最终版模拟器 </span></span><br><span class="line">│   └── simulator   <span class="comment">//接回模拟器验证</span></span><br><span class="line">├── simulator_script  </span><br><span class="line">│   ├── gen_top             <span class="comment">//组合top生成</span></span><br><span class="line">│   ├── interface_extractor <span class="comment">//接口提取</span></span><br><span class="line">│   └── ram_generator       <span class="comment">//ram生成   </span></span><br><span class="line">├── top-<span class="keyword">final</span>     <span class="comment">//顶层top</span></span><br><span class="line">│   ├── prf_bsd_top.v</span><br><span class="line">│   ├── ram</span><br><span class="line">│   ├── slices</span><br><span class="line">│   └── top_function_layer.v</span><br><span class="line">├── verilator <span class="comment">//verilator工具</span></span><br><span class="line">└── verileq_dist</span><br></pre></td></tr></table></figure>
 
-<h2 id="接口提取"><a href="#接口提取" class="headerlink" title="接口提取"></a>接口提取</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/nfs_global/I/qimeng3/zhangchaochao/simulator_script/interface_extractor</span><br><span class="line">├── advanced_interface_analysis.csv <span class="comment">//接口提取具体结果</span></span><br><span class="line">├── advanced_interface_analyzer.py  <span class="comment">//接口提取脚本</span></span><br><span class="line">├── include_new                     <span class="comment">//提取文件</span></span><br><span class="line">│   ├── base_types.h</span><br><span class="line">│   ├── config.h                    </span><br><span class="line">│   ├── debug_config.h</span><br><span class="line">│   ├── FTQ.h</span><br><span class="line">│   ├── InstructionBuffer.h</span><br><span class="line">│   ├── IO.h</span><br><span class="line">│   ├── PerfCount.h</span><br><span class="line">│   ├── Prf.h                       <span class="comment">//PRF</span></span><br><span class="line">│   ├── SimCpu.h</span><br><span class="line">│   ├── types.h</span><br><span class="line">│   └── util.h</span><br><span class="line">├── Makefile                        <span class="comment">//接口提取</span></span><br><span class="line">└── prf_bsd.h                       <span class="comment">//接口提取结果io_generator_outer()</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/nfs_global/I/qimeng3/zhangchaochao</span><br><span class="line">├── simulator_script  </span><br><span class="line">│   ├── gen_top             <span class="comment">//组合top生成</span></span><br><span class="line">│   ├── interface_extractor <span class="comment">//接口提取</span></span><br><span class="line">│   └── ram_generator       <span class="comment">//ram生成   </span></span><br><span class="line"></span><br><span class="line">## 接口提取</span><br><span class="line"></span><br><span class="line">```cpp</span><br><span class="line">/nfs_global/I/qimeng3/zhangchaochao/simulator_script/interface_extractor</span><br><span class="line">├── advanced_interface_analysis.csv <span class="comment">//接口提取具体结果</span></span><br><span class="line">├── advanced_interface_analyzer.py  <span class="comment">//接口提取脚本</span></span><br><span class="line">├── include_new                     <span class="comment">//提取文件</span></span><br><span class="line">│   ├── base_types.h</span><br><span class="line">│   ├── config.h                    </span><br><span class="line">│   ├── debug_config.h</span><br><span class="line">│   ├── FTQ.h</span><br><span class="line">│   ├── InstructionBuffer.h</span><br><span class="line">│   ├── IO.h</span><br><span class="line">│   ├── PerfCount.h</span><br><span class="line">│   ├── Prf.h                       <span class="comment">//PRF</span></span><br><span class="line">│   ├── SimCpu.h</span><br><span class="line">│   ├── types.h</span><br><span class="line">│   └── util.h</span><br><span class="line">├── Makefile                        <span class="comment">//接口提取</span></span><br><span class="line">└── prf_bsd.h                       <span class="comment">//接口提取结果io_generator_outer()</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="BSD训练-12"><a href="#BSD训练-12" class="headerlink" title="BSD训练"></a>BSD训练</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/nfs_global/I/qimeng3/zhangchaochao/BSD/src</span><br><span class="line">├── rtl_set               <span class="comment">//rtl</span></span><br><span class="line">├── run_batch_parallel.py <span class="comment">//并行训练脚本</span></span><br><span class="line">├── run_logs              <span class="comment">//训练log</span></span><br><span class="line">├── sample.h              <span class="comment">//部分设定输入</span></span><br><span class="line">├── sample_input.set      <span class="comment">//部分设定输入</span></span><br><span class="line">├── top.h                 <span class="comment">//顶层top</span></span><br><span class="line">├── variable_order        <span class="comment">//展开序列</span></span><br><span class="line">└── io_generator</span><br><span class="line">    ├── prf_bsd</span><br><span class="line">    │   ├── Makefile      <span class="comment">//切分变量</span></span><br><span class="line">    │   ├── prf_bsd.h     <span class="comment">//PRF</span></span><br><span class="line">    │   └── split_h.py</span><br><span class="line">    └── simulator_include</span><br><span class="line">        ├── base_types.h</span><br><span class="line">        ├── config.h</span><br><span class="line">        ├── debug_config.h</span><br><span class="line">        ├── dummy_vars.h</span><br><span class="line">        ├── InstructionBuffer.h</span><br><span class="line">        ├── IO.h</span><br><span class="line">        ├── PerfCount.h</span><br><span class="line">        ├── Prf_cpp.h     <span class="comment">//PRF</span></span><br><span class="line">        ├── Prf.h         <span class="comment">//PRF</span></span><br><span class="line">        ├── types.h</span><br><span class="line">        └── util.h</span><br></pre></td></tr></table></figure>
 
@@ -1443,11 +1443,334 @@
 <h2 id="综合-4"><a href="#综合-4" class="headerlink" title="综合"></a>综合</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/nfs_global/I/qimeng3/zhangchaochao/prf_syn</span><br><span class="line">├── filelist    <span class="comment">//综合rtl</span></span><br><span class="line">├── results     <span class="comment">//结果</span></span><br><span class="line">└──  run_dc_prf.sh <span class="comment">//综合脚本</span></span><br></pre></td></tr></table></figure>
 
 
+
+<h1 id="假如一个公司要设计一款芯片，该通过何种手段什么样的流程保证芯片功能正确，怎么有效防止各个环节出现的疏忽，例如因特尔著名的浮点bug；再次发散一下，假如我或者团队在进行一项复杂工作，我又该如何保证工作的正确性（角度不限，哲学，数学；领域也不限）"><a href="#假如一个公司要设计一款芯片，该通过何种手段什么样的流程保证芯片功能正确，怎么有效防止各个环节出现的疏忽，例如因特尔著名的浮点bug；再次发散一下，假如我或者团队在进行一项复杂工作，我又该如何保证工作的正确性（角度不限，哲学，数学；领域也不限）" class="headerlink" title="假如一个公司要设计一款芯片，该通过何种手段什么样的流程保证芯片功能正确，怎么有效防止各个环节出现的疏忽，例如因特尔著名的浮点bug；再次发散一下，假如我或者团队在进行一项复杂工作，我又该如何保证工作的正确性（角度不限，哲学，数学；领域也不限）"></a>假如一个公司要设计一款芯片，该通过何种手段什么样的流程保证芯片功能正确，怎么有效防止各个环节出现的疏忽，例如因特尔著名的浮点bug；再次发散一下，假如我或者团队在进行一项复杂工作，我又该如何保证工作的正确性（角度不限，哲学，数学；领域也不限）</h1><p>本质：</p>
+<p>如何在一个极其复杂、无法完全穷举验证的系统中，最大程度降低错误发生的概率？</p>
+<p>芯片设计只是这个问题的一个具体实例。<br>相似的有：<br>计算机网络里差错检测这一概念</p>
+<h1 id="一、芯片行业是怎么保证正确性的"><a href="#一、芯片行业是怎么保证正确性的" class="headerlink" title="一、芯片行业是怎么保证正确性的"></a>一、芯片行业是怎么保证正确性的</h1><p>芯片行业并不保证100%正确。</p>
+<p>Intel Pentium FDIV Bug（1994）<br>Intel Spectre&#x2F;Meltdown<br>AMD Zen bug<br>ARM errata<br>RISC-V各种实现bug</p>
+<p>都说明：<br>没有人能证明一个现代CPU完全正确。</p>
+<p>大家做的是：<br>建立一套层层防御（Defense in Depth）的体系。</p>
+<h2 id="第一层：规格（Specification）"><a href="#第一层：规格（Specification）" class="headerlink" title="第一层：规格（Specification）"></a>第一层：规格（Specification）</h2><p>最先不是写代码。</p>
+<p>而是写：</p>
+<p>CPU应该做什么</p>
+<p>例如：</p>
+<p>ADD x1,x2,x3</p>
+<p>结果&#x3D;x2+x3</p>
+<p>或者：</p>
+<p>TLB miss后必须触发Page Walk</p>
+<p>很多bug其实死在这里。</p>
+<p>例如：</p>
+<p>工程师A理解：</p>
+<p>overflow trap</p>
+<p>工程师B理解：</p>
+<p>saturation</p>
+<p>然后实现都正确。</p>
+<p>但规格错了。</p>
+<p>所以大公司会：</p>
+<p>ISA文档<br>Architecture Spec<br>Microarchitecture Spec</p>
+<p>层层细化。</p>
+<h2 id="第二层：设计评审（Review）"><a href="#第二层：设计评审（Review）" class="headerlink" title="第二层：设计评审（Review）"></a>第二层：设计评审（Review）</h2><p>任何设计：</p>
+<p>不能直接提交</p>
+<p>必须Review。</p>
+<p>例如：</p>
+<p>PRF设计</p>
+<p>你写完：</p>
+<p>rename逻辑<br>free list<br>checkpoint<br>rollback</p>
+<p>然后：</p>
+<p>另外3个人审。</p>
+<p>为什么？</p>
+<p>因为：</p>
+<p>自己最难发现自己的错误。</p>
+<p>这是心理学规律。</p>
+<h2 id="第三层：仿真（Simulation）"><a href="#第三层：仿真（Simulation）" class="headerlink" title="第三层：仿真（Simulation）"></a>第三层：仿真（Simulation）</h2><p>RTL出来后：</p>
+<p>Verilator<br>VCS<br>Xcelium</p>
+<p>开始跑。</p>
+<p>例如：</p>
+<p>ADD<br>SUB<br>LOAD<br>STORE</p>
+<p>全部测。</p>
+<p>类似：</p>
+<p>assert(a+b&#x3D;&#x3D;golden_result);</p>
+<p>但问题：</p>
+<p>状态空间无限。</p>
+<p>例如：</p>
+<p>64位寄存器<br>32个寄存器</p>
+<p>组合爆炸</p>
+<p>根本测不完。</p>
+<p>所以出现：</p>
+<h2 id="第四层：随机测试（Random-Testing）"><a href="#第四层：随机测试（Random-Testing）" class="headerlink" title="第四层：随机测试（Random Testing）"></a>第四层：随机测试（Random Testing）</h2><p>Google、Intel大量使用。</p>
+<p>例如：</p>
+<p>随机生成：</p>
+<p>ADD<br>MUL<br>DIV<br>LOAD<br>STORE<br>BRANCH</p>
+<p>十亿条。</p>
+<p>然后：</p>
+<p>同时跑：</p>
+<p>RTL<br>参考模型</p>
+<p>比较结果。</p>
+<p>例如RISC-V著名工具：</p>
+<p>riscv-dv</p>
+<p>就是干这个。</p>
+<p>Intel Pentium后，</p>
+<p>整个行业开始疯狂依赖：</p>
+<p>Constrained Random Verification</p>
+<h2 id="第五层：形式化验证（Formal-Verification）"><a href="#第五层：形式化验证（Formal-Verification）" class="headerlink" title="第五层：形式化验证（Formal Verification）"></a>第五层：形式化验证（Formal Verification）</h2><p>这是你最近接触CBMC、HW-CBMC最相关的东西。</p>
+<p>思想：</p>
+<p>不要测试。</p>
+<p>直接证明。</p>
+<p>例如：</p>
+<p>证明：</p>
+<p>任意输入</p>
+<p>ADD模块输出一定正确</p>
+<p>数学上：</p>
+<p>∀ input</p>
+<p>output &#x3D; a+b</p>
+<p>工具：</p>
+<p>CBMC<br>HW-CBMC<br>JasperGold<br>VC Formal</p>
+<p>形式化最大的价值：</p>
+<p>找到</p>
+<p>百万年测不到一次</p>
+<p>的bug。</p>
+<h2 id="第六层：Assertion"><a href="#第六层：Assertion" class="headerlink" title="第六层：Assertion"></a>第六层：Assertion</h2><p>RTL里面直接写：</p>
+<p>assert(free_num&gt;&#x3D;0);</p>
+<p>例如ROB：</p>
+<p>commit数<br>&lt;&#x3D;<br>dispatch数</p>
+<p>写成：</p>
+<p>assert(commit_ptr &lt;&#x3D; dispatch_ptr);</p>
+<p>一旦违反：</p>
+<p>直接爆炸。</p>
+<p>现代CPU：</p>
+<p>往往几万条Assertion。</p>
+<h2 id="第七层：黄金模型（Golden-Model）"><a href="#第七层：黄金模型（Golden-Model）" class="headerlink" title="第七层：黄金模型（Golden Model）"></a>第七层：黄金模型（Golden Model）</h2><p>例如：</p>
+<p>Rocket Chip</p>
+<p>有：</p>
+<p>Spike</p>
+<p>参考模型。</p>
+<p>RTL执行：</p>
+<p>ADD<br>LOAD<br>STORE</p>
+<p>同时：</p>
+<p>Spike执行。</p>
+<p>比较：</p>
+<p>寄存器<br>CSR<br>内存<br>异常</p>
+<p>不同：</p>
+<p>立刻报错。</p>
+<p>这叫：</p>
+<p>Lockstep Verification</p>
+<h2 id="第八层：覆盖率（Coverage）"><a href="#第八层：覆盖率（Coverage）" class="headerlink" title="第八层：覆盖率（Coverage）"></a>第八层：覆盖率（Coverage）</h2><p>最危险的问题：</p>
+<p>测试跑了很多</p>
+<p>但关键路径没跑到</p>
+<p>例如：</p>
+<p>异常恢复</p>
+<p>代码有1000行。</p>
+<p>结果测试一次都没进入。</p>
+<p>所以统计：</p>
+<p>代码覆盖率<br>分支覆盖率<br>功能覆盖率</p>
+<p>Intel很多项目要求：</p>
+<p>95%以上</p>
+<p>甚至更高。</p>
+<p>第九层：Tapeout前签核</p>
+<p>最后：</p>
+<p>几十个Checklist。</p>
+<p>例如：</p>
+<p>CDC<br>Lint<br>Formal<br>Coverage<br>Power<br>Timing</p>
+<p>全部通过。</p>
+<p>才允许：</p>
+<p>Tapeout</p>
+<h1 id="二、Intel-FDIV-Bug为什么还能出现"><a href="#二、Intel-FDIV-Bug为什么还能出现" class="headerlink" title="二、Intel FDIV Bug为什么还能出现"></a>二、Intel FDIV Bug为什么还能出现</h1><p>著名案例。</p>
+<p>Pentium除法表：</p>
+<p>1066个表项</p>
+<p>人工录入。</p>
+<p>结果：</p>
+<p>5个表项漏了。</p>
+<p>最终：</p>
+<p>4195835 &#x2F; 3145727</p>
+<p>出现错误。</p>
+<p>为什么没发现？</p>
+<p>因为：</p>
+<p>随机测试没覆盖到</p>
+<p>这件事直接改变了行业。</p>
+<p>后来：</p>
+<p>Formal Verification大规模普及。</p>
+<h1 id="三、推广到任何复杂工作"><a href="#三、推广到任何复杂工作" class="headerlink" title="三、推广到任何复杂工作"></a>三、推广到任何复杂工作</h1><p>这里就有意思了。</p>
+<p>芯片行业其实是在应用一个普适规律：</p>
+<p>复杂系统不能依赖单一正确性来源。</p>
+<p>例如写论文。</p>
+<p>错误来源：</p>
+<p>理论错<br>推导错<br>代码错<br>实验错<br>图错<br>结论错</p>
+<p>所以：</p>
+<p>第一原则</p>
+<p>不要相信自己。</p>
+<p>数学家有句话：</p>
+<p>The enemy is not complexity.</p>
+<p>The enemy is self-confidence.</p>
+<p>很多重大事故：</p>
+<p>都不是能力不足。</p>
+<p>而是：</p>
+<p>我觉得没问题<br>第二原则</p>
+<p>独立验证</p>
+<p>NASA原则：</p>
+<p>Never verify your own work.</p>
+<p>例如：</p>
+<p>证明A。</p>
+<p>然后：</p>
+<p>换一种方法证明一次。</p>
+<p>例如：</p>
+<p>理论：</p>
+<p>O(nlogn)</p>
+<p>再：</p>
+<p>实验验证。</p>
+<p>两条路径一致。</p>
+<p>可信度暴涨。</p>
+<p>第三原则</p>
+<p>建立冗余</p>
+<p>飞机：</p>
+<p>3套飞控。</p>
+<p>银行：</p>
+<p>双人审批。</p>
+<p>芯片：</p>
+<p>RTL + Golden Model。</p>
+<p>本质：</p>
+<p>一个系统会犯错</p>
+<p>两个独立系统同时犯同一个错<br>概率极低<br>第四原则</p>
+<p>让错误自动暴露</p>
+<p>高手和普通人的区别：</p>
+<p>不是错误少。</p>
+<p>而是：</p>
+<p>错误暴露得快。</p>
+<p>例如：</p>
+<p>assert(ptr!&#x3D;NULL);</p>
+<p>比：</p>
+<p>半年后随机崩溃</p>
+<p>强无数倍。</p>
+<p>所以：</p>
+<p>尽量把错误从“潜伏错误”变成“立即错误”。</p>
+<p>第五原则</p>
+<p>关注系统，而不是人</p>
+<p>很多团队喜欢：</p>
+<p>是谁犯的错？</p>
+<p>优秀团队问：</p>
+<p>为什么这个错能一路通过？</p>
+<p>例如：</p>
+<p>某人误删代码。</p>
+<p>问题不在于：</p>
+<p>张三粗心</p>
+<p>而在于：</p>
+<p>为什么Review没发现？<br>为什么测试没发现？<br>为什么CI没发现？</p>
+<p>这其实是航空业、医疗业、芯片业共同的思想：</p>
+<p>人一定会犯错，所以不要设计依赖“人不犯错”的流程。</p>
+<h1 id="四、从哲学角度总结"><a href="#四、从哲学角度总结" class="headerlink" title="四、从哲学角度总结"></a>四、从哲学角度总结</h1><p>如果把它抽象成一句话：</p>
+<p>正确性不是靠聪明获得的，而是靠不断消灭错误获得的。</p>
+<p>或者更严格一点：</p>
+<p>任何复杂工作的可靠性 ≈ 多层独立验证机制 × 快速暴露错误机制 × 对自身不可信的认知。</p>
+<p>芯片验证、数学证明、航空安全、科研复现、软件工程、甚至个人决策，本质上都在遵循同一个框架：</p>
+<p>明确规格（你到底要什么）<br>独立实现（不要只相信一种思路）<br>独立验证（换视角检查）<br>自动检查（assert&#x2F;checklist&#x2F;tests）<br>覆盖边界情况（最容易忽略的地方）<br>复盘错误来源（改进系统而非责怪个人）</p>
+<p>做到这些，无法保证永不出错，但能把“大错漏过所有防线”的概率降到极低。</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="verilator-2"><a href="#verilator-2" class="headerlink" title="verilator"></a>verilator</h1><p>参数	含义<br>-cc	生成 C++<br>–exe	加入 C++ testbench<br>–build	自动调用 make 编译<br>-f filelist.f	使用文件列表<br>–top-module	指定顶层模块<br>–trace	支持生成 VCD 波形<br>–trace-fst	支持生成 FST 波形（更小更快）<br>-O3	Verilator 自身优化<br>–threads N	多线程仿真</p>
+<p>&#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;test&#x2F;memory-linux</p>
+<p>  bash script&#x2F;run_verify_prf_slices.sh –max-commit 10000 &#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;test&#x2F;memory-linux – –slice function_layer_0_nodes_0_0</p>
+<p>  你需要同步这些文件&#x2F;删除项到服务器 &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;top0707 对应的 simulator 工作区：</p>
+<p>  需要更新</p>
+<ul>
+<li>Makefile</li>
+<li>back-end&#x2F;Prf.cpp</li>
+<li>back-end&#x2F;include&#x2F;Prf.h</li>
+<li>script&#x2F;verify_prf_slices.py</li>
+<li>script&#x2F;run_verify_prf_slices.sh</li>
+<li>tests&#x2F;test_verify_prf_slices.py</li>
+<li>tests&#x2F;test_prf_verilator_cosim_removed.py</li>
+</ul>
+<p>  需要删除旧文件&#x2F;目录</p>
+<ul>
+<li>back-end&#x2F;PrfVerilatorMap.h</li>
+<li>back-end&#x2F;verilator&#x2F;</li>
+<li>run_compare_prf_verilator.sh</li>
+<li>run_compare_prf_verilator_parallel.sh</li>
+<li>run_cosim.sh</li>
+<li>script&#x2F;compare_prf_trace.py</li>
+</ul>
+<p>  在服务器 simulator 目录里执行：</p>
+<p>  cd &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;top0707&#x2F;simulator<br>  make native</p>
+<p>  先小规模跑 slice 比较，比如只跑前 20 个 slice：</p>
+<p>  bash script&#x2F;run_verify_prf_slices.sh –max-commit 10000 baremetal&#x2F;memory – –max-slices 20</p>
+<p>  全量跑所有 slice：</p>
+<p>  bash script&#x2F;run_verify_prf_slices.sh –max-commit 10000 baremetal&#x2F;memory – –keep-going</p>
+<p>  只截取某个 cycle 窗口，减少 trace 和运行量：</p>
+<p>  PRF_SLICE_TRACE_START_CYCLE&#x3D;1000 PRF_SLICE_TRACE_END_CYCLE&#x3D;1200 <br>  bash script&#x2F;run_verify_prf_slices.sh –max-commit 50000 baremetal&#x2F;memory – –keep-going</p>
+<p>  只验证某一个 slice：</p>
+<p>  bash script&#x2F;run_verify_prf_slices.sh –max-commit 10000 baremetal&#x2F;memory – <br>    –slice function_layer_0_nodes_0_0</p>
+<p>  结果看这里：</p>
+<p>  ls slice_verify_logs<br>  cat slice_verify_logs&#x2F;<run_id>&#x2F;slices&#x2F;summary.txt<br>  head -n 20 slice_verify_logs&#x2F;<run_id>&#x2F;slices&#x2F;mismatch.csv</p>
+<p>  如果失败，第一优先看：</p>
+<p>  cat slice_verify_logs&#x2F;<run_id>&#x2F;slices&#x2F;summary.txt<br>  grep -v ‘,PASS,’ slice_verify_logs&#x2F;<run_id>&#x2F;slices&#x2F;mismatch.csv | head</p>
+<p>  默认 top0707 Verilog 路径已经写成服务器路径：</p>
+<p>  &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;top0707</p>
+<p>  如果你的 simulator 目录不在 &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;top0707&#x2F;simulator，那就进入实际 simulator 目录，或者显式指定：</p>
+<p>  PRF_SLICE_TOP_DIR&#x3D;&#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;top0707 <br>  bash script&#x2F;run_verify_prf_slices.sh –max-commit 10000 baremetal&#x2F;memory – –max-slices 20</p>
+<p>› native如果我想单独先跑跑看看效果呢，命令是啥</p>
+<p>• 在服务器 simulator 目录：</p>
+<p>  cd &#x2F;nfs_global&#x2F;I&#x2F;qimeng3&#x2F;zhangchaochao&#x2F;top0707&#x2F;simulator<br>  make native</p>
+<p>  单独跑 native、不做 slice 比较：</p>
+<p>  .&#x2F;build&#x2F;simulator_native –max-commit 10000 &#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;test&#x2F;memory-linux</p>
+<p>  如果想顺便确认新的 PRF slice trace 能生成：</p>
+<p>  mkdir -p &#x2F;tmp&#x2F;prf_slice_test<br>  PRF_SLICE_TRACE_FILE&#x3D;&#x2F;tmp&#x2F;prf_slice_test&#x2F;prf_slice.trace <br>  PRF_SLICE_TRACE_START_CYCLE&#x3D;0 <br>  PRF_SLICE_TRACE_END_CYCLE&#x3D;100 <br>  .&#x2F;build&#x2F;simulator_native –max-commit 10000 baremetal&#x2F;memory</p>
+<p>  看 trace 是否生成：</p>
+<p>  ls -lh &#x2F;tmp&#x2F;prf_slice_test&#x2F;prf_slice.trace<br>  head -n 2 &#x2F;tmp&#x2F;prf_slice_test&#x2F;prf_slice.trace</p>
+<p>  如果你的 workload 不是 baremetal&#x2F;memory，把最后那个参数换成你的 PI&#x2F;程序路径。</p>
+<p>bash script&#x2F;run_verify_prf_slices.sh –max-commit 10000 &#x2F;share&#x2F;personal&#x2F;S&#x2F;liuguilan&#x2F;test&#x2F;memory-linux – –keep-going</p>
+<p>  TRACE&#x3D;slice_verify_logs&#x2F;1936_1967&#x2F;prf_slice.trace</p>
+<p>  python3 - &lt;&lt;’PY’<br>  from pathlib import Path<br>  trace &#x3D; Path(“slice_verify_logs&#x2F;<run_id>&#x2F;prf_slice.trace”)<br>  cycle &#x3D; 44<br>  for line in trace.read_text().splitlines():<br>      if line.startswith(f”CYCLE&#x3D;{cycle} “):<br>          po_hex &#x3D; line.split(“ PO&#x3D;0x”, 1)[1]<br>          po &#x3D; int(po_hex, 16)<br>          for i in range(0, 8):<br>              valid &#x3D; (po &gt;&gt; i) &amp; 1<br>              src2 &#x3D; (po &gt;&gt; (1782 + i*7)) &amp; 0x7f<br>              print(i, “valid&#x3D;”, valid, “src2_preg&#x3D;”, hex(src2))<br>          break<br>  PY</p>
+<pre><code>bash script/run_verify_prf_slices.sh --max-commit 10000 /share/personal/S/liuguilan/test/memory-linux -- --slice function_layer_0_nodes_22_53
+
+bash script/run_verify_prf_slices.sh --max-commit 10000 /share/personal/S/liuguilan/test/memory-linux -- --max-slices 100
+
+
+bash script/run_verify_prf_slices.sh --max-commit 10000 /share/personal/S/liuguilan/test/memory-linux -- --keep-going
+
+  bash script/run_verify_prf_slices.sh --max-commit 10000 /share/personal/S/liuguilan/test/memory-linux
+</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">接回模拟器验证时，是：</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> </span><br><span class="line">  BackTop 运行到 prf-&gt;<span class="built_in">comb_xxx</span>() 前</span><br><span class="line">    采这个函数真正看到的输入 PI</span><br><span class="line"></span><br><span class="line">  执行 prf-&gt;<span class="built_in">comb_xxx</span>()</span><br><span class="line"></span><br><span class="line">  采这个函数修改后的输出 PO</span><br><span class="line"></span><br><span class="line">  把 PI 喂给对应 RTL/verilator cpp</span><br><span class="line">  比较 RTL PO 和 C++ PO</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  也就是说通过：</span><br><span class="line">  prf.<span class="built_in">pi_to_simulator</span>(pi);</span><br><span class="line">  prf.<span class="built_in">comb_begin</span>();</span><br><span class="line">  prf.<span class="built_in">comb_complete</span>();</span><br><span class="line">  prf.<span class="built_in">comb_awake</span>();</span><br><span class="line">  prf.<span class="built_in">comb_req_ftq</span>();</span><br><span class="line">  prf.<span class="built_in">comb_read</span>();</span><br><span class="line">  prf.<span class="built_in">comb_write</span>();</span><br><span class="line">  prf.<span class="built_in">comb_pipeline</span>();</span><br><span class="line">  prf.<span class="built_in">simulator_to_po</span>(po);</span><br><span class="line">  这个整体流程训练出来的rtl应该满足对应的每个prf.<span class="built_in">comb_xx</span>()函数。</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span></span><br><span class="line">  还是说正确验证方式是：</span><br><span class="line"></span><br><span class="line">  一个完整 PI[<span class="number">16655</span>:<span class="number">0</span>]</span><br><span class="line">    -&gt; top_function_layer / 单个 slice</span><br><span class="line">  一个完整 PO[<span class="number">13033</span>:<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">  但这样的话BackTop:<span class="built_in">comb</span>()中我没找到一个合适的PI/PO采样点。</span><br><span class="line">  还是说PI/PO可以不用同时采样？</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">我放在最后 (<span class="built_in">seq</span>()的开头) 发现是这样：</span><br><span class="line">应该就是和idu-&gt;<span class="built_in">comb_branch</span>()有关。</span><br><span class="line">采样的<span class="built_in">PI</span>(用bcast的新值)，而采样的 PO-&gt;is_killed_out_0 是模拟器通过最初的<span class="built_in">pi</span>(用bcast的初始值)在 Prf::<span class="built_in">comb_awake</span>() 算出的。</span><br><span class="line">于是PI给到 cpp_rtl 中得到的 PO_rtl-&gt;is_killed_out_0 和PO-&gt;is_killed_out_0里的不一致。</span><br><span class="line">是这样吗？</span><br><span class="line">那后续rtl要依据这个采样位置的PI/PO训吗，可这样和Prf_cpp.h描述的一致吗？该如何操作</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2><p>我认为什么电路都可以用数字电路书写出来（你可以反驳这个观点），但是受限于电路频率，面积，功耗以及“语义（例如计数器用数字电路实现明显不如寄存器累加）”，必须在其中添加寄存器</p>
+<p>现在需要一个功能（可以通过维护skill或者md调用agent），那就是面对一段长组合逻辑，能通过设置BSD最大深度，去限制每一段组合逻辑的关键路径长度</p>
+<hr>
+<ol>
+<li><p>电路：模拟电路、数字电路、混合信号电路</p>
+</li>
+<li><pre><code>             数字电路
+              │
+</code></pre>
+<p>   ┌──────────────┴──────────────┐<br>   │                             │<br>  组合逻辑                      时序逻辑<br>                              │<br>                   ┌──────────┴──────────┐<br>                   │                     │<br>             Latch（锁存器）      Flip-Flop（触发器）<br>                                         │<br>                               多个组成一个 Register（寄存器）</p>
+</li>
+<li></li>
+</ol>
+<p>什么电路都可以用数字电路书写出来,<br>但是受限于电路频率，面积，功耗以及“语义（例如计数器用数字电路实现明显不如寄存器累加）”，必须在其中添加寄存器<br>&#x3D;&#x3D;&#x3D;&gt;<br>任何同步数字功能都可以表示为组合逻辑与状态存储（通常由寄存器实现）的组合，因此理论上都可以自动生成对应的RTL。<br>但是受限于频率、面积、功耗以及高层语义（如计数器、RAM、FIFO等），生成的RTL需要合理地插入寄存器并保留这些结构语义</p>
+<p>• 已把 io_generator&#x2F;simple_cpp_target.cpp:1 改复杂一些：</p>
+<ul>
+<li>PI_WIDTH: 4 -&gt; 8</li>
+<li>PO_WIDTH: 2 -&gt; 4</li>
+<li>逻辑包含：<ul>
+<li>与或非组合</li>
+<li>mux-like 三目选择</li>
+<li>两组三输入 majority</li>
+<li>carry-like 链式组合逻辑</li>
+</ul>
+</li>
+</ul>
+<p>  非 pipeline 执行命令：</p>
+<p>  .&#x2F;run_simple_cpp_bsd.sh</p>
+<p>  pipeline 执行命令，例如每段最多 2 层 BSD&#x2F;BDD depth：</p>
+<p>  BSD_PIPELINE&#x3D;1 BSD_PIPELINE_MAX_DEPTH&#x3D;2 .&#x2F;run_simple_cpp_bsd.sh</p>
+<p>  如果想更激进地每 1 层就插寄存器：</p>
+<p>  BSD_PIPELINE&#x3D;1 BSD_PIPELINE_MAX_DEPTH&#x3D;1 .&#x2F;run_simple_cpp_bsd.sh</p>
+<p>  生成文件仍是：</p>
+<p>  rtl_set&#x2F;function_layer_0_nodes_simple_cpp.v</p>
+<p>  静态检查已做：确认 PI_WIDTH&#x3D;8、PO_WIDTH&#x3D;4、io_generator_outer() 存在，且 po[0]..po[3] 都有赋值；脚本仍通过 DYNAMIC_HEADER 指向这个 target。</p>
+
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidXMXrm2h-Of1it7XyVUHVn" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidQYWUsI4NvVD112cdWaw_6" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

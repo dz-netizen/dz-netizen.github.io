@@ -4,18 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>ClaudeCode | DZ_Blog</title>
+  <title>GPUInterconect | DZ_Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="export ANTHROPIC_BASE_URL&#x3D;https:&#x2F;&#x2F;api.deepseek.com&#x2F;anthropicexport ANTHROPIC_AUTH_TOKEN&#x3D;sk-1111f44a8932426f448db55d6fde70e7bb9aexport ANTHROPIC_MODEL&#x3D;deepseek-v4-pro[1m]export ANTHROPIC">
+  <meta name="description" content="serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器）   系统同步的问题  a)、时钟到达两个芯片的传播延时不相等(clock skew) b)、并行数据各个bit的传播延时不相等(data skew) c)、时钟的传播延时和数据的传播延时不一致(skew between data and">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ClaudeCode">
-<meta property="og:url" content="https://dz-netizen.github.io/ClaudeCode/index.html">
+<meta property="og:title" content="GPUInterconect">
+<meta property="og:url" content="https://dz-netizen.github.io/serdes/index.html">
 <meta property="og:site_name" content="DZ_Blog">
-<meta property="og:description" content="export ANTHROPIC_BASE_URL&#x3D;https:&#x2F;&#x2F;api.deepseek.com&#x2F;anthropicexport ANTHROPIC_AUTH_TOKEN&#x3D;sk-1111f44a8932426f448db55d6fde70e7bb9aexport ANTHROPIC_MODEL&#x3D;deepseek-v4-pro[1m]export ANTHROPIC">
+<meta property="og:description" content="serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器）   系统同步的问题  a)、时钟到达两个芯片的传播延时不相等(clock skew) b)、并行数据各个bit的传播延时不相等(data skew) c)、时钟的传播延时和数据的传播延时不一致(skew between data and">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-06-02T08:45:05.000Z">
-<meta property="article:modified_time" content="2026-07-22T07:18:47.187Z">
+<meta property="article:published_time" content="2026-07-22T07:02:21.000Z">
+<meta property="article:modified_time" content="2026-07-22T07:10:24.852Z">
 <meta property="article:author" content="Zhang Chaochao">
+<meta property="article:tag" content="hardwired">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
@@ -132,10 +133,10 @@
 
 
       <div class="outer">
-        <section id="main"><article id="post-ClaudeCode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-serdes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/ClaudeCode/" class="article-date">
-  <time class="dt-published" datetime="2026-06-02T08:45:05.000Z" itemprop="datePublished">2026-06-02</time>
+    <a href="/serdes/" class="article-date">
+  <time class="dt-published" datetime="2026-07-22T07:02:21.000Z" itemprop="datePublished">2026-07-22</time>
 </a>
     
   </div>
@@ -146,7 +147,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      ClaudeCode
+      GPUInterconect
     </h1>
   
 
@@ -156,49 +157,68 @@
     
       <div class="e-content article-entry" itemprop="articleBody">
         
-          <p>export ANTHROPIC_BASE_URL&#x3D;<a target="_blank" rel="noopener" href="https://api.deepseek.com/anthropic">https://api.deepseek.com/anthropic</a><br>export ANTHROPIC_AUTH_TOKEN&#x3D;sk-1111f44a8932426f448db55d6fde70e7bb9a<br>export ANTHROPIC_MODEL&#x3D;deepseek-v4-pro[1m]<br>export ANTHROPIC_DEFAULT_OPUS_MODEL&#x3D;deepseek-v4-pro[1m]<br>export ANTHROPIC_DEFAULT_SONNET_MODEL&#x3D;deepseek-v4-pro[1m]<br>export ANTHROPIC_DEFAULT_HAIKU_MODEL&#x3D;deepseek-v4-flash<br>export CLAUDE_CODE_SUBAGENT_MODEL&#x3D;deepseek-v4-flash<br>export CLAUDE_CODE_EFFORT_LEVEL&#x3D;max</p>
-<p><a target="_blank" rel="noopener" href="https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code">https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code</a></p>
-<p>● 脚本能跑了。用法：</p>
-<p>  source .venv&#x2F;bin&#x2F;activate</p>
-<h1 id="全量回测（2998只，和V13报告一样）"><a href="#全量回测（2998只，和V13报告一样）" class="headerlink" title="全量回测（2998只，和V13报告一样）"></a>全量回测（2998只，和V13报告一样）</h1><p>  python scripts&#x2F;run_v13.py</p>
-<h1 id="先跑100只试试"><a href="#先跑100只试试" class="headerlink" title="先跑100只试试"></a>先跑100只试试</h1><p>  python scripts&#x2F;run_v13.py –limit 100</p>
-<h1 id="自定义日期-保存明细"><a href="#自定义日期-保存明细" class="headerlink" title="自定义日期 + 保存明细"></a>自定义日期 + 保存明细</h1><p>  python scripts&#x2F;run_v13.py –start 2024-01-01 –output reports&#x2F;my_report.txt</p>
-<h1 id="只看ETF"><a href="#只看ETF" class="headerlink" title="只看ETF"></a>只看ETF</h1><p>  python scripts&#x2F;run_v13.py –kind etf –limit 50</p>
-<p>  运行流程：</p>
-<ol>
-<li>自动寻优：在30只样本上测试5组参数，选最优（min_score_to_enter 在1~2之间搜索）</li>
-<li>全量回测：用最优参数跑全部标的，流式输出进度</li>
-<li>输出：Top 20 摘要 + 统计指标</li>
-</ol>
-<p>  –output 可以把每笔交易明细保存到文件，格式和 V13_trade_details.txt 一样。</p>
+          <h1 id="serdes"><a href="#serdes" class="headerlink" title="serdes"></a>serdes</h1><p>SerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：<br>串行器 &#x2F; 解串器（也叫串并转换器）</p>
+<hr>
+<ul>
+<li>系统同步的问题</li>
+</ul>
+<p>a)、时钟到达两个芯片的传播延时不相等(clock skew)</p>
+<p>b)、并行数据各个bit的传播延时不相等(data skew)</p>
+<p>c)、时钟的传播延时和数据的传播延时不一致(skew between data and clock)</p>
+<hr>
+<ul>
+<li>相比源同步接口，SerDes的主要特点包括:</li>
+</ul>
+<p>a) SerDes在数据线中时钟内嵌,不需要传送时钟信号。</p>
+<p>b) SerDes通过加重&#x2F;均衡技术可以实现高速长距离传输，如背板。</p>
+<p>c) SerDes 使用了较少的芯片引脚</p>
+<h2 id="serdes调研"><a href="#serdes调研" class="headerlink" title="serdes调研"></a>serdes调研</h2><ul>
+<li>开源</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/SparcLab/OpenSERDES">https://github.com/SparcLab/OpenSERDES</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2105.13256">https://arxiv.org/pdf/2105.13256</a></p>
+<ul>
+<li>商用</li>
+</ul>
+<p>Synopsys DesignWare SerDes PHY<br>Cadence Multi-Protocol PHY<br>Alphawave 112G&#x2F;224G SerDes<br>Rambus SerDes PHY</p>
+<hr>
+<h2 id="其余相关项目"><a href="#其余相关项目" class="headerlink" title="其余相关项目"></a>其余相关项目</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/RV-BOSC/OpenNoC">https://github.com/RV-BOSC/OpenNoC</a></li>
+</ul>
+<p>Packet<br>Routing<br>Flow Control<br>适合设计 GPU 内部和 GPU 间通信的数据包机制。</p>
+<hr>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/PrincetonUniversity/openpiton">https://github.com/PrincetonUniversity/openpiton</a></li>
+</ul>
+<p>Cache Coherence<br>NoC<br>如果未来考虑 GPU-GPU 一致性，可以借鉴。</p>
+<hr>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/enjoy-digital/litex">https://github.com/enjoy-digital/litex</a></li>
+</ul>
+<p>Aurora 风格高速点对点通信<br>FPGA 原型验证</p>
+<h1 id="GPU-Link-的典型架构"><a href="#GPU-Link-的典型架构" class="headerlink" title="GPU Link 的典型架构"></a>GPU Link 的典型架构</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">GPU Core</span><br><span class="line">   │</span><br><span class="line">NoC / Cache / DMA</span><br><span class="line">   │</span><br><span class="line">GPU Link Controller      ← 设计</span><br><span class="line">   │</span><br><span class="line">PCS（编码/解码）          ← 设计（Physical Coding Sublayer）</span><br><span class="line">   │</span><br><span class="line">SerDes PHY               ← 一般购买 IP</span><br><span class="line">   │</span><br><span class="line">Package / PCB</span><br><span class="line">   │</span><br><span class="line">SerDes PHY</span><br><span class="line">   │</span><br><span class="line">PCS</span><br><span class="line">   │</span><br><span class="line">GPU Link Controller</span><br><span class="line">   │</span><br><span class="line">GPU Core</span><br></pre></td></tr></table></figure>
+
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/ClaudeCode/" data-id="cuidwnyTahqr4GOaFFzfV3dAJ" data-title="ClaudeCode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuid7i5vjXQvVi6oNC3KnGQY8" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hardwired/" rel="tag">hardwired</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/paper/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          paper
-        
-      </div>
-    </a>
   
-  
-    <a href="/cpp/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/master/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">cpp</div>
+      <div class="article-nav-title">master</div>
     </a>
   
 </nav>
