@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/prf_420_451.png">
 <meta property="og:image" content="https://dz-netizen.github.io/QimengFlow/outoftime.png">
 <meta property="article:published_time" content="2026-03-19T01:04:47.000Z">
-<meta property="article:modified_time" content="2026-07-22T17:02:09.145Z">
+<meta property="article:modified_time" content="2026-07-22T17:08:15.279Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="IC design">
 <meta name="twitter:card" content="summary">
@@ -1765,7 +1765,8 @@ bash script/run_verify_prf_slices.sh --max-commit 10000 /share/personal/S/liugui
 <p>  生成文件仍是：</p>
 <p>  rtl_set&#x2F;function_layer_0_nodes_simple_cpp.v</p>
 <p>  静态检查已做：确认 PI_WIDTH&#x3D;8、PO_WIDTH&#x3D;4、io_generator_outer() 存在，且 po[0]..po[3] 都有赋值；脚本仍通过 DYNAMIC_HEADER 指向这个 target。</p>
-<h1 id="在不改变-BSD-训练和精度验证逻辑的前提下，把已训练好的-BSD-按层切成若干流水段，每段最多跨-parameter-pipeline-max-bsd-depth-层-BSD-逻辑，默认路径仍保持组合逻辑输出。"><a href="#在不改变-BSD-训练和精度验证逻辑的前提下，把已训练好的-BSD-按层切成若干流水段，每段最多跨-parameter-pipeline-max-bsd-depth-层-BSD-逻辑，默认路径仍保持组合逻辑输出。" class="headerlink" title="在不改变 BSD 训练和精度验证逻辑的前提下，把已训练好的 BSD 按层切成若干流水段，每段最多跨 parameter_pipeline_max_bsd_depth 层 BSD 逻辑，默认路径仍保持组合逻辑输出。"></a>在不改变 BSD 训练和精度验证逻辑的前提下，把已训练好的 BSD 按层切成若干流水段，每段最多跨 parameter_pipeline_max_bsd_depth 层 BSD 逻辑，默认路径仍保持组合逻辑输出。</h1><p><code>print_circuit.h:157</code> 里把 BSD 节点打印成：</p>
+<h1 id="md"><a href="#md" class="headerlink" title="md"></a>md</h1><p><strong>在不改变 BSD 训练和精度验证逻辑的前提下，把已训练好的 BSD 按层切成若干流水段，每段最多跨 parameter_pipeline_max_bsd_depth 层 BSD 逻辑，默认路径仍保持组合逻辑输出。</strong></p>
+<p><code>print_circuit.h:157</code> 里把 BSD 节点打印成：</p>
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assign</span> l_i[j] =</span><br><span class="line">    (l_next[left]  &amp; !i[<span class="keyword">bit</span>]) |</span><br><span class="line">    (l_next[right] &amp;  i[<span class="keyword">bit</span>]);</span><br></pre></td></tr></table></figure>
 <p>  所以 BSD 深度越深，l_0 到叶子路径越长。插寄存器最自然的位置就是 l_k 这些层间向量。</p>
 <p>  例如 BSD 总深度 12，max_depth&#x3D;4：</p>
@@ -1783,7 +1784,7 @@ bash script/run_verify_prf_slices.sh --max-commit 10000 /share/personal/S/liugui
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidi9Va6U2IoivVL2_YT3ggk" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/QimengFlow/" data-id="cuidiWUzNZN0lPNXj7tx5PXF-" data-title="QimengFlow" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
