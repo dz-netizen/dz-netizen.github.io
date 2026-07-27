@@ -13,11 +13,17 @@
 <meta property="og:site_name" content="DZ_Blog">
 <meta property="og:description" content="zhangchaochao^L$nGZFtL1P55QJt serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器） https:&#x2F;&#x2F;www.mr-wu.cn&#x2F;wp-content&#x2F;uploads&#x2F;2021&#x2F;03&#x2F;SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_pri.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_0.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_1.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/parallel_clock.png">
 <meta property="article:published_time" content="2026-07-22T07:02:21.000Z">
-<meta property="article:modified_time" content="2026-07-24T10:02:53.293Z">
+<meta property="article:modified_time" content="2026-07-27T10:27:19.384Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="hardwired">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dz-netizen.github.io/serdes/lvds.png">
   
     <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
   
@@ -216,9 +222,43 @@
 
 <h1 id="方案调研"><a href="#方案调研" class="headerlink" title="方案调研"></a>方案调研</h1><h2 id="I2C"><a href="#I2C" class="headerlink" title="I2C"></a>I2C</h2><p><a target="_blank" rel="noopener" href="https://www.nxp.com/docs/en/user-guide/UM10204.pdf">https://www.nxp.com/docs/en/user-guide/UM10204.pdf</a></p>
 <p>$latency &#x3D; um \sim mm$ 级别</p>
-<blockquote>
-<p>Serial, 8-bit oriented, bidirectional data transfers can be made at up to 100 kbit&#x2F;s in the Standard-mode,<br>up to 400 kbit&#x2F;s in the Fast-mode,<br>up to 1 Mbit&#x2F;s in Fast-mode Plus,<br>or up to 3.4 Mbit&#x2F;s in the High-speed mode.</p>
-</blockquote>
+<ul>
+<li>Serial, 8-bit oriented, bidirectional data transfers</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>I2C模式</th>
+<th align="right">SCL频率</th>
+<th align="right">理论bit&#x2F;s</th>
+<th align="right">实际有效吞吐（约）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Standard Mode</td>
+<td align="right">100 kHz</td>
+<td align="right">100 kbps</td>
+<td align="right">≈ 70~90 kbps</td>
+</tr>
+<tr>
+<td>Fast Mode</td>
+<td align="right">400 kHz</td>
+<td align="right">400 kbps</td>
+<td align="right">≈ 250~350 kbps</td>
+</tr>
+<tr>
+<td>Fast Mode Plus</td>
+<td align="right">1 MHz</td>
+<td align="right">1 Mbps</td>
+<td align="right">≈ 700~900 kbps</td>
+</tr>
+<tr>
+<td>High Speed Mode</td>
+<td align="right">3.4 MHz</td>
+<td align="right">3.4 Mbps</td>
+<td align="right">≈ 2~3 Mbps</td>
+</tr>
+</tbody></table>
 <h2 id="PCB"><a href="#PCB" class="headerlink" title="PCB"></a>PCB</h2><p><a target="_blank" rel="noopener" href="https://wiki.lceda.cn/zh-hans/design-production/pcb-design/knowledge-point/differentiate-sign-speed.html">https://wiki.lceda.cn/zh-hans/design-production/pcb-design/knowledge-point/differentiate-sign-speed.html</a></p>
 <p>传播速度：$12.5 cm&#x2F;ns \sim 15cm&#x2F;ns$</p>
 <p><a target="_blank" rel="noopener" href="https://www.analog.com/media/cn/technical-documentation/intelligence/pcb-design-secrets.pdf">https://www.analog.com/media/cn/technical-documentation/intelligence/pcb-design-secrets.pdf</a></p>
@@ -234,12 +274,45 @@
 <p> VRM（Voltage Regulator Module，电压调节模块）</p>
 <p> Dk（Dielectric constant，介电常数） → 决定信号传播速度、阻抗<br>Df（Dissipation Factor，损耗因子） → 决定高速信号经过PCB后的衰减</p>
 <p>HDI &#x3D; High Density Interconnect（高密度互连）</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>PLL（Phase-Locked Loop，锁相环）是一种利用反馈控制产生稳定时钟信号的模拟电路。</p>
+<h1 id="物理层（PHY）的电气标准"><a href="#物理层（PHY）的电气标准" class="headerlink" title="物理层（PHY）的电气标准"></a>物理层（PHY）的电气标准</h1><h2 id="IO标准"><a href="#IO标准" class="headerlink" title="IO标准"></a>IO标准</h2><p>LVTTL&#x2F;LVCMOS：一种传输电气方式<br>LVDS(Low-Voltage Differential Signaling)：低电压差分信号<br>CML（Current Mode Logic）</p>
+<h1 id="芯片互联"><a href="#芯片互联" class="headerlink" title="芯片互联"></a>芯片互联</h1><h2 id="差分信号技术"><a href="#差分信号技术" class="headerlink" title="差分信号技术"></a>差分信号技术</h2><p>在选择高速差分信号技术时有很多选择。不同的技术通常共享某些特性，但在性能、功耗和目标应用程序方面差异很大</p>
+<img src="/serdes/lvds.png" class="" title="lvds">
+
+<blockquote>
+<p>LVDS(Low-Voltage Differential Signaling)：低电压差分信号<br>CML（Current Mode Logic）：电流模式逻辑<br>Low Voltage Positive Emitter Coupled Logic 低电压正射极耦合逻辑。</p>
+</blockquote>
+<hr>
+<h3 id="LVDS驱动器和接收器"><a href="#LVDS驱动器和接收器" class="headerlink" title="LVDS驱动器和接收器"></a>LVDS驱动器和接收器</h3><img src="/serdes/lvds_pri.png" class="" title="lvds_pri">
+
+<p>驱动器中含有一个3.5mA的电流源。因为接收器的输入阻抗很高，故整个电流实际上全部流过100Ω的终接电阻，于是在接收器输入端产生了350mV的电压。接收器的阈值可以保证为100mV或更低，可在0V-2.4V的宽共模范围内维持这样的灵敏度水平，提供出色的噪声裕量。</p>
+<img src="/serdes/lvds_0.png" class="" title="lvds_0">
+
+<hr>
+<img src="/serdes/lvds_1.png" class="" title="lvds_1">
+
+<hr>
+<h3 id="CML（Current-Mode-Logic）"><a href="#CML（Current-Mode-Logic）" class="headerlink" title="CML（Current Mode Logic）"></a>CML（Current Mode Logic）</h3><h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><blockquote>
+<p>所有差分技术共有的优点：<br>首先，电流源始终导通，但电流被引导流向不同的方向，以驱动逻辑0&#x2F;1。这种始终保持的特性可以消除开关噪声带来的尖峰和大电流晶体管不断导通-关断造成的电磁干扰（EMI）。<br>其次，构成差分对的两条导线的间距很短，可以保证较高的抗噪性能。一条导线所吸收的串扰或EMI也会同时出现在另一条临近导线上。<br>另外，由于两条临近的导线传输的电流相同，方向相反，故而产生的EMI很低。</p>
+</blockquote>
+<blockquote>
+<p>LVDS是最常用的高速接口，具有低功耗和宽共模的双重优点。<br>LVPECL通常使用额外的功率，但支持非常高的数据速率和出色的抖动。<br>CML设备提供与LVPECL相似的性能，并且具有简单且通常集成的终端的优势</p>
+</blockquote>
+<hr>
+<h2 id="serdes架构"><a href="#serdes架构" class="headerlink" title="serdes架构"></a>serdes架构</h2><h3 id="并行时钟serdes"><a href="#并行时钟serdes" class="headerlink" title="并行时钟serdes"></a>并行时钟serdes</h3><img src="/serdes/parallel_clock.png" class="" title="parallel_clock">
+
+
+
+<h3 id="嵌入式始终serdes"><a href="#嵌入式始终serdes" class="headerlink" title="嵌入式始终serdes"></a>嵌入式始终serdes</h3><h3 id="8b-10b-serdes"><a href="#8b-10b-serdes" class="headerlink" title="8b&#x2F;10b serdes"></a>8b&#x2F;10b serdes</h3><h3 id="FPGA连接serdes"><a href="#FPGA连接serdes" class="headerlink" title="FPGA连接serdes"></a>FPGA连接serdes</h3><h2 id="芯片互联协议"><a href="#芯片互联协议" class="headerlink" title="芯片互联协议"></a>芯片互联协议</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">|                                                |</span><br><span class="line">|              芯片互连协议                       |</span><br><span class="line">|                                                |</span><br><span class="line">|  CPU/GPU互连        外设          网络          |</span><br><span class="line">|                                                |</span><br><span class="line">|  NVLink             USB          Ethernet       |</span><br><span class="line">|  CXL                SATA         InfiniBand     |</span><br><span class="line">|  UCIe               HDMI         PCIe Ethernet  |</span><br><span class="line">|  AMBA               SPI                         |</span><br><span class="line">|  AXI                I2C                         |</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="serdes-2"><a href="#serdes-2" class="headerlink" title="serdes"></a>serdes</h2><h3 id="spi"><a href="#spi" class="headerlink" title="spi"></a>spi</h3><p><a target="_blank" rel="noopener" href="https://www.ti.com.cn/cn/lit/ab/zhcafo7/zhcafo7.pdf?ts=1785116751723&ref_url=https%253A%252F%252Fcn.bing.com%252F">https://www.ti.com.cn/cn/lit/ab/zhcafo7/zhcafo7.pdf?ts=1785116751723&amp;ref_url=https%253A%252F%252Fcn.bing.com%252F</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1936216871004280022">https://zhuanlan.zhihu.com/p/1936216871004280022</a></p>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuid5BftKMEriBmji-e7pSDKS" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuidDCeyLuf14Z46klGHUn5MP" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
