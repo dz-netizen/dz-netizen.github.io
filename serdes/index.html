@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/pcie.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/logiclayer.png">
 <meta property="article:published_time" content="2026-07-22T07:02:21.000Z">
-<meta property="article:modified_time" content="2026-07-28T09:20:33.106Z">
+<meta property="article:modified_time" content="2026-07-28T10:54:05.885Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="hardwired">
 <meta name="twitter:card" content="summary">
@@ -361,37 +361,26 @@
 
 </div>
 
-
 <p>随着接口频率的提高，在系统同步接口方式中, 有几个因素限制了有效数据窗口宽度的继续增加。</p>
 <ul>
-<li><p>时钟到达两个芯片的传播延时不相等(clock skew)</p>
-</li>
-<li><p>并行数据各个bit的传播延时不相等(data skew)</p>
-</li>
-<li><p>时钟的传播延时和数据的传播延时不一致(skew between data and clock)</p>
-</li>
+<li>时钟到达两个芯片的传播延时不相等(clock skew)</li>
+<li>并行数据各个bit的传播延时不相等(data skew)</li>
+<li>时钟的传播延时和数据的传播延时不一致(skew between data and clock)<br>虽然可以通过在目的芯片内用PLL(Phase Locked Loop)补偿时钟延时差(clock skew)，但是PVT(process,voltage,temperature)变化时，时钟延时的变化量和数据延时的变化量是不一样的。这又进一步恶化了数据窗口。</li>
 </ul>
-<p>虽然可以通过在目的芯片内用PLL(Phase Locked Loop)补偿时钟延时差(clock skew)，但是PVT(process,voltage,temperature)变化时，时钟延时的变化量和数据延时的变化量是不一样的。这又进一步恶化了数据窗口。</p>
-<hr>
 <p>源同步解决了“时钟和数据不同步”的问题，但还是存在“引脚数量、传输速率”等问题</p>
-<hr>
 <h3 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h3><p>引入串行化主要是为了解决并行总线在高速下的问题：</p>
 <ol>
-<li><p>减少引脚数量<br>例如 32-bit 并行总线至少需要 32 根数据线，还可能需要时钟、控制、校验线。串行化可以用一对或几对差分线完成传输。</p>
-</li>
-<li><p>避免 data skew<br>并行总线中每一根 bit 线长度、负载、延迟不同，高速下 bit 之间会错位。串行链路只有一条数据流，不存在多 bit 同时到达的问题。</p>
-</li>
-<li><p>时钟可以嵌入数据流<br>串行化可以通过编码保证数据跳变，接收端用 CDR 恢复时钟。</p>
-</li>
-<li><p>更容易做均衡和通道补偿<br>高速串行链路可以使用预加重、去加重、CTLE、DFE 等技术补偿 PCB、封装、连接器、背板损耗。</p>
-</li>
+<li>减少引脚数量<br>例如 32-bit 并行总线至少需要 32 根数据线，还可能需要时钟、控制、校验线。串行化可以用一对或几对差分线完成传输。</li>
+<li>避免 data skew<br>并行总线中每一根 bit 线长度、负载、延迟不同，高速下 bit 之间会错位。串行链路只有一条数据流，不存在多 bit 同时到达的问题。</li>
+<li>时钟可以嵌入数据流<br>串行化可以通过编码保证数据跳变，接收端用 CDR 恢复时钟。</li>
+<li>更容易做均衡和通道补偿<br>高速串行链路可以使用预加重、去加重、CTLE、DFE 等技术补偿 PCB、封装、连接器、背板损耗。</li>
 </ol>
 <hr>
 <h3 id="serdes-2"><a href="#serdes-2" class="headerlink" title="serdes"></a>serdes</h3><p>SERDES将发送端多路低速并行信号转换成高速串行信号，经过传输媒体(光缆或铜线)，最后在接收端高速串行信号重新转换成低速并行信号。这种点对点的串行通信技术充分利用传输媒体的信道容量，减少所需的传输信道和器件引脚数目，提升信号的传输速度，从而大大降低通信成本。</p>
 <img src="/serdes/serdes.png" class="" title="serdes">
 
 
-<h2 id="serdes架构"><a href="#serdes架构" class="headerlink" title="serdes架构"></a>serdes架构</h2><h3 id="并行时钟serdes"><a href="#并行时钟serdes" class="headerlink" title="并行时钟serdes"></a>并行时钟serdes</h3><img src="/serdes/parallel_clock.png" class="" title="parallel_clock">
+<h2 id="serdes（serializer-deserializer）架构"><a href="#serdes（serializer-deserializer）架构" class="headerlink" title="serdes（serializer&#x2F;deserializer）架构"></a>serdes（serializer&#x2F;deserializer）架构</h2><h3 id="并行时钟serdes"><a href="#并行时钟serdes" class="headerlink" title="并行时钟serdes"></a>并行时钟serdes</h3><img src="/serdes/parallel_clock.png" class="" title="parallel_clock">
 
 <p>并行时钟serdes通常对“数据-地址-控制”并行连接的总线进行串行化。</p>
 <blockquote>
@@ -448,6 +437,9 @@
 <hr>
 <img src="/serdes/bus.jpg" class="" title="bus">
 
+<blockquote>
+<p>考虑<br>面积<br>启动延迟<br>速率<br>带宽</p>
+</blockquote>
 <h3 id="I2C-1"><a href="#I2C-1" class="headerlink" title="I2C"></a>I2C</h3><p>I2C（Inter-Integrated Circuit）是一种多主机、两线制、低速串行通信总线，广泛用于微控制器和各种外围设备之间的通信。</p>
 <img src="/serdes/typicalI2C.png" class="" title="typicalI2C">
 
@@ -483,6 +475,8 @@
 <h3 id="pcie"><a href="#pcie" class="headerlink" title="pcie"></a>pcie</h3><img src="/serdes/pcie.png" class="" title="pcie">
 
 <img src="/serdes/logiclayer.png" class="" title="logiclayer">
+
+
 
 
 <h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><table>
@@ -555,12 +549,71 @@
 <td>板内高速互连、插槽、背板</td>
 </tr>
 </tbody></table>
+<hr>
+<table>
+<thead>
+<tr>
+<th>接口</th>
+<th>启动延迟</th>
+<th>典型传输&#x2F;访问延迟</th>
+<th>主要原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>I2C</strong></td>
+<td>START&#x2F;STOP + bus free 时间，约 <strong>0.5 μs ~ 4.7 μs</strong> 级别；若进入 High-speed mode，还需要先发送 <strong>master code</strong></td>
+<td>单字节有效数据通常 <strong>5 μs ~ 200 μs+</strong></td>
+<td>速率低；每 <strong>8 bit</strong> 数据需要额外 <strong>1 bit ACK</strong>；采用开漏（Open Drain）结构，高电平依靠上拉电阻，RC充电导致边沿较慢</td>
+</tr>
+<tr>
+<td><strong>SPI</strong></td>
+<td>通常 <strong>ns ~ μs</strong></td>
+<td>通常 <strong>几十 ns ~ 几 μs</strong></td>
+<td>时钟到来即可移位传输；延迟主要由 <strong>SCLK频率、数据长度</strong>决定</td>
+</tr>
+<tr>
+<td><strong>PCIe</strong></td>
+<td>上电&#x2F;复位后需要 <strong>Link Training</strong>，通常为 <strong>ms级</strong>；从低功耗状态退出可能为 <strong>ns ~ μs&#x2F;几十 μs</strong></td>
+<td><strong>0.5 ~ 2 μs</strong></td>
+<td>SerDes高速传输，但协议层（Transaction Layer&#x2F;Data Link Layer）、TLP&#x2F;DLLP处理、Root Complex、Switch、Completion等都会增加延迟</td>
+</tr>
+</tbody></table>
+<hr>
+<table>
+<thead>
+<tr>
+<th>接口</th>
+<th>配置</th>
+<th align="right">28nm 面积估算</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SPI</strong></td>
+<td>1 组 SPI，不带大 FIFO</td>
+<td align="right"><code>0.01 ~ 0.05 mm²</code></td>
+</tr>
+<tr>
+<td><strong>SPI</strong></td>
+<td>带 FIFO &#x2F; DMA &#x2F; APB-AXI 接口</td>
+<td align="right"><code>0.05 ~ 0.20 mm²</code></td>
+</tr>
+<tr>
+<td><strong>PCIe Gen3 x16</strong></td>
+<td>8 GT&#x2F;s per lane</td>
+<td align="right"><code>8 ~ 18 mm²</code></td>
+</tr>
+<tr>
+<td><strong>PCIe Gen4 x16</strong></td>
+<td>16 GT&#x2F;s per lane</td>
+<td align="right"><code>12 ~ 30 mm²</code></td>
+</tr>
+</tbody></table>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuid4OzK9wfulaBXF5z7tom59" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuidYbwrO0GWkKMtgM1ko51pM" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
