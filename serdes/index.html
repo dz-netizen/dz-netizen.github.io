@@ -13,17 +13,33 @@
 <meta property="og:site_name" content="DZ_Blog">
 <meta property="og:description" content="zhangchaochao^L$nGZFtL1P55QJt serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器） https:&#x2F;&#x2F;www.mr-wu.cn&#x2F;wp-content&#x2F;uploads&#x2F;2021&#x2F;03&#x2F;SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/singleend.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/diff.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_pri.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_output.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_input.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_0.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/lvds_1.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/system_syn.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/source_syn.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/serdes.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/parallel_clock.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/embed_clock.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/8b10b.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/bus.jpg">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/typicalI2C.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/opendrain.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/opendrain_ex.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/spi.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/pcie.png">
+<meta property="og:image" content="https://dz-netizen.github.io/serdes/logiclayer.png">
 <meta property="article:published_time" content="2026-07-22T07:02:21.000Z">
-<meta property="article:modified_time" content="2026-07-27T10:27:19.384Z">
+<meta property="article:modified_time" content="2026-07-28T09:20:33.106Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="hardwired">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://dz-netizen.github.io/serdes/lvds.png">
+<meta name="twitter:image" content="https://dz-netizen.github.io/serdes/singleend.png">
   
     <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
   
@@ -276,43 +292,275 @@
 <p>HDI &#x3D; High Density Interconnect（高密度互连）</p>
 <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>PLL（Phase-Locked Loop，锁相环）是一种利用反馈控制产生稳定时钟信号的模拟电路。</p>
 <h1 id="物理层（PHY）的电气标准"><a href="#物理层（PHY）的电气标准" class="headerlink" title="物理层（PHY）的电气标准"></a>物理层（PHY）的电气标准</h1><h2 id="IO标准"><a href="#IO标准" class="headerlink" title="IO标准"></a>IO标准</h2><p>LVTTL&#x2F;LVCMOS：一种传输电气方式<br>LVDS(Low-Voltage Differential Signaling)：低电压差分信号<br>CML（Current Mode Logic）</p>
-<h1 id="芯片互联"><a href="#芯片互联" class="headerlink" title="芯片互联"></a>芯片互联</h1><h2 id="差分信号技术"><a href="#差分信号技术" class="headerlink" title="差分信号技术"></a>差分信号技术</h2><p>在选择高速差分信号技术时有很多选择。不同的技术通常共享某些特性，但在性能、功耗和目标应用程序方面差异很大</p>
+<h1 id="Chip-interconnection"><a href="#Chip-interconnection" class="headerlink" title="Chip interconnection"></a>Chip interconnection</h1><h2 id="差分信号技术"><a href="#差分信号技术" class="headerlink" title="差分信号技术"></a>差分信号技术</h2><h3 id="引入原因"><a href="#引入原因" class="headerlink" title="引入原因"></a>引入原因</h3><div style="display: flex; justify-content: center; gap: 20px;">
+
+  <div>
+    <img src="/serdes/singleend.png" class="" title="singleend">
+  </div>
+
+  <div>
+    <img src="/serdes/diff.png" class="" title="diff">
+  </div>
+
+</div>
+
+<p>差分信号不是看某一根线对地的绝对电压，而是看两根线之间的电压差：$V_{diff} &#x3D; V_p - V_n$<br>核心优势：</p>
+<ol>
+<li>抗共模噪声强<br>  外部噪声通常会同时耦合到两根线上，接收端做相减后，共同出现的噪声会被抵消。</li>
+<li>EMI(电磁干扰) 更低<br>差分对中两根线电流大小相等、方向相反，远场辐射相互抵消，比单端信号更容易控制电磁干扰。</li>
+<li>低摆幅也能可靠传输<br>LVDS 典型差分摆幅只有几百 mV，但接收器只关心差分电压，因此速度快、功耗低。</li>
+<li>适合高速长距离互连<br>高速 SerDes、PCIe、以太网、CML&#x2F;LVDS&#x2F;LVPECL 等常用差分，是因为 GHz 级信号对噪声、串扰、反射、地弹都很敏感。</li>
+</ol>
+<h3 id="主流差分技术"><a href="#主流差分技术" class="headerlink" title="主流差分技术"></a>主流差分技术</h3><p>在选择高速差分信号技术时有很多选择。不同的技术通常共享某些特性，但在性能、功耗和目标应用程序方面差异很大</p>
 <img src="/serdes/lvds.png" class="" title="lvds">
 
 <blockquote>
-<p>LVDS(Low-Voltage Differential Signaling)：低电压差分信号<br>CML（Current Mode Logic）：电流模式逻辑<br>Low Voltage Positive Emitter Coupled Logic 低电压正射极耦合逻辑。</p>
+<p>LVDS(Low-Voltage Differential Signaling)：低电压差分信号<br>CML（Current Mode Logic）：当前模式逻辑<br>LVPECL(Low Voltage Positive Emitter Coupled Logic) 低电压正射极耦合逻辑。</p>
 </blockquote>
 <hr>
 <h3 id="LVDS驱动器和接收器"><a href="#LVDS驱动器和接收器" class="headerlink" title="LVDS驱动器和接收器"></a>LVDS驱动器和接收器</h3><img src="/serdes/lvds_pri.png" class="" title="lvds_pri">
 
 <p>驱动器中含有一个3.5mA的电流源。因为接收器的输入阻抗很高，故整个电流实际上全部流过100Ω的终接电阻，于是在接收器输入端产生了350mV的电压。接收器的阈值可以保证为100mV或更低，可在0V-2.4V的宽共模范围内维持这样的灵敏度水平，提供出色的噪声裕量。</p>
-<img src="/serdes/lvds_0.png" class="" title="lvds_0">
+<div style="display: flex; justify-content: center; gap: 20px;">
+
+  <div>
+    <img src="/serdes/lvds_output.png" class="" title="lvds_output">
+  </div>
+
+  <div>
+    <img src="/serdes/lvds_input.png" class="" title="lvds_input">
+  </div>
+
+</div>
 
 <hr>
-<img src="/serdes/lvds_1.png" class="" title="lvds_1">
+<div style="display: flex; justify-content: center; gap: 20px;">
+
+  <div>
+    <img src="/serdes/lvds_0.png" class="" title="lvds_0">
+  </div>
+
+  <div>
+    <img src="/serdes/lvds_1.png" class="" title="lvds_1">
+  </div>
+
+</div>
+
 
 <hr>
-<h3 id="CML（Current-Mode-Logic）"><a href="#CML（Current-Mode-Logic）" class="headerlink" title="CML（Current Mode Logic）"></a>CML（Current Mode Logic）</h3><h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><blockquote>
-<p>所有差分技术共有的优点：<br>首先，电流源始终导通，但电流被引导流向不同的方向，以驱动逻辑0&#x2F;1。这种始终保持的特性可以消除开关噪声带来的尖峰和大电流晶体管不断导通-关断造成的电磁干扰（EMI）。<br>其次，构成差分对的两条导线的间距很短，可以保证较高的抗噪性能。一条导线所吸收的串扰或EMI也会同时出现在另一条临近导线上。<br>另外，由于两条临近的导线传输的电流相同，方向相反，故而产生的EMI很低。</p>
-</blockquote>
-<blockquote>
-<p>LVDS是最常用的高速接口，具有低功耗和宽共模的双重优点。<br>LVPECL通常使用额外的功率，但支持非常高的数据速率和出色的抖动。<br>CML设备提供与LVPECL相似的性能，并且具有简单且通常集成的终端的优势</p>
-</blockquote>
+<h2 id="serdes的引入"><a href="#serdes的引入" class="headerlink" title="serdes的引入"></a>serdes的引入</h2><h3 id="并行总线接口"><a href="#并行总线接口" class="headerlink" title="并行总线接口"></a>并行总线接口</h3><p>在SerDes流行之前,芯片之间的互联通过系统同步或者源同步的并行接口传输数据</p>
+<div style="display: flex; justify-content: center; gap: 20px;">
+
+  <div>
+    <img src="/serdes/system_syn.png" class="" title="system_syn">
+  </div>
+
+  <div>
+    <img src="/serdes/source_syn.png" class="" title="source_syn">
+  </div>
+
+</div>
+
+
+<p>随着接口频率的提高，在系统同步接口方式中, 有几个因素限制了有效数据窗口宽度的继续增加。</p>
+<ul>
+<li><p>时钟到达两个芯片的传播延时不相等(clock skew)</p>
+</li>
+<li><p>并行数据各个bit的传播延时不相等(data skew)</p>
+</li>
+<li><p>时钟的传播延时和数据的传播延时不一致(skew between data and clock)</p>
+</li>
+</ul>
+<p>虽然可以通过在目的芯片内用PLL(Phase Locked Loop)补偿时钟延时差(clock skew)，但是PVT(process,voltage,temperature)变化时，时钟延时的变化量和数据延时的变化量是不一样的。这又进一步恶化了数据窗口。</p>
 <hr>
+<p>源同步解决了“时钟和数据不同步”的问题，但还是存在“引脚数量、传输速率”等问题</p>
+<hr>
+<h3 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h3><p>引入串行化主要是为了解决并行总线在高速下的问题：</p>
+<ol>
+<li><p>减少引脚数量<br>例如 32-bit 并行总线至少需要 32 根数据线，还可能需要时钟、控制、校验线。串行化可以用一对或几对差分线完成传输。</p>
+</li>
+<li><p>避免 data skew<br>并行总线中每一根 bit 线长度、负载、延迟不同，高速下 bit 之间会错位。串行链路只有一条数据流，不存在多 bit 同时到达的问题。</p>
+</li>
+<li><p>时钟可以嵌入数据流<br>串行化可以通过编码保证数据跳变，接收端用 CDR 恢复时钟。</p>
+</li>
+<li><p>更容易做均衡和通道补偿<br>高速串行链路可以使用预加重、去加重、CTLE、DFE 等技术补偿 PCB、封装、连接器、背板损耗。</p>
+</li>
+</ol>
+<hr>
+<h3 id="serdes-2"><a href="#serdes-2" class="headerlink" title="serdes"></a>serdes</h3><p>SERDES将发送端多路低速并行信号转换成高速串行信号，经过传输媒体(光缆或铜线)，最后在接收端高速串行信号重新转换成低速并行信号。这种点对点的串行通信技术充分利用传输媒体的信道容量，减少所需的传输信道和器件引脚数目，提升信号的传输速度，从而大大降低通信成本。</p>
+<img src="/serdes/serdes.png" class="" title="serdes">
+
+
 <h2 id="serdes架构"><a href="#serdes架构" class="headerlink" title="serdes架构"></a>serdes架构</h2><h3 id="并行时钟serdes"><a href="#并行时钟serdes" class="headerlink" title="并行时钟serdes"></a>并行时钟serdes</h3><img src="/serdes/parallel_clock.png" class="" title="parallel_clock">
 
+<p>并行时钟serdes通常对“数据-地址-控制”并行连接的总线进行串行化。</p>
+<blockquote>
+<p>采用了复用器处理</p>
+</blockquote>
+<h3 id="嵌入式时钟位serdes"><a href="#嵌入式时钟位serdes" class="headerlink" title="嵌入式时钟位serdes"></a>嵌入式时钟位serdes</h3><img src="/serdes/embed_clock.png" class="" title="embed_clock">
+
+<p>时钟位嵌入式架构中的发送器将数据总线上的数据信号和时钟串行化，形成单路串行信号对。</p>
+<p>两个时钟位，一路高而另一路低，被嵌入到串行流中，用于界定每个字的起点和终点，并在串行数据流中产生一个周期性的上升沿。</p>
+<blockquote>
+<p>优点：数据有效负载的字宽度无需被限制为字节的倍数，10&#x2F;16&#x2F;18&#x2F;24 bit是常见的总线宽度。<br>无论有效负载的数据样式如何变化，解串器都可以从串行数据流中将数据恢复出来，在接收器不受系统直接控制的远程模块的系统中，这种自同步能力是一项极为有用的功能。<br>同时因为接收器可以锁定到接收的嵌入时钟上，而不是锁定到外部的基准时钟信号上，因此对于发送器和接收器的时钟信号抖动要求可以大大放宽。</p>
+</blockquote>
+<hr>
+<h3 id="8b-10b-serdes"><a href="#8b-10b-serdes" class="headerlink" title="8b&#x2F;10b serdes"></a>8b&#x2F;10b serdes</h3><img src="/serdes/8b10b.png" class="" title="8b10b">
+
+<p>8-bit&#x2F;10-bit 串化器可将每个并行数据字节映射为一个10bit的代码，然后将该10bit码串行化，传送到一个串行对上。</p>
+<blockquote>
+<p>10bit传输码特点：可以确保每个周期内多次边沿切换，使得接收器能与输入数据流实现同步，<br>并实现直流平衡（所发送的0和1的数量相平衡），使得对于交流耦合负载、光电模块等的驱动成为可能。<br>8b&#x2F;10b serdes架构使用外部基准时钟来恢复时钟信号，并对数据流进行解串处理，因此需要严格的基准时钟源频率以及抖动控制。</p>
+</blockquote>
+<h2 id="芯片互联协议"><a href="#芯片互联协议" class="headerlink" title="芯片互联协议"></a>芯片互联协议</h2><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>代表协议</th>
+<th>典型位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>片内并行互连</strong></td>
+<td>AXI &#x2F; AMBA</td>
+<td>CPU内部、SoC内部</td>
+</tr>
+<tr>
+<td><strong>板级并行接口</strong></td>
+<td>DDR &#x2F; SRAM Interface</td>
+<td>芯片-内存</td>
+</tr>
+<tr>
+<td><strong>低速串行接口</strong></td>
+<td>I2C &#x2F; SPI &#x2F; UART</td>
+<td>外设控制</td>
+</tr>
+<tr>
+<td><strong>高速串行SerDes</strong></td>
+<td>PCIe &#x2F; NVLink &#x2F; CXL &#x2F; Ethernet</td>
+<td>芯片间互连</td>
+</tr>
+<tr>
+<td><strong>封装级互连</strong></td>
+<td>UCIe &#x2F; BoW</td>
+<td>Chiplet</td>
+</tr>
+</tbody></table>
+<hr>
+<img src="/serdes/bus.jpg" class="" title="bus">
+
+<h3 id="I2C-1"><a href="#I2C-1" class="headerlink" title="I2C"></a>I2C</h3><p>I2C（Inter-Integrated Circuit）是一种多主机、两线制、低速串行通信总线，广泛用于微控制器和各种外围设备之间的通信。</p>
+<img src="/serdes/typicalI2C.png" class="" title="typicalI2C">
 
 
-<h3 id="嵌入式始终serdes"><a href="#嵌入式始终serdes" class="headerlink" title="嵌入式始终serdes"></a>嵌入式始终serdes</h3><h3 id="8b-10b-serdes"><a href="#8b-10b-serdes" class="headerlink" title="8b&#x2F;10b serdes"></a>8b&#x2F;10b serdes</h3><h3 id="FPGA连接serdes"><a href="#FPGA连接serdes" class="headerlink" title="FPGA连接serdes"></a>FPGA连接serdes</h3><h2 id="芯片互联协议"><a href="#芯片互联协议" class="headerlink" title="芯片互联协议"></a>芯片互联协议</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">|                                                |</span><br><span class="line">|              芯片互连协议                       |</span><br><span class="line">|                                                |</span><br><span class="line">|  CPU/GPU互连        外设          网络          |</span><br><span class="line">|                                                |</span><br><span class="line">|  NVLink             USB          Ethernet       |</span><br><span class="line">|  CXL                SATA         InfiniBand     |</span><br><span class="line">|  UCIe               HDMI         PCIe Ethernet  |</span><br><span class="line">|  AMBA               SPI                         |</span><br><span class="line">|  AXI                I2C                         |</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>两线制总线：I2C仅使用两条线——串行数据线（SDA）和串行时钟线（SCL）进行通信，有效降低了连接复杂性。</li>
+<li>多主多从设备支持：I2C支持多个主设备和多个从设备连接到同一总线上。每个设备都有唯一的地址。</li>
+<li>阻塞传输：I2C支持阻塞传输机制，即主设备可以在传输过程中控制总线，防止其他设备发送数据。</li>
+</ul>
+<hr>
+<div style="display: flex; justify-content: center; gap: 20px;">
 
-<h2 id="serdes-2"><a href="#serdes-2" class="headerlink" title="serdes"></a>serdes</h2><h3 id="spi"><a href="#spi" class="headerlink" title="spi"></a>spi</h3><p><a target="_blank" rel="noopener" href="https://www.ti.com.cn/cn/lit/ab/zhcafo7/zhcafo7.pdf?ts=1785116751723&ref_url=https%253A%252F%252Fcn.bing.com%252F">https://www.ti.com.cn/cn/lit/ab/zhcafo7/zhcafo7.pdf?ts=1785116751723&amp;ref_url=https%253A%252F%252Fcn.bing.com%252F</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1936216871004280022">https://zhuanlan.zhihu.com/p/1936216871004280022</a></p>
+  <div>
+    <img src="/serdes/opendrain.png" class="" title="opendrain">
+  </div>
+
+  <div>
+     <img src="/serdes/opendrain_ex.png" class="" title="opendrain_ex">
+  </div>
+
+</div>
+
+<p>开漏(open drain)结构只能拉低。高电平靠上拉电阻。<br>优点：多个设备可以共享。缺点：慢。</p>
+<hr>
+<p><strong>不用推挽的原因</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//chip1                     </span></span><br><span class="line">VDD</span><br><span class="line"> |</span><br><span class="line">PMOS ON</span><br><span class="line"> |</span><br><span class="line">SDA</span><br><span class="line"></span><br><span class="line">SDA</span><br><span class="line"> |</span><br><span class="line">NMOS ON</span><br><span class="line"> |</span><br><span class="line">GND</span><br><span class="line"><span class="comment">//chip2</span></span><br></pre></td></tr></table></figure>
+<p>电源 —- 电阻很小 —- 地<br>形成大电流。</p>
+<h3 id="spi"><a href="#spi" class="headerlink" title="spi"></a>spi</h3><img src="/serdes/spi.png" class="" title="spi">
+
+<p>串行外设接口 (SPI) 总线是一种广泛使用的同步通信协议、可在控制器器件与一个或多个外设之间实现高速、全双<br>工数据传输。</p>
+<p>SDO：Slave Data Output<br>SDI：Slave Data Input<br>SCLK ：Serial Clock串行时钟信号，由主机产生发送给从机；<br>CS：Chip Select 片选信号，由主机发送，以控制与哪个从机通信，通常是低电平有效信号。</p>
+<hr>
+<h3 id="pcie"><a href="#pcie" class="headerlink" title="pcie"></a>pcie</h3><img src="/serdes/pcie.png" class="" title="pcie">
+
+<img src="/serdes/logiclayer.png" class="" title="logiclayer">
+
+
+<h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>SPI</th>
+<th>I2C</th>
+<th>PCIe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>标准速度</strong></td>
+<td>1~10 MHz</td>
+<td>100 kHz(Standard Mode)</td>
+<td>PCIe 1.0：2.5 GT&#x2F;s per lane</td>
+</tr>
+<tr>
+<td><strong>高速范围</strong></td>
+<td>10~100+ MHz</td>
+<td>400 kHz(Fast Mode)、1 MHz(Fast Mode Plus)、3.4 MHz(High Speed Mode)</td>
+<td>PCIe 4.0：16 GT&#x2F;s；PCIe 5.0：32 GT&#x2F;s；PCIe 6.0：64 GT&#x2F;s per lane</td>
+</tr>
+<tr>
+<td><strong>数据传输模式</strong></td>
+<td>全双工</td>
+<td>半双工</td>
+<td>全双工</td>
+</tr>
+<tr>
+<td><strong>通信类型</strong></td>
+<td>同步串行</td>
+<td>同步串行</td>
+<td>高速串行点对点互连</td>
+</tr>
+<tr>
+<td><strong>时钟信号</strong></td>
+<td>有（SCLK）</td>
+<td>有（SCL）</td>
+<td>无独立数据时钟；参考时钟 + CDR</td>
+</tr>
+<tr>
+<td><strong>数据线</strong></td>
+<td>SCLK、MOSI、MISO、CS</td>
+<td>SCL、SDA</td>
+<td>TX+&#x2F;TX-、RX+&#x2F;RX- 差分 Lane</td>
+</tr>
+<tr>
+<td><strong>物理信号</strong></td>
+<td>单端 CMOS</td>
+<td>开漏单端，上拉电阻</td>
+<td>高速差分 SerDes，常见 CML</td>
+</tr>
+<tr>
+<td><strong>寻址方式</strong></td>
+<td>CS 片选</td>
+<td>7-bit &#x2F; 10-bit 地址</td>
+<td>Bus &#x2F; Device &#x2F; Function</td>
+</tr>
+<tr>
+<td><strong>拓扑结构</strong></td>
+<td>一主多从</td>
+<td>多主多从共享总线</td>
+<td>点对点、交换式拓扑</td>
+</tr>
+<tr>
+<td><strong>典型距离</strong></td>
+<td>板内短距离</td>
+<td>板内短距离</td>
+<td>板内高速互连、插槽、背板</td>
+</tr>
+</tbody></table>
 
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuidDCeyLuf14Z46klGHUn5MP" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuid4OzK9wfulaBXF5z7tom59" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
