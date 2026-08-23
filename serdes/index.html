@@ -6,12 +6,12 @@
   
   <title>GPUInterconect | DZ_Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="zhangchaochao^L$nGZFtL1P55QJt serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器） https:&#x2F;&#x2F;www.mr-wu.cn&#x2F;wp-content&#x2F;uploads&#x2F;2021&#x2F;03&#x2F;SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7">
+  <meta name="description" content="serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器） https:&#x2F;&#x2F;www.mr-wu.cn&#x2F;wp-content&#x2F;uploads&#x2F;2021&#x2F;03&#x2F;SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7%A3.pdf 系统同步的问题  a)、时钟到达两个芯片的传">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GPUInterconect">
 <meta property="og:url" content="https://dz-netizen.github.io/serdes/index.html">
 <meta property="og:site_name" content="DZ_Blog">
-<meta property="og:description" content="zhangchaochao^L$nGZFtL1P55QJt serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器） https:&#x2F;&#x2F;www.mr-wu.cn&#x2F;wp-content&#x2F;uploads&#x2F;2021&#x2F;03&#x2F;SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7">
+<meta property="og:description" content="serdesSerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：串行器 &#x2F; 解串器（也叫串并转换器） https:&#x2F;&#x2F;www.mr-wu.cn&#x2F;wp-content&#x2F;uploads&#x2F;2021&#x2F;03&#x2F;SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7%A3.pdf 系统同步的问题  a)、时钟到达两个芯片的传">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/singleend.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/diff.png">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/pcie.png">
 <meta property="og:image" content="https://dz-netizen.github.io/serdes/logiclayer.png">
 <meta property="article:published_time" content="2026-07-22T07:02:21.000Z">
-<meta property="article:modified_time" content="2026-07-28T10:54:05.885Z">
+<meta property="article:modified_time" content="2026-08-23T09:05:41.023Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="hardwired">
 <meta name="twitter:card" content="summary">
@@ -179,8 +179,7 @@
     
       <div class="e-content article-entry" itemprop="articleBody">
         
-          <p>zhangchaochao<br>^L$nGZFtL1P55QJt</p>
-<h1 id="serdes"><a href="#serdes" class="headerlink" title="serdes"></a>serdes</h1><p>SerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：<br>串行器 &#x2F; 解串器（也叫串并转换器）</p>
+          <h1 id="serdes"><a href="#serdes" class="headerlink" title="serdes"></a>serdes</h1><p>SerDes 是 Serializer &#x2F; Deserializer 的缩写，中文通常翻译为：<br>串行器 &#x2F; 解串器（也叫串并转换器）</p>
 <h2 id="https-www-mr-wu-cn-wp-content-uploads-2021-03-SerDes-E7-9F-A5-E8-AF-86-E8-AF-A6-E8-A7-A3-pdf"><a href="#https-www-mr-wu-cn-wp-content-uploads-2021-03-SerDes-E7-9F-A5-E8-AF-86-E8-AF-A6-E8-A7-A3-pdf" class="headerlink" title="https://www.mr-wu.cn/wp-content/uploads/2021/03/SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7%A3.pdf"></a><a target="_blank" rel="noopener" href="https://www.mr-wu.cn/wp-content/uploads/2021/03/SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7%A3.pdf">https://www.mr-wu.cn/wp-content/uploads/2021/03/SerDes-%E7%9F%A5%E8%AF%86%E8%AF%A6%E8%A7%A3.pdf</a></h2><ul>
 <li>系统同步的问题</li>
 </ul>
@@ -608,12 +607,265 @@
 <td align="right"><code>12 ~ 30 mm²</code></td>
 </tr>
 </tbody></table>
+<hr>
+<p>3900 kGate&#x2F;mm2 in this 28-nm dual&#x2F;triple gate oxide SoC technology. </p>
+<h1 id="codex使用"><a href="#codex使用" class="headerlink" title="codex使用"></a>codex使用</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">命令	说明</span><br><span class="line">!	内联执行 Shell 命令 (例如 !ls, !git status)</span><br><span class="line">/model	在会话中切换模型</span><br><span class="line">/compact	压缩上下文，当对话太久 token 快满时用来“续命”</span><br><span class="line">/review	让另一个 Codex 代理审查当前代码改动</span><br><span class="line">/init	在当前项目创建 AGENTS.md 文件，用于设定项目级指令</span><br><span class="line">/skills	浏览和插入可用的技能 (Skills)</span><br></pre></td></tr></table></figure>
 
+<h1 id="未来工作要点"><a href="#未来工作要点" class="headerlink" title="未来工作要点"></a>未来工作要点</h1><p><a target="_blank" rel="noopener" href="https://gitea.iprc.top/ChenYi/S-part-basic">https://gitea.iprc.top/ChenYi/S-part-basic</a></p>
+<ul>
+<li>PCB</li>
+</ul>
+<p>synopsys</p>
+<ul>
+<li>serdes</li>
+</ul>
+<p>datasheet<br>x1&#x2F;x2&#x2F;x4选择<br>上层control的设计</p>
+<ul>
+<li><p>数值验证<br>验证传输的正确，可以实现一个传输的模拟器</p>
+</li>
+<li><p>确定性<br>serdes的时钟得确定下来</p>
+</li>
+</ul>
+<h1 id="faraday手册"><a href="#faraday手册" class="headerlink" title="faraday手册"></a>faraday手册</h1><p>PMA &#x3D; Physical Medium Attachment，物理媒介适配层&#x2F;物理介质适配层。</p>
+<p>hard macro 硬核（宏）</p>
+<p>  PVT<br>  P &#x3D; Process，工艺偏差<br>  V &#x3D; Voltage，电源电压变化<br>  T &#x3D; Temperature，温度变化</p>
+<p>  MAC：协议包处理，比如 Ethernet frame、PCIe transaction&#x2F;data link 相关控制<br>  PCS：编码&#x2F;解码、扰码&#x2F;解扰、对齐、lane bonding、block lock 等数字 PHY 功能<br>  PMA：SerDes 串并转换、CDR、PLL、TX driver、RX equalizer 等高速模拟&#x2F;混合信号功能</p>
+<p>PCS层（Physical Coding Sublayer）是以太网物理层中位于MAC层与PMA层之间的子层，负责数据编码、解码、CRC校验及跨时钟域处理，确保数据可靠传输。</p>
+<h2 id="学到"><a href="#学到" class="headerlink" title="学到"></a>学到</h2><p>serdes</p>
+<p>gemma3</p>
+<p>fpga</p>
+<h1 id="8-6"><a href="#8-6" class="headerlink" title="8&#x2F;6"></a>8&#x2F;6</h1><p>实现GTY IP内部的loopback下的链路传输<br>即 data-link-pcs-GTY(pma)-pcs-link-data</p>
+<p>本质还是片内</p>
+<hr>
+<p>后续计划：实现片间通信</p>
+<h1 id="8-7"><a href="#8-7" class="headerlink" title="8&#x2F;7"></a>8&#x2F;7</h1><ul>
+<li>思路<br>vcu118中的套件（QSFP+ 万能环回适配器）可以模拟出 片间通信<br>data — link—pcs—GTY(pma)— fpga_pin - pcb — QSFP_tx — QSFP_rx — pcb — fpga_pin — GTY(pma) — pcs — link — data</li>
+</ul>
+<h2 id="没解决的问题"><a href="#没解决的问题" class="headerlink" title="没解决的问题"></a>没解决的问题</h2><h3 id="时钟频率"><a href="#时钟频率" class="headerlink" title="时钟频率"></a>时钟频率</h3><p>为满足28Gbps的片间通信，GTY user端需要175Mhz的时钟频率，<br>然而默认是156.25Mhz，<br>可以通过驱动经uart配置，但暂时没成功（SCUI没识别到vcu118）</p>
+<h3 id="板卡没能识别到QSFP-适配器"><a href="#板卡没能识别到QSFP-适配器" class="headerlink" title="板卡没能识别到QSFP+适配器"></a>板卡没能识别到QSFP+适配器</h3><p>正确插入后仍无法识别到适配器</p>
+<p>正在使用官方工程排查问题</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>后续计划：实现片间通信</li>
+</ul>
+<hr>
+<p>相比商用片间传输,目前链路欠缺的点仍有：<br>片间通信；<br>pcs block coding<br>link侧的校验&#x2F;重传&#x2F;流控</p>
+<p> Kintex UltraScale+ FPGA DC和AC开关特性</p>
+<hr>
+<p>为啥GAP</p>
+<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><p> 这组 ILA 是用来同时观察 GTY 物理状态、selftest 状态机、TX&#x2F;RX packet 流、PCS lock、错误计数 的。</p>
+<p>  probe1: GTY reset &#x2F; power 状态</p>
+<p>  .probe1({gt_powergood, gt_txresetdone, gt_rxresetdone,<br>           gt_txpmaresetdone, gt_rxpmaresetdone})</p>
+<p>  含义：看 GTY 底层是否 ready。</p>
+<p>  大概字段：</p>
+<p>  gt_powergood[3:0]        每条 GTY lane 电源&#x2F;primitive ready<br>  gt_txresetdone           TX reset 流程完成<br>  gt_rxresetdone           RX reset 流程完成<br>  gt_txpmaresetdone[3:0]   每条 lane TX PMA reset 完成<br>  gt_rxpmaresetdone[3:0]   每条 lane RX PMA reset 完成</p>
+<p>  如果 link_up&#x3D;0，先看这个 probe。<br>  常见问题：</p>
+<p>  powergood 不全 1：GTY primitive 或电源&#x2F;时钟问题<br>  txresetdone&#x3D;0：TX userclk&#x2F;refclk&#x2F;reset sequence 问题<br>  rxresetdone&#x3D;0：RX CDR 没锁、没有输入信号、线没接对<br>  rxpmaresetdone 某 lane&#x3D;0：对应 lane 物理链路或 CDR 有问题</p>
+<p>  probe2: state</p>
+<p>  .probe2(state)</p>
+<p>  含义：selftest FSM 当前状态。</p>
+<p>  根据你之前代码，大概是：</p>
+<p>  ST_WAIT_LINK  等待 link_up<br>  ST_START      发起一个 packet<br>  ST_PAYLOAD    发送 payload beat<br>  ST_WAIT_RX    等待收到 packet<br>  ST_GAP        包间隔</p>
+<p>  判断：</p>
+<p>  卡在 ST_WAIT_LINK：GTY&#x2F;link 没起来<br>  卡在 ST_START：packetizer 不 ready<br>  卡在 ST_PAYLOAD：payload ready&#x2F;valid 卡住<br>  卡在 ST_WAIT_RX：发出去了但没收到<br>  一直循环 ST_START&#x2F;ST_PAYLOAD&#x2F;ST_WAIT_RX&#x2F;ST_GAP：链路在跑</p>
+<p>  probe3: TX&#x2F;RX&#x2F;selftest 关键事件</p>
+<p>  .probe3({<br>    tx_start_valid,<br>    tx_start_ready,<br>    tx_payload_tvalid,<br>    tx_payload_tready,<br>    rx_payload_valid,<br>    rx_packet_done,<br>    rx_crc_ok,<br>    rx_format_error,<br>    payload_seen_for_packet,<br>    payload_match_for_packet,<br>    payload_mismatch_seen,<br>    packet_done_seen<br>  })</p>
+<p>  含义：一组握手、收包、CRC、payload 检查状态。</p>
+<p>  字段解释：</p>
+<p>  tx_start_valid           selftest 请求开始发一个 packet<br>  tx_start_ready           packetizer 可以接受 start<br>  tx_payload_tvalid        selftest 正在提供 payload<br>  tx_payload_tready        packetizer 可以接收 payload<br>  rx_payload_valid         depacketizer 输出了 payload beat<br>  rx_packet_done           depacketizer 收完一个 packet<br>  rx_crc_ok                当前 packet CRC 正确，通常可能是脉冲<br>  rx_format_error          packet 格式错误<br>  payload_seen_for_packet  本 packet 曾经看到 payload<br>  payload_match_for_packet payload 内容匹配 expected_token_id<br>  payload_mismatch_seen    曾经看到 payload 不匹配<br>  packet_done_seen         曾经收到完整 packet，通常是 latched</p>
+<p>  重点看：</p>
+<p>  tx_start_valid &amp; tx_start_ready 同时为 1：开始发包成功<br>  tx_payload_tvalid &amp; tx_payload_tready 同时为 1：payload 被接受<br>  rx_payload_valid 拉高：RX 真的吐出 payload<br>  rx_packet_done 拉高：完整包收到<br>  rx_crc_ok 拉高：CRC 正确<br>  rx_format_error 拉高：PCS&#x2F;packet 格式有问题<br>  payload_mismatch_seen 拉高：payload 内容错</p>
+<p>  probe4: packets_sent</p>
+<p>  .probe4(packets_sent)</p>
+<p>  含义：packetizer 已发送 packet 数。</p>
+<p>  如果这个不增长：</p>
+<p>  TX start 没握手<br>  packetizer 卡住<br>  link_up 没起来</p>
+<p>  probe5: packets_received</p>
+<p>  .probe5(packets_received)</p>
+<p>  含义：depacketizer 已完整收到 packet 数。</p>
+<p>  判断：</p>
+<p>  packets_sent 增长，packets_received 不增长：<br>    数据没有回来，或 PCS 没 lock，或 RX packet 格式不完整</p>
+<p>  两者都增长：<br>    基本端到端通了</p>
+<p>  probe6: payload_beats_consumed</p>
+<p>  .probe6(payload_beats_consumed)</p>
+<p>  含义：TX 端 packetizer 已消费的 payload beat 数。</p>
+<p>  你当前 NEXT_TOKEN payload 只有 8 字节，通常每个 packet 是 1 个 payload beat。<br>  如果发 hidden activation，beat 数会更多。</p>
+<p>  probe7: selftest_errors_r</p>
+<p>  .probe7(selftest_errors_r)</p>
+<p>  含义：selftest 累计错误数。</p>
+<p>  增加条件通常包括：</p>
+<p>  CRC 不对<br>  format_error<br>  没看到 payload<br>  payload 不匹配<br>  packet type 不对<br>  src&#x2F;dst 不对<br>  request_id 不对<br>  payload_bytes 不对</p>
+<p>  验收时希望：</p>
+<p>  selftest_errors_r &#x3D;&#x3D; 0</p>
+<p>  probe8: tx_token_id</p>
+<p>  .probe8(tx_token_id)</p>
+<p>  含义：TX 当前准备发送的 token 值。</p>
+<p>  用于检查发送序列是否递增。<br>  每成功完成一个 packet 后通常加 1。</p>
+<p>  probe9: expected_token_id</p>
+<p>  .probe9(expected_token_id)</p>
+<p>  含义：RX checker 期望收到的 token 值。</p>
+<p>  在内部 loopback 或一发一收设计中，它应该和收到的 rx_payload_data[63:0] 对齐。</p>
+<p>  如果做双 FPGA A&#x2F;B 互联，要注意：A 收到的是 B 发的 token，B 收到的是 A 发的 token。此时 expected_token_id 不能还按“自己发自己收”的假设，否则会误报。</p>
+<p>  probe10: rx_payload_data[63:0]</p>
+<p>  .probe10(rx_payload_data[63:0])</p>
+<p>  含义：RX payload 低 64 bit。</p>
+<p>  当前 selftest 里 TX payload 是：</p>
+<p>  tx_payload_tdata &#x3D; {576’h0, tx_token_id};</p>
+<p>  所以 RX 正常时：</p>
+<p>  rx_payload_data[63:0] &#x3D;&#x3D; expected_token_id</p>
+<p>  如果 CRC 对但 payload 不对，要看这个值。</p>
+<p>  probe11: rx_payload_keep</p>
+<p>  .probe11(rx_payload_keep)</p>
+<p>  含义：RX payload 每个 byte 是否有效，80 bit 对应 640 bit data。</p>
+<p>  当前 NEXT_TOKEN 只有 8 字节，所以期望：</p>
+<p>  rx_payload_keep &#x3D; 80’h0000_0000_0000_0000_00ff</p>
+<p>  如果 keep 不对，可能是 packet length、depacketizer、PCS 对齐或 tkeep 处理问题。</p>
+<p>  probe12: RX packet header 摘要</p>
+<p>  .probe12({<br>    rx_packet_type,<br>    rx_src_lpu,<br>    rx_dst_lpu,<br>    rx_stream_id,<br>    rx_request_id,<br>    rx_payload_bytes,<br>    rx_payload_beat_index<br>  })</p>
+<p>  含义：收到 packet 的关键 header 字段。</p>
+<p>  字段：</p>
+<p>  rx_packet_type        包类型，比如 PKT_NEXT_TOKEN<br>  rx_src_lpu            源 LPU ID<br>  rx_dst_lpu            目的 LPU ID<br>  rx_stream_id          stream 类型<br>  rx_request_id         request 序号<br>  rx_payload_bytes      payload 字节数<br>  rx_payload_beat_index 当前 payload beat index</p>
+<p>  当前 NEXT_TOKEN 期望大概是：</p>
+<p>  rx_packet_type   &#x3D; PKT_NEXT_TOKEN<br>  rx_src_lpu       &#x3D; 8’h01<br>  rx_dst_lpu       &#x3D; 8’h02<br>  rx_stream_id     &#x3D; STREAM_CONTROL<br>  rx_payload_bytes &#x3D; 8<br>  beat_index       &#x3D; 0</p>
+<p>  双端互联时 A&#x2F;B 的 src&#x2F;dst 要反过来检查。</p>
+<p>  probe13: PCS debug</p>
+<p>  .probe13({<br>    dbg_pcs_frame_lock,<br>    dbg_pcs_frames_sent,<br>    dbg_pcs_data_frames_sent,<br>    dbg_pcs_frames_received,<br>    dbg_pcs_data_frames_received,<br>    dbg_pcs_frame_format_errors<br>  })</p>
+<p>  含义：PCS 层状态。</p>
+<p>  字段：</p>
+<p>  dbg_pcs_frame_lock             PCS 是否找到 frame marker &#x2F; lane alignment<br>  dbg_pcs_frames_sent            PCS 总发送 frame 数<br>  dbg_pcs_data_frames_sent       PCS 发送 data frame 数<br>  dbg_pcs_frames_received        PCS 总接收 frame 数<br>  dbg_pcs_data_frames_received   PCS 接收 data frame 数<br>  dbg_pcs_frame_format_errors    PCS frame 格式错误计数</p>
+<p>  判断：</p>
+<p>  frame_lock&#x3D;0：<br>    RX 没看到有效 PCS marker，可能物理链路&#x2F;极性&#x2F;lane map&#x2F;bit alignment 问题</p>
+<p>  frames_sent 增长但 frames_received 不增长：<br>    TX 在发，但 RX PCS 没收到有效 frame</p>
+<p>  frames_received 增长但 format_errors 增长：<br>    收到东西了，但格式错，常见是 lane 顺序、bit slip、PCS framing 问题</p>
+<p>  probe14: loopback&#x2F;reset 配置</p>
+<p>  .probe14({GT_LOOPBACK_MODE, rst_n, reset_in})</p>
+<p>  含义：确认当前 bitstream 到底在什么模式、reset 是否释放。</p>
+<p>  字段：</p>
+<p>  GT_LOOPBACK_MODE  GTY loopback 配置<br>  rst_n             内部同步后的低有效复位释放信号<br>  reset_in          外部 reset 输入</p>
+<p>  重点：</p>
+<p>  GT_LOOPBACK_MODE &#x3D; 12’h000  外部正常链路<br>  GT_LOOPBACK_MODE &#x3D; 12’h492  4 lane near-end PMA loopback，即 {4{3’b010}}<br>  rst_n &#x3D; 1                 系统已释放 reset<br>  reset_in &#x3D; 0              外部没有按住 reset</p>
+<p>  如果你想验证 PCB 片间链路，必须看到：</p>
+<p>  GT_LOOPBACK_MODE &#x3D;&#x3D; 12’h000</p>
+<p>  否则数据没有真正走外部 PCB。</p>
+<p>  调试时推荐观察顺序</p>
+<ol>
+<li>probe14：确认 reset 释放、loopback 模式正确</li>
+<li>probe1&#x2F;probe0：确认 GTY ready、link_up</li>
+<li>probe13：确认 PCS frame_lock</li>
+<li>probe3：确认 TX handshake 和 RX packet_done</li>
+<li>probe4&#x2F;probe5&#x2F;probe6：确认包计数增长</li>
+<li>probe10&#x2F;probe11&#x2F;probe12：确认 payload&#x2F;header 正确</li>
+<li>probe7：最终确认 error 不增长</li>
+</ol>
+<p>  最理想的稳定状态是：</p>
+<p>  link_up &#x3D; 1<br>  GT resetdone&#x2F;pmaresetdone 全 1<br>  state 周期性跑动<br>  packets_sent 持续增长<br>  packets_received 持续增长<br>  pcs_frame_lock &#x3D; 1<br>  rx_crc_ok 周期性脉冲<br>  selftest_errors_r &#x3D; 0</p>
+<h3 id="-2"><a href="#-2" class="headerlink" title=""></a></h3><p>• 结论：haps80_Manual\haps80_Manual 显示 HAPS-80 S104 可以支撑你的“片间通信验证”，但要分清验证层级。</p>
+<p>  它适合验证：</p>
+<ul>
+<li>多 FPGA &#x2F; 多板之间的 RTL 通信协议、包格式、CRC、流控、复位恢复、链路训练、吞吐和延迟。</li>
+<li>用 HT3 并行互连或 ProtoCompiler HSTDM 做宽总线跨 FPGA 分割验证。</li>
+<li>用 MGB&#x2F;GTH SerDes 做更接近高速串行片间链路的 FPGA 原型验证。</li>
+</ul>
+<p>  它不等价于真实 ASIC&#x2F;Chiplet 的物理层验证，不能证明最终硅片 PHY、封装 SI、CDR&#x2F;PLL、均衡、眼图、串扰、电源完整性等模拟&#x2F;板级问题。</p>
+<p>  关键依据：<br>    HAPS_80_S104_Reference_Manual.txt:87</p>
+<ul>
+<li><p>HT3 可用于外部逻辑或 FPGA 间连接；HAPS-80 每个 HT3 约 52 个 I&#x2F;O 信号，HT3 线缆有明确延迟表，例如 25cm 约 1.3ns，50cm 约 2.4ns，100cm 约 4.6ns。&#x2F;abs&#x2F;path&#x2F;D:&#x2F;3rd_spring&#x2F;HN&#x2F;.cache&#x2F;haps80_manual_text&#x2F;<br>HAPS_Interconnect_Boards_and_Cables_HT3_Reference_Manual.txt:95</p>
+</li>
+<li><p>ProtoCompiler 支持 TSS 描述互连、时钟、复位、电压区域，支持跨 FPGA 分割、HSTDM、TSS 硬件校验、多 FPGA RTL&#x2F;门级仿真。&#x2F;abs&#x2F;path&#x2F;D:&#x2F;3rd_spring&#x2F;HN&#x2F;.cache&#x2F;haps80_manual_text&#x2F;protocompiler_user_guide.txt:15</p>
+</li>
+</ul>
+<p>  结合你当前工程，已有的 serdes 方向是可复用的，但不能直接搬到 HAPS-80：</p>
+<ul>
+<li>当前 lpu_link_mac_pcs640_gty4x160 是 packetizer -&gt; PCS TX -&gt; GTY PMA -&gt; PCS RX -&gt; depacketizer，协议层很适合作为片间链路验证核心。serdes&#x2F;rtl&#x2F;lpu_link&#x2F;lpu_link_mac_pcs640_gty4x160.sv:1</li>
+<li>当前 VCU118 版本用 GTY、4 lane、28Gb&#x2F;s&#x2F;lane、内部 PMA loopback，尚不是外部板间&#x2F;片间链路。serdes&#x2F;docs&#x2F;architecture&#x2F;lpu_pcs640_vcu118_bringup_status_2026_08_06.md:1</li>
+<li>HAPS-80 是 XCVU440 GTH，不是 GTY；如果走 MGB&#x2F;SATA，线速大概率要降到 6Gb&#x2F;s&#x2F;lane 级别，并重新生成 UltraScale GTH IP、重做 wrapper&#x2F;TSS&#x2F;XDC。</li>
+</ul>
+<p>  建议路径：</p>
+<ol>
+<li><p>如果你要验证“协议&#x2F;RTL 是否能跨片工作”，优先用 HAPS-80 HT3 + ProtoCompiler 分割。把两个 chiplet&#x2F;LPU endpoint 放到不同 FPGA，通过 HT3&#x2F;HSTDM 或固定 inter-FPGA bus 连接，验证包、CRC、序号、流控、复位恢复。</p>
+</li>
+<li><p>如果你要验证“SerDes 型片间通信协议”，走 HAPS-80 MGB&#x2F;GTH。复用现有 LPU PCS&#x2F;packet&#x2F;depacketizer，把 PMA wrapper 从 VCU118 GTY 改成 HAPS-80 XCVU440 GTH，先做内部 loopback，再做 FPGA A 到 FPGA D &#x2F; 两系统间 SATA<br>crossover 外部链路。</p>
+</li>
+<li><p>验证指标至少包括：link_up、pcs_frame_lock、TX&#x2F;RX packet counter、CRC error、format error、sequence gap、payload mismatch、reset&#x2F;retrain 次数、长跑错误率、不同包型覆盖率。</p>
+</li>
+</ol>
+<p>  所以答案是：能实现你的片间通信验证，但应定位为 FPGA 原型级链路&#x2F;协议验证。若目标是 ASIC 最终物理层 signoff，还需要真实 SerDes PHY、封装&#x2F;板级 SI、实验室仪器和硅后验证补齐。</p>
+<h1 id="Aurora-64B-66B"><a href="#Aurora-64B-66B" class="headerlink" title="Aurora 64B&#x2F;66B"></a>Aurora 64B&#x2F;66B</h1><pre><code> 做 payload -&gt; Aurora -&gt; GTH -&gt; GTH -&gt; Aurora -&gt; payload
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">PCS 常做：</span><br><span class="line"></span><br><span class="line"> 功能                        是否常见           作用</span><br><span class="line">━━━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span><br><span class="line"> 8b/10b 或 64b/66b 编码      常见               保证跳变密度、DC balance、可同步</span><br><span class="line">──────────────────────────  ─────────────────  ──────────────────────────────────</span><br><span class="line"> scrambling                  常见               打散数据模式，帮助 CDR 和 EMI</span><br><span class="line">──────────────────────────  ─────────────────  ──────────────────────────────────</span><br><span class="line"> block lock / comma align    必需               找到字/块边界</span><br><span class="line">──────────────────────────  ─────────────────  ──────────────────────────────────</span><br><span class="line"> lane bonding / deskew       多 lane 必需       多条 lane 延迟对齐</span><br><span class="line">──────────────────────────  ─────────────────  ──────────────────────────────────</span><br><span class="line"> idle/control block          常见               空闲、对齐、维护链路</span><br><span class="line">──────────────────────────  ─────────────────  ──────────────────────────────────</span><br><span class="line"> clock compensation          常见               补偿两端 ppm 差异</span><br><span class="line">──────────────────────────  ─────────────────  ──────────────────────────────────</span><br><span class="line"> FEC                         高速/长距离常见    纠错，降低 BER 要求</span><br><span class="line">──────────────────────────  ─────────────────  ──────────────────────────────────</span><br><span class="line"> error counter/status        必需               调试和健康监测</span><br><span class="line"></span><br><span class="line">LINK/MAC 常做：</span><br><span class="line"></span><br><span class="line"> 功能                           是否需要        作用</span><br><span class="line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━</span><br><span class="line"> packet framing                 基本需要        定义包边界</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> header: dst/src/type/len       多节点需要      路由和解释 payload</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> CRC/FCS                        强烈建议        检测端到端错误</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> sequence number                建议            检测丢包、乱序、重复</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> credit/flow control            高速强烈建议    防止 RX FIFO 爆</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> retry/retransmission           看可靠性要求    错包自动重发</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> virtual channel                复杂网络需要    防止不同流互相阻塞</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> link training/state machine    常见            初始化、恢复、错误处理</span><br><span class="line">─────────────────────────────  ──────────────  ────────────────────────</span><br><span class="line"> statistics/debug regs          强烈建议        bring-up 必备</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ol>
+<li>verilog-ethernet &#x2F; Taxi</li>
+</ol>
+<p>  路径接近：</p>
+<p>  payload<br>    -&gt; Ethernet MAC<br>    -&gt; 10G&#x2F;25G PCS&#x2F;PMA<br>    -&gt; FPGA GT<br>    -&gt; 对端 GT<br>    -&gt; PCS&#x2F;PMA<br>    -&gt; MAC<br>    -&gt; payload</p>
+<p>  里面有 eth_mac_10g、eth_phy_10g、xgmii_baser_enc_64、xgmii_baser_dec_64、CRC&#x2F;FCS、BER monitor、frame sync。<br>  链接：<br>  <a target="_blank" rel="noopener" href="https://github.com/alexforencich/verilog-ethernet">https://github.com/alexforencich/verilog-ethernet</a><br>  <a target="_blank" rel="noopener" href="https://github.com/fpganinja/taxi">https://github.com/fpganinja/taxi</a></p>
+<ol start="2">
+<li>LiteICLink</li>
+</ol>
+<p>  它就是“小型 inter-chip communication core”，支持 UltraScale GTH&#x2F;UltraScale+ GTY，SerWB 有 8B&#x2F;10B、gearbox、Etherbone&#x2F;Wishbone 封装。适合你学怎么做轻量片间链路。<br>  链接：<a target="_blank" rel="noopener" href="https://github.com/enjoy-digital/liteiclink">https://github.com/enjoy-digital/liteiclink</a></p>
+<ol start="3">
+<li>LiteSATA</li>
+</ol>
+<p>  虽然是 SATA，不是任意 FPGA-to-FPGA 协议，但它的 link&#x2F;PCS 思路很完整：</p>
+<p>  payload&#x2F;command<br>    -&gt; transport<br>    -&gt; link: scramble &#x2F; CRC &#x2F; HOLD &#x2F; CONT<br>    -&gt; PHY: ALIGN &#x2F; 8B10B &#x2F; OOB &#x2F; GTH</p>
+<p>  它有 CRC inserter&#x2F;checker、scrambling、ALIGN、OOB、错误检测。你可以参考它的 link 层组织方式。<br>  链接：<a target="_blank" rel="noopener" href="https://github.com/enjoy-digital/litesata">https://github.com/enjoy-digital/litesata</a></p>
+<p>  更偏“完整 link 层”的项目</p>
+<p>  openHMC 很值得看。它不是通用片间网络，而是 HMC 控制器，但 link 层功能很完整：packet flow control、sequence number、packet length、CRC、retry。<br>  链接：<a target="_blank" rel="noopener" href="https://opencores.org/projects/openhmc">https://opencores.org/projects/openhmc</a></p>
+<p>payload -&gt; link -&gt; pcs -&gt; pma(GTY loopback) -&gt; pcs -&gt; link -&gt; payload</p>
+<h1 id="serdes-3"><a href="#serdes-3" class="headerlink" title="serdes"></a>serdes</h1><p>由于LPU topology是LPU0-&gt;LPU1-&gt;LPU2-&gt;LPU3-&gt;LPU0 ，且某一时刻LPU间不并行工作，</p>
+<p>因此数据数据只要能发送，就一定能接收，故而接收方在确保数据可信的基础上，就一定可以将数据存放置指定区域<br>因此不需要过多缓存。</p>
+<p>每次传输事务最多传输1280B的数据，</p>
+<h1 id="link"><a href="#link" class="headerlink" title="link"></a>link</h1><h2 id="片内频率是多少"><a href="#片内频率是多少" class="headerlink" title="片内频率是多少"></a>片内频率是多少</h2><h2 id="差错检测与恢复"><a href="#差错检测与恢复" class="headerlink" title="差错检测与恢复"></a>差错检测与恢复</h2><h2 id="crc"><a href="#crc" class="headerlink" title="crc"></a>crc</h2><h2 id="frame"><a href="#frame" class="headerlink" title="frame"></a>frame</h2><p>不额外使用完整SOF和EOF两个控制块。采用固定长度隐式边界：</p>
+<p>  10个64-bit DATA word</p>
+<ul>
+<li>1个64-bit TRAILER control word</li>
+</ul>
+<p>  TRAILER：</p>
+<p>  [63:56] frame type<br>  [55:40] sequence<br>  [39:32] status&#x2F;version<br>  [31: 0] CRC32C</p>
+<p>  因为帧长固定，RX知道：</p>
+<p>  收到10个DATA block后，下一个必须是TRAILER</p>
+<p>  所以不需要：</p>
+<p>  payload_count<br>  length<br>  SOF</p>
+<p>  初始化或失锁后，通过PCS alignment marker重新建立帧相位。</p>
+<h2 id="fifo"><a href="#fifo" class="headerlink" title="fifo"></a>fifo</h2><h1 id="pcs"><a href="#pcs" class="headerlink" title="pcs"></a>pcs</h1><h2 id="采用64b-66b编码"><a href="#采用64b-66b编码" class="headerlink" title="采用64b&#x2F;66b编码"></a>采用64b&#x2F;66b编码</h2><h2 id="对齐"><a href="#对齐" class="headerlink" title="对齐"></a>对齐</h2><h2 id="pma-的各个lane之间有对齐吗？"><a href="#pma-的各个lane之间有对齐吗？" class="headerlink" title="pma 的各个lane之间有对齐吗？"></a>pma 的各个lane之间有对齐吗？</h2><p>  CRC-32</p>
+<ul>
+<li>固定大小FLIT</li>
+<li>递增序列号</li>
+<li>16项Replay Buffer</li>
+<li>累计ACK</li>
+<li>Go-Back-N</li>
+<li>Credit流控</li>
+<li>每Lane AM Deskew</li>
+</ul>
+<h2 id="3-2-没有FEC"><a href="#3-2-没有FEC" class="headerlink" title="3.2 没有FEC"></a>3.2 没有FEC</h2><p>  当前仅有：</p>
+<p>  CRC检测 + Replay恢复</p>
+<p>  没有前向纠错。短突发错误会导致整个FLIT以及其后的在途窗口重新发送。</p>
+<p>  商用高速链路通常根据BER、延迟和功耗目标选择：</p>
+<ul>
+<li>无FEC但低BER；</li>
+<li>轻量FEC；</li>
+<li>Reed-Solomon；</li>
+<li>BCH；</li>
+<li>Fire Code；</li>
+<li>PHY级符号纠错。</li>
+</ul>
+<p>  FEC可以直接修复少量错误，降低Replay频率，但会增加延迟、面积和功耗。</p>
+<p>Siemens HyperLynx 官方也把 SerDes 验证分成 standards compliance 和 vendor IBIS-AMI simulation；Keysight 也明确把现代<br>    chip-to-chip SerDes 推荐到 IBIS-AMI channel simulation flow。</p>
+<ol>
+<li>Verilator&#x2F;cocotb 验证完整功能链路</li>
+<li>Python&#x2F;scikit-rf 计算通道损伤</li>
+<li>ngspice&#x2F;Xyce 验证 PMA 关键模拟电路</li>
+<li>把 2&#x2F;3 的结果抽象成参数，喂给 behavioral PMA&#x2F;channel</li>
+<li>再回到 Verilator&#x2F;cocotb 跑完整 payload 到 payload</li>
+</ol>
+<h3 id="-3"><a href="#-3" class="headerlink" title=""></a></h3>
         
       </div>
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuidYbwrO0GWkKMtgM1ko51pM" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/serdes/" data-id="cuidLx8eyIYVYNCv-A4ImcvKF" data-title="GPUInterconect" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
