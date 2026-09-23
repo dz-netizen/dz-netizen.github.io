@@ -4,21 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>paper | DZ_Blog</title>
+  <title>paper | DZ Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="启蒙： https:&#x2F;&#x2F;qimeng-ict.github.io attention https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1706.03762 智能处理器DLSSDeep Learning Super Sampling，是NVIDIA推出的一项AI超分辨率技术。 fpga LUTlook up table  routing   可编程开关（Programmable Switch）  Fli">
 <meta property="og:type" content="article">
 <meta property="og:title" content="paper">
 <meta property="og:url" content="https://dz-netizen.github.io/paper/index.html">
-<meta property="og:site_name" content="DZ_Blog">
+<meta property="og:site_name" content="DZ Blog">
 <meta property="og:description" content="启蒙： https:&#x2F;&#x2F;qimeng-ict.github.io attention https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1706.03762 智能处理器DLSSDeep Learning Super Sampling，是NVIDIA推出的一项AI超分辨率技术。 fpga LUTlook up table  routing   可编程开关（Programmable Switch）  Fli">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-06T09:03:13.000Z">
-<meta property="article:modified_time" content="2026-07-22T07:19:15.940Z">
+<meta property="article:modified_time" content="2026-09-23T15:22:00.241Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="DZ_Blog" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="DZ Blog" type="application/atom+xml">
   
   
     <link rel="shortcut icon" href="/favicon.png">
@@ -67,6 +67,30 @@
           
             
             <a class="main-nav-link" href="/">
+              
+              首页
+            </a>
+          
+            
+            <a class="main-nav-link" href="/archives">
+              
+              归档
+            </a>
+          
+            
+            <a class="main-nav-link" href="/categories">
+              
+              分类
+            </a>
+          
+            
+            <a class="main-nav-link" href="/tags">
+              
+              标签
+            </a>
+          
+            
+            <a class="main-nav-link" href="/">
               <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
               Home
             </a>
@@ -98,13 +122,17 @@
         </nav>
         <nav id="sub-nav">
           
+            
+              <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/dz-netizen"><span class="fa fa-github"></span></a>
+            
           
-            <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
           
-          <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+            <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+          
+          <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
         </nav>
         <div id="search-form-wrap">
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dz-netizen.github.io"></form>
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dz-netizen.github.io"></form>
         </div>
       </div>
     </div>
@@ -113,8 +141,12 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="-wrap">
-        <a href="/" id="logo" data-typing="true" data-text="爱你的命运_">爱你的命运_</a>
+        <a href="/" id="logo" data-typing="true" data-text="DZ Blog">DZ Blog</a>
       </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">硬件 · 软件 · 工程实践</a>
+        </h2>
       
     </div>
   </div>
@@ -151,7 +183,6 @@
   
 
       </header>
-    
     
     
       <div class="e-content article-entry" itemprop="articleBody">
@@ -202,12 +233,48 @@
 <li><p>LSTM（Long Short-Term Memory）</p>
 </li>
 </ul>
+<h2 id="-2"><a href="#-2" class="headerlink" title=""></a></h2><h3 id="4-1-近年-CCF-A-片间互联论文（2021—2025）"><a href="#4-1-近年-CCF-A-片间互联论文（2021—2025）" class="headerlink" title="4.1 近年 CCF A 片间互联论文（2021—2025）"></a>4.1 近年 CCF A 片间互联论文（2021—2025）</h3><p>以下论文均来自 CCF A 会议（ISCA、HPCA、MICRO 或 DAC）。多数工作研究互连架构、拓扑和协议，SerDes 模拟前端通常抽象为带宽、延迟和 BER；因此做 FPGA&#x2F;RTL 复现时，还需要把 PHY、编码和可靠性机制单独建模。</p>
+<p>链接优先给出 arXiv、作者主页、开放 PDF 或 ResearchGate；DOI 仅用于核对正式出版信息。建议先点击每条最前面的开放入口。</p>
+<ol>
+<li><p><strong>ISCA 2021</strong> — <em>Pioneering Chiplet Technology and Design for the AMD EPYC™ and Ryzen™ Processor Families</em>（Naffziger 等）<br><a target="_blank" rel="noopener" href="https://www.amd.com/content/dam/amd/en/documents/solutions/technologies/chiplet-architecture-white-paper.pdf">AMD Chiplet 架构白皮书（开放 PDF）</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1109/ISCA52012.2021.00014">DOI&#x2F;书目信息</a><br>以 AMD Zen 2&#x2F;EPYC 的工业实例说明计算 die、I&#x2F;O die 与封装内互连的划分，讨论 die-to-die 带宽、延迟、功耗和封装约束。适合建立片间链路预算基线，但不是 SerDes 电路论文。</p>
+</li>
+<li><p><strong>DAC 2021</strong> — <em>Designing a 2048-Chiplet, 14336-Core Waferscale Processor</em>（Pal 等）<br><a target="_blank" rel="noopener" href="https://rakeshk.crhc.illinois.edu/dac21_01.pdf">作者开放 PDF</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1109/DAC18074.2021.9586194">DOI&#x2F;书目信息</a><br>在被动硅互连晶圆上组织 2048 个 chiplet，重点解决大规模网络、时钟&#x2F;供电、可测试性和故障容忍。对编码方向的启发是：链路需要帧边界、错误检测、坏链路旁路和可重配置路由，而不是只追求峰值吞吐。</p>
+</li>
+<li><p><strong>HPCA 2022</strong> — <em>Application Defined On-chip Networks for Heterogeneous Chiplets: An Implementation Perspective</em>（He 等）<br><a target="_blank" rel="noopener" href="https://cir.nii.ac.jp/crid/1360868144070171776">CiNii 摘要与 PDF 入口</a> · <a target="_blank" rel="noopener" href="http://xplorestaging.ieee.org/ielx7/9773179/9773180/09773184.pdf?arnumber=9773184">直接 PDF 镜像</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1109/HPCA53966.2022.00091">DOI&#x2F;书目信息</a><br>提出面向服务器 CPU、AI 处理器和基带处理器的无缓存多环 NoC，展示应用、微架构和物理实现协同设计可达到约 16 TB&#x2F;s 的 AI 处理器带宽。可将其环网&#x2F;流控思想映射到片间链路，并比较不同编码开销对有效带宽的影响。</p>
+</li>
+<li><p><strong>DAC 2022</strong> — <em>Chiplet Actuary: A Quantitative Cost Model and Multi-Chiplet Architecture Exploration</em>（Feng、Ma）<br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.12268">arXiv 预印本</a> · <a target="_blank" rel="noopener" href="https://github.com/Yinxiao-Feng/chiplet-actuary">开源成本模型</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1145/3489517.3530428">DOI&#x2F;书目信息</a><br>建立同时考虑良率、复用、封装和 chiplet 异构性的成本模型，用于探索多 chiplet 架构。它不实现 PHY，但能把 SerDes lane 数、封装走线长度、重传&#x2F;FEC 面积和功耗作为设计空间参数加入系统级权衡。</p>
+</li>
+<li><p><strong>HPCA 2023</strong> — <em>A Scalable Methodology for Designing Efficient Interconnection Network of Chiplets</em>（Feng、Xiang、Ma）<br><a target="_blank" rel="noopener" href="https://yinxiao-feng.github.io/">作者主页（论文入口）</a> · <a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/369515200_A_Scalable_Methodology_for_Designing_Efficient_Interconnection_Network_of_Chiplets">ResearchGate 全文入口</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1109/HPCA56546.2023.10070981">DOI&#x2F;书目信息</a><br>针对分层 chiplet 拓扑提出可扩展的互连网络设计方法，联合拓扑、路由和流量建模，并保持无死锁。实现时可把每条物理链路扩展为“编码器 → SerDes → 解串器 → CRC&#x2F;重试”的模块，再用论文的网络模型评估编码开销。</p>
+</li>
+<li><p><strong>MICRO 2023</strong> — <em>Heterogeneous Die-to-Die Interfaces: Enabling More Flexible Chiplet Interconnection Systems</em>（Feng、Xiang、Ma）<br><a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/376362225_Heterogeneous_Die-to-Die_Interfaces_Enabling_More_Flexible_Chiplet_Interconnection_Systems">ResearchGate 开放 PDF</a> · <a target="_blank" rel="noopener" href="https://yinxiao-feng.github.io/">作者主页</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1145/3613424.3614310">DOI&#x2F;书目信息</a><br>提出 Hetero-PHY 与 Hetero-Channel 两种异构接口组织方式，并讨论调度、互连、路由和无死锁算法；论文还给出仿真与电路验证。它最适合指导“不同 SerDes&#x2F;并行 D2D PHY 共存”的 FPGA 原型：在适配层统一 flit 格式，在 PHY 层允许不同 lane rate、编码和重传策略。</p>
+</li>
+<li><p><strong>HPCA 2024</strong> — <em>Gemini: Mapping and Architecture Co-exploration for Large-scale DNN Chiplet Accelerators</em>（Cai 等）<br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.16436">arXiv 预印本</a> · <a target="_blank" rel="noopener" href="https://people.iiis.tsinghua.edu.cn/~gaomy/pubs/gemini.hpca24.pdf">作者开放 PDF</a> · <a target="_blank" rel="noopener" href="https://github.com/SET-Scheduling-Project/GEMINI-HPCA2024">代码</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1109/HPCA57654.2024.00022">DOI&#x2F;书目信息</a><br>用 layer-centric encoding 表示 DNN 的 layer-pipeline 空间映射，并在统一硬件模板上联合搜索架构、映射、性能、能效和成本。这里的“encoding”是映射空间编码，不是 8b&#x2F;10b 或 128b&#x2F;130b 线路编码；但它能量化片间通信量，适合作为 SerDes 带宽&#x2F;能耗模型的上层工作负载。</p>
+</li>
+<li><p><strong>MICRO 2024</strong> — <em>LUCIE: A Universal Chiplet-Interposer Design Framework for Plug-and-Play Integration</em>（Li、Wentzlaff）<br><a target="_blank" rel="noopener" href="https://collaborate.princeton.edu/en/publications/lucie-a-universal-chiplet-interposer-design-framework-for-plug-an/">Princeton 作者摘要页</a> · <a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/386401728_LUCIE_A_Universal_Chiplet-Interposer_Design_Framework_for_Plug-and-Play_Integration">ResearchGate 入口</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1109/MICRO61859.2024.00039">DOI&#x2F;书目信息</a><br>设计可复用的二维网格 interposer 和图搜索放置算法，面向 plug-and-play chiplet 集成；相较定制 interposer，在部分场景下可达到约 2× 速度、约 20% 的能效改进。对 SerDes 研究的价值在于提供可插拔链路端点和拓扑，便于替换不同 PHY&#x2F;编码实现。</p>
+</li>
+<li><p><strong>HPCA 2025</strong> — <em>EIGEN: Enabling Efficient 3DIC Interconnect with Heterogeneous Dual-Layer Network-on-Active-Interposer</em>（Jia 等）<br><a target="_blank" rel="noopener" href="https://zhutmost.com/publication">作者课题组论文页</a> · <a target="_blank" rel="noopener" href="https://hpca-conf.org/2025/main-program/">HPCA 2025 会议摘要</a> · <a target="_blank" rel="noopener" href="https://doi.org/10.1109/HPCA61900.2025.00117">DOI&#x2F;书目信息</a><br>在 active interposer 上分成应用感知的可编程交换层（AspLayer）和动态路由层（DynLayer），再用强化学习选择路径，以降低异构 CPU&#x2F;GPU&#x2F;AI chiplet 的拥塞和延迟。它更偏网络&#x2F;3DIC 物理，不宜直接当作普通 FPGA 的 SerDes PHY 实现，但可作为多层互连拓扑和流量优化的最新参考。</p>
+</li>
+</ol>
+<h3 id="4-2-SerDes、线路编码与可靠传输：如何对接上述论文"><a href="#4-2-SerDes、线路编码与可靠传输：如何对接上述论文" class="headerlink" title="4.2 SerDes、线路编码与可靠传输：如何对接上述论文"></a>4.2 SerDes、线路编码与可靠传输：如何对接上述论文</h3><ul>
+<li><strong>短距 D2D 不等于传统长距 SerDes。</strong> 片间距离短、并行 bump 数多，UCIe 的先进封装模式通常采用多 lane、低摆幅、转发时钟的短距 PHY；只有跨封装或较长通道才更像 PCIe 式高速 SerDes。建模时要把 lane 数、每 lane 速率、时钟方式和通道 BER 分开记录。</li>
+<li><strong>编码开销要和协议层分开。</strong> UCIe 1.0 规范明确建议在标准 256B Flit 模式下省去传统 8b&#x2F;10b、128b&#x2F;130b 及非 Flit CRC&#x2F;Retry 逻辑；可靠性由 Flit CRC、序列号和链路级重试承担。参考：<a target="_blank" rel="noopener" href="https://www.uciexpress.org/specifications">UCIe Consortium 规范页</a> 和 <a target="_blank" rel="noopener" href="https://studylib.net/doc/27600414/ucie-1p0-with-legal-disclaimer-july-26th-2022">UCIe 1.0 规范全文</a>。因此 FPGA 原型至少应区分：原始 payload、帧&#x2F;Flit 头、CRC、重试缓存和可选 scrambling&#x2F;FEC，而不要把所有开销笼统称为“编码”。</li>
+<li><strong>建议的 RTL 数据路径。</strong> <code>payload →（可选 8b/10b 或 64b/66b/128b/130b）→ scrambler → lane serializer → channel model → deserializer → descrambler → decoder → CRC/replay</code>。用可参数化模块比较编码效率、时钟恢复友好性、直流平衡、误码率和 FPGA 资源；短距 UCIe 模式可关闭传统线路编码，仅保留 Flit CRC&#x2F;Retry。</li>
+<li><strong>论文与实现的对应关系。</strong> HPCA 2023 和 MICRO 2023 负责拓扑、路由与异构 PHY；ISCA 2021、DAC 2021&#x2F;2022 负责真实系统约束和成本&#x2F;可靠性；HPCA 2024 提供 DNN 流量与片间通信量。把四类结果组合起来，才能得到可复现实验，而不是只复现一个抽象 NoC。</li>
+</ul>
+<h3 id="4-3-非-CCF-A、但值得作为-PHY-细节补充的资料"><a href="#4-3-非-CCF-A、但值得作为-PHY-细节补充的资料" class="headerlink" title="4.3 非 CCF A、但值得作为 PHY 细节补充的资料"></a>4.3 非 CCF A、但值得作为 PHY 细节补充的资料</h3><p>以下资料用于补足 SerDes&#x2F;编码电路细节，不计入上面的 CCF A 论文统计：</p>
+<ul>
+<li><strong>Nature Electronics 2024（开放全文）</strong> — <em>High-performance, power-efficient three-dimensional system-in-package designs with universal chiplet interconnect express</em>，<a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41928-024-01126-y">Nature 全文</a>。直接讨论 UCIe 的 PHY、封装、bump pitch、lane 和能效，是目前最容易访问的 UCIe 物理层资料之一。</li>
+<li><strong>UCIe Consortium</strong> — <a target="_blank" rel="noopener" href="https://www.uciexpress.org/specifications">官方规范下载页</a> · <a target="_blank" rel="noopener" href="https://studylib.net/doc/27600414/ucie-1p0-with-legal-disclaimer-july-26th-2022">UCIe 1.0 在线全文</a>。重点阅读 Flit 格式、scrambling、CRC、retry、lane repair&#x2F;reversal 和 link training。</li>
+<li><strong>IEEE Micro 2025</strong> — <em>UCIe Standard: Enhancing Die-to-Die Connectivity in Modern Packaging</em>，<a target="_blank" rel="noopener" href="https://doi.org/10.1109/MM.2025.3526048">DOI&#x2F;书目信息</a>。用于补充 2D、2.5D 和 3D 封装中的 PHY&#x2F;协议落地讨论。</li>
+<li><strong>IEEE TCPMT 2022</strong> — <em>Universal Chiplet Interconnect Express (UCIe): An Open Industry Standard for Innovations With Chiplets at Package Level</em>，<a target="_blank" rel="noopener" href="https://doi.org/10.1109/TCPMT.2022.3207195">DOI&#x2F;书目信息</a>。用于核对通道、电路、封装和链路训练的工程约束。</li>
+</ul>
 
         
       </div>
+      
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/paper/" data-id="cuidiFL6DkiUeOXNHwkBxNzdG" data-title="paper" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://dz-netizen.github.io/paper/" data-id="cuidA6culw174WiuD87GnLbMr" data-title="paper" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -218,7 +285,7 @@
 <nav id="article-nav">
   
     <a href="/master/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
           master
@@ -228,7 +295,7 @@
   
   
     <a href="/ClaudeCode/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">后一篇</strong>
       <div class="article-nav-title">ClaudeCode</div>
     </a>
   
@@ -236,6 +303,7 @@
 
   
 </article>
+
 
 
 </section>
@@ -255,6 +323,30 @@
     </div>
     <nav id="mobile-nav">
   
+  
+    
+    <a href="/" class="mobile-nav-link">
+      
+      首页
+    </a>
+  
+    
+    <a href="/archives" class="mobile-nav-link">
+      
+      归档
+    </a>
+  
+    
+    <a href="/categories" class="mobile-nav-link">
+      
+      分类
+    </a>
+  
+    
+    <a href="/tags" class="mobile-nav-link">
+      
+      标签
+    </a>
   
     
     <a href="/" class="mobile-nav-link">
