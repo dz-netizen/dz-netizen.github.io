@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>interconnect | DZ Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="主线：片间互联要解决的不只是“把比特送到另一片芯片”，而是把事务可靠地、可控地、可验证地送达。HNLink 将业务事务、可靠 Link、PCS 和 SerDes 分层；hnlink_haps80_abdc_ring 则用四片 HAPS-80 FPGA，把这套设计放到真实片间物理路径上验证，为后续 ASIC SerDes 集成留下协议和验证基础。   片间互联：从系统需求到 SerDes为什么芯">
+<meta property="og:type" content="article">
+<meta property="og:title" content="interconnect">
+<meta property="og:url" content="https://dz-netizen.github.io/interconnect/index.html">
+<meta property="og:site_name" content="DZ Blog">
+<meta property="og:description" content="主线：片间互联要解决的不只是“把比特送到另一片芯片”，而是把事务可靠地、可控地、可验证地送达。HNLink 将业务事务、可靠 Link、PCS 和 SerDes 分层；hnlink_haps80_abdc_ring 则用四片 HAPS-80 FPGA，把这套设计放到真实片间物理路径上验证，为后续 ASIC SerDes 集成留下协议和验证基础。   片间互联：从系统需求到 SerDes为什么芯">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dz-netizen.github.io/interconnect/serdes.png">
+<meta property="og:image" content="https://dz-netizen.github.io/interconnect/hnlink.png">
+<meta property="article:published_time" content="2026-09-23T16:52:30.000Z">
+<meta property="article:modified_time" content="2026-09-24T03:33:42.798Z">
+<meta property="article:author" content="Zhang Chaochao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dz-netizen.github.io/interconnect/serdes.png">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-nav-wrap">
+    <div class="outer">
+      <div id="header-inner" class="inner">
+        <nav id="main-nav">
+          <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+          <a id="nav-logo" class="nav-logo" href="/">DzBlog</a>
+          
+          
+            
+            <a class="main-nav-link" href="/">
+              <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
+              首页
+            </a>
+          
+            
+            <a class="main-nav-link" href="/archives">
+              <span class="fa fa-archive main-nav-icon" aria-hidden="true"></span>
+              归档
+            </a>
+          
+            
+            <a class="main-nav-link" href="/categories">
+              <span class="fa fa-folder-open-o main-nav-icon" aria-hidden="true"></span>
+              分类
+            </a>
+          
+            
+            <a class="main-nav-link" href="/tags">
+              <span class="fa fa-tags main-nav-icon" aria-hidden="true"></span>
+              标签
+            </a>
+          
+        </nav>
+        <nav id="sub-nav">
+          
+            
+              <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/dz-netizen"><span class="fa fa-github"></span></a>
+            
+          
+          <a class="nav-icon nav-search-btn" href="#site-search-input" title="搜索文章标题" aria-label="搜索文章标题"><span class="fa fa-search"></span></a>
+        </nav>
+        
+        <script id="post-search-index" type="application/json">[{"title":"12306","url":"/12306/"},{"title":"ClaudeCode","url":"/ClaudeCode/"},{"title":"ComputerNetworks","url":"/ComputerNetworks/"},{"title":"NetworkPeripheralExpansion","url":"/NetworkPeripheralExpansion/"},{"title":"QimengFlow","url":"/QimengFlow/"},{"title":"compilers","url":"/compilers/"},{"title":"cpp","url":"/cpp/"},{"title":"Quant","url":"/Quant/"},{"title":"database","url":"/database/"},{"title":"Hello World","url":"/hello-world/"},{"title":"github.io blog 使用说明","url":"/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/"},{"title":"interconnect","url":"/interconnect/"},{"title":"master","url":"/master/"},{"title":"python","url":"/python/"},{"title":"vscode-ssh","url":"/vscode-ssh/"},{"title":"paper","url":"/paper/"}]</script>
+        <div id="search-form-wrap">
+          <form id="site-search-form" class="search-form" role="search">
+            <input id="site-search-input" type="search" class="search-form-input" placeholder="搜索文章标题" autocomplete="off" aria-label="搜索文章标题">
+            <button type="submit" class="search-form-submit" aria-label="提交搜索">&#xF002;</button>
+            <div id="site-search-results" class="search-results" role="listbox" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="-wrap">
+        <a href="/" id="logo" data-typing="true" data-text="DZ Blog">DZ Blog</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+
+      
+  <aside id="post-toc" aria-label="Table of contents">
+    <div class="widget-wrap">
+      <h3 class="widget-title">目录</h3>
+      <div class="widget widget-toc">
+        <nav class="post-toc-nav"></nav>
+      </div>
+    </div>
+  </aside>
+
+
+      <div class="outer">
+        <section id="main"><article id="post-interconnect" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/interconnect/" class="article-date">
+  <time class="dt-published" datetime="2026-09-23T16:52:30.000Z" itemprop="datePublished">2026-09-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      interconnect
+    </h1>
+  
+
+      </header>
+    
+    
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <blockquote>
+<ul>
+<li><strong>主线</strong>：<br>片间互联要解决的不只是“把比特送到另一片芯片”，而是把事务可靠地、可控地、可验证地送达。<br>HNLink 将业务事务、可靠 Link、PCS 和 SerDes 分层；<br><code>hnlink_haps80_abdc_ring</code> 则用四片 HAPS-80 FPGA，把这套设计放到真实片间物理路径上验证，为后续 ASIC SerDes 集成留下协议和验证基础。</li>
+</ul>
+</blockquote>
+<h1 id="片间互联：从系统需求到-SerDes"><a href="#片间互联：从系统需求到-SerDes" class="headerlink" title="片间互联：从系统需求到 SerDes"></a>片间互联：从系统需求到 SerDes</h1><h2 id="为什么芯片之间需要一条“可靠的路”"><a href="#为什么芯片之间需要一条“可靠的路”" class="headerlink" title="为什么芯片之间需要一条“可靠的路”"></a>为什么芯片之间需要一条“可靠的路”</h2><p>当计算、存储和 I&#x2F;O 不再全部位于同一片 die 内，多片 ASIC、chiplet 或 FPGA 就需要跨封装或跨板交换数据。距离和介质可以不同：封装内的 die-to-die、封装基板上的芯片互联、板上的高速连接器和 PCB 走线，都属于片间互联。它可以承载内存读写、加速器的数据流、控制命令，也可以把多个点到点端口组织成环、网格或交换网络。</p>
+<p>一次“片间写入”至少涉及四个连续的问题：<strong>源端从哪里取数 → 通道能否接收 → 对端是否正确写入 → 源端如何知道事务完成</strong>。物理通道只回答其中的一部分。因此设计必须从上到下建立一致的边界：</p>
+<pre class="mermaid">flowchart LR
+    subgraph TX[发送芯片]
+      APP[应用 / 主机] --> DMA[事务 / DMA]
+      DMA --> LINK[Link：可靠传输]
+      LINK --> PCS[PCS：编码与对齐]
+      PCS --> TPMA[SerDes PMA：串行发送]
+    end
+
+    TPMA --> MEDIA[封装 / 连接器 / PCB]
+    MEDIA --> RPMA
+
+    subgraph RX[接收芯片]
+      RPMA[SerDes PMA：时钟恢复和接收]
+      RPMA --> RPCS[PCS：锁定与解码]
+      RPCS --> RLINK[Link：校验、顺序、流控]
+      RLINK --> RDMA[事务 / DMA：写入和完成]
+    end</pre>
+
+<table>
+<thead>
+<tr>
+<th>关心的问题</th>
+<th>主要责任层</th>
+<th>出错时不能误判为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>写多少、写到哪里、何时完成</td>
+<td>事务 &#x2F; DMA</td>
+<td>“Link 发出去了”就是写入成功</td>
+</tr>
+<tr>
+<td>缓冲不足、错包、丢包、重包</td>
+<td>Link</td>
+<td>“SerDes 有信号”就是数据可靠</td>
+</tr>
+<tr>
+<td>训练、块边界、lane 对齐</td>
+<td>PCS</td>
+<td>“CDR lock”就是可接收业务帧</td>
+</tr>
+<tr>
+<td>电气信号、时钟恢复、均衡</td>
+<td>SerDes &#x2F; PMA</td>
+<td>“眼图合格”就是系统事务正确</td>
+</tr>
+</tbody></table>
+<p>这张表也是本项目设计和验收的依据：<strong>物理层解决跨芯片传比特，Link 解决跨一跳可靠传数据，事务层解决真正的业务完成</strong>。</p>
+<h2 id="SerDes-在片间互联中做什么"><a href="#SerDes-在片间互联中做什么" class="headerlink" title="SerDes 在片间互联中做什么"></a>SerDes 在片间互联中做什么</h2><p>如果将片内的数百根并行数据线直接引出芯片，封装引脚、时钟偏斜、走线长度和信号完整性都会成为约束。SerDes（Serializer&#x2F;Deserializer）把并行数据转为少量高速差分通道上的串行比特，到对端再恢复为并行数据。它并不是片间互联的全部，而是其物理传输能力的关键来源：</p>
+<img src="/interconnect/serdes.png" class="" title="serdes">
+<ul>
+<li><strong>发送端TX</strong>：并行用户数据经过所需的编码&#x2F;gearbox，串行化后由高速驱动器输出；预加重等措施用于适配通道损耗。</li>
+<li><strong>跨芯片通道</strong>：信号经过 die、封装、连接器和走线；损耗、反射、串扰与通道间偏斜都会影响接收。</li>
+<li><strong>接收端RX</strong>：均衡器补偿通道损耗，CDR（时钟数据恢复）从输入数据中提取采样时钟，随后反串行化；PCS 再找回块边界和 lane 间的对应关系。</li>
+<li><strong>状态管理</strong>：PLL lock、TX&#x2F;RX reset done、CDR lock、block lock、lane alignment 和远端握手逐步成立，才能宣告业务可用。失锁或重训时必须通知上层停止发送、处理未完成事务。</li>
+</ul>
+<p>多 lane 并行提高带宽，但接收端不能简单地按线号拼起来：各 lane 的延迟可能不同，需要周期性 marker、deskew 缓冲和对齐判据；其中一条 lane 失锁后，不能继续把错位数据当作正常 payload。</p>
+<blockquote>
+<p><strong>线速率 ≠ 有效业务速率</strong>。可将其理解为“物理速率 × 编码效率 × 数据帧载荷比例 × 实际利用率”，再叠加训练、空闲、确认和重传的开销。例如每通道 <strong>6 Gb&#x2F;s、150 MHz REFCLK0、物理侧 8b10b</strong>；仅按 8b10b 计算，单条 6 Gb&#x2F;s 通道的理论编码后数据上界约为 4.8 Gb&#x2F;s，实际业务还要扣除其他开销。</p>
+</blockquote>
+<h2 id="怎样判定“片间互联是对的”"><a href="#怎样判定“片间互联是对的”" class="headerlink" title="怎样判定“片间互联是对的”"></a>怎样判定“片间互联是对的”</h2><p>从低到高，至少有四种不能互相代替的证据：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">① 物理健康：参考时钟、PLL/CDR lock、通道初始化</span><br><span class="line">② 逻辑建链：块锁定、lane 对齐、远端握手、Link up</span><br><span class="line">③ 一跳可靠：CRC/序号正确，信用不超发，ACK/重传行为正确</span><br><span class="line">④ 端到端正确：对端确实写入，完整事务返回并与源数据一致</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="HNLink-设计：把物理能力变成可信的业务互联"><a href="#HNLink-设计：把物理能力变成可信的业务互联" class="headerlink" title="HNLink 设计：把物理能力变成可信的业务互联"></a>HNLink 设计：把物理能力变成可信的业务互联</h1><h2 id="ASIC-目标架构与模块边界"><a href="#ASIC-目标架构与模块边界" class="headerlink" title="ASIC 目标架构与模块边界"></a>ASIC 目标架构与模块边界</h2><p>HNLink 是本项目的片间互联方案，不宣称兼容 PCIe、Ethernet、Aurora 等现成协议。面向 ASIC，它让不同节点之间具有可流控、可校验、可恢复的点到点端口；设计的关键不是绑定某个 GTH 或 SerDes 厂商，而是<strong>冻结各层对上、对下的契约</strong>。</p>
+<img src="/interconnect/hnlink.png" class="" title="hnlink">
+
+<p>　　HNLink 将一次跨芯片写入拆为<strong>事务封装、一跳可靠传输、物理块交付</strong>。上层定义“写的是什么、何时算完成”，下层定义“如何让相邻两端正确接收”；层与层通过数据、<code>valid/ready</code> 和错误状态交互，不把物理锁定或单跳 ACK 当成业务完成。</p>
+<p>　　<strong>DMA &#x2F; 事务层：</strong> 描述符给出源&#x2F;目的、长度和事务号；发送侧形成请求头及连续数据拍，接收侧按有效字节写入存储。请求头应包含操作类型、会话、事务 ID、长度及必要的路由信息；数据完整性校验覆盖不变的事务信息和有效负载，逐跳可变的路由字段则由每个节点检查。对每笔长度为 <code>L</code> 字节、每拍承载 <code>B</code> 字节的写请求，数据拍数为 <code>ceil(L/B)</code>；最后一拍只提交有效字节。</p>
+<p>　　<strong>Link 层：</strong> 将每个事务数据拍封装为带类型、会话、VC、帧边界、序号及 CRC 的传输单元（FLIT）；另设状态&#x2F;控制帧承载 ACK&#x2F;NAK 和信用更新，而不是把它们误认为业务 payload。发送前同时检查窗口和远端所授信用，逻辑条件是 <code>未确认帧数 &lt; 窗口大小</code> 且 <code>该 VC 可用信用 &gt; 0</code>。接收端先校验 CRC 和预期序号，再占用对应 VC 缓冲并按顺序交付；发送端保存未确认数据，丢包&#x2F;损坏触发重传。累计 ACK 和信用释放不能因重复控制帧而重复计算，重传数据也不能再次提交给事务层。<strong>Link ACK 只确认下一跳收到传输单元，不确认事务已写入。</strong></p>
+<p>　　<strong>PCS 层：</strong> 将 Link 的块流变为 SerDes 用户侧可收发的并行数据。若采用自定义 66-bit 块编码，每块由 <code>2-bit 同步头 + 64-bit 内容</code> 组成，用同步头区分控制与数据；通过 TRAIN&#x2F;START 建链，以 IDLE 维持空闲发送，用带 lane 身份和序号的 AM（alignment marker）支持多 lane deskew。扰码降低长时间低跳变风险，gearbox 在逻辑块宽度与 SerDes 并行宽度之间连续变宽；接收侧依次恢复块边界、锁定和 lane 对齐，再解扰并将有序数据交给 Link。任何背压都必须同步冻结数据和扰码&#x2F;gearbox&#x2F;marker 状态，否则恢复后会发生相位错位。如果 ASIC SerDes IP 已提供这些 PCS 功能，就应与 IP 做接口适配，而不是再实现一套冲突的编码。</p>
+<p>　　<strong>完成与故障边界：</strong> 从物理可用、PCS 锁定、Link 建链，到事务写入成功，状态逐级成立。断链、重训或远端复位时停止新事务，未完成事务明确失败；建立新 session 后拒绝旧数据和确认。跨复位不承诺透明的 exactly-once。下节才把这些设计原则映射到 FPGA 的具体位宽、模块和四片回环。</p>
+<pre class="mermaid">flowchart TB
+    DMA[DMA / 事务层：存储访问与最终完成]
+    DMA <--> MEM[(片内 SRAM / 外部存储)]
+    DMA <-->|app valid / ready| LINK[Link：DATA/RESPONSE VC、credit、CRC、序号、ACK/NAK、replay]
+    LINK <-->|FLIT / block| PCS[PCS：66-bit block、训练、扰码、gearbox、lane 对齐]
+    PCS  <--> IP[ASIC SerDes IP：PMA ]
+    IP <--> PEER[芯片引脚 / 对端]</pre>
+
+<h2 id="例子：一笔-4-KiB-回环事务怎样穿过各层"><a href="#例子：一笔-4-KiB-回环事务怎样穿过各层" class="headerlink" title="例子：一笔 4 KiB 回环事务怎样穿过各层"></a>例子：一笔 4 KiB 回环事务怎样穿过各层</h2><p>假设 A 发起一笔正向 4 KiB 写入&#x2F;回环事务。下表既说明 ASIC 要保留的语义，也交代当前 FULL 原型在做什么：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>正向事务中的动作</th>
+<th>要证明的不变量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A &#x2F; DMA</td>
+<td>生成事务头，选定 session、txn、direction、length&#x3D;4096；4 KiB 按 64 byte 拆成 64 个有效数据拍</td>
+<td>同一事务的字节、长度、头部一致</td>
+</tr>
+<tr>
+<td>A→B &#x2F; Link</td>
+<td>每拍成为带 VC、序号和 CRC 的可靠帧；远端有接收信用才注入，必要时 replay</td>
+<td>不越信用、不静默丢帧、不重复交付</td>
+</tr>
+<tr>
+<td>PCS &#x2F; SerDes</td>
+<td>把 Link 块 striping&#x2F;gearbox 后送往物理边界；B 恢复块锁定和 lane 对齐再解析</td>
+<td>锁定前不交业务；暂停&#x2F;恢复不改变数据顺序</td>
+</tr>
+<tr>
+<td>B &#x2F; DMA</td>
+<td>接收全部 4 KiB，检查事务头和 CRC，写入本地槽，向 A 回 WRITE_DONE</td>
+<td>“一跳接收成功”有存储和校验证据</td>
+</tr>
+<tr>
+<td>B→D→C→A</td>
+<td>每跳完成同样的存储转发；path 与 hops 随转发更新</td>
+<td>确实走过指定节点，而非短路返回</td>
+</tr>
+<tr>
+<td>A &#x2F; 完成</td>
+<td>按事务号&#x2F;方向&#x2F;长度&#x2F;path 检查返回值，逐有效字节比较 payload，再走退休握手</td>
+<td>Link ACK ≠ WRITE_DONE ≠ 最终 RING_DONE</td>
+</tr>
+</tbody></table>
+<p>这里的 <strong>64 byte 数据拍</strong>与<strong>物理线上一个传输周期</strong>不是一回事。以 <code>rtl/full/hnlink_full_pkg.sv</code> 中一个 FULL DATA 帧为例，单个 512-bit payload 在 Link 被组织为 <strong>11 个 66-bit block</strong>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">block 0       : 帧头（magic、version、帧类型、长度及帧头 CRC）</span><br><span class="line">block 1       : metadata（session、sequence、VC、SOF/EOF 等）</span><br><span class="line">block 2 ～ 9  : payload 的 8 个 64-bit 数据字</span><br><span class="line">block 10      : 结束标记 + 帧 CRC</span><br><span class="line">合计          : 11 × 66 = 726 bit，承载 512 bit 业务 payload</span><br></pre></td></tr></table></figure>
+
+<p>512&#x2F;726 ≈ 70.5% 只是<strong>此 DATA 帧在 Link block 层面的 payload 比例</strong>：还没有计入 DMA 的事务头&#x2F;响应、PCS 的训练&#x2F;IDLE&#x2F;AM、CPM 的握手、物理编码以及等待信用的时间。展示这一比例，也说明为什么不能用 SerDes 线速直接宣称 ASIC 业务吞吐。</p>
+<pre class="mermaid">sequenceDiagram
+    participant A as A：事务源
+    participant B as B：存储转发
+    participant D as D：存储转发
+    participant C as C：存储转发
+    A->>B: WRITE，事务头 + payload
+    B-->>A: WRITE_DONE：B 完整写入
+    B->>D: WRITE，path/hops 更新
+    D-->>B: WRITE_DONE：D 完整写入
+    D->>C: WRITE，path/hops 更新
+    C-->>D: WRITE_DONE：C 完整写入
+    C->>A: WRITE，四跳返回
+    A-->>C: WRITE_DONE：A 校验返回
+    Note over A,C: 退休/确认沿途进行；A 完成数据与路径核对并释放槽后才计入最终 good</pre>
+
+
+<h1 id="在-FPGA-上模拟实现-HNLink：四片环路与分层验证"><a href="#在-FPGA-上模拟实现-HNLink：四片环路与分层验证" class="headerlink" title="在 FPGA 上模拟实现 HNLink：四片环路与分层验证"></a>在 FPGA 上模拟实现 HNLink：四片环路与分层验证</h1><h2 id="从-ASIC-思路到具体-HAPS-映射"><a href="#从-ASIC-思路到具体-HAPS-映射" class="headerlink" title="从 ASIC 思路到具体 HAPS 映射"></a>从 ASIC 思路到具体 HAPS 映射</h2><p>本工程不是将 ASIC SerDes 直接“烧进 FPGA”，而是用 HAPS-80 的物理资源<strong>替换</strong> ASIC 的模拟后端，在其上运行可复用的事务、Link 和 PCS 逻辑。选择 A、B、D、C 四个 FPGA 分区组成实际片间环路，既能测试每一跳，也能用 A 的返回数据做端到端对照：</p>
+<pre class="mermaid">flowchart LR
+    A[FPGA A<br/>事务源 / 终点] -->|正向| B[FPGA B<br/>接收 / 存储 / 转发]
+    B -->|正向| D[FPGA D<br/>接收 / 存储 / 转发]
+    D -->|正向| C[FPGA C<br/>接收 / 存储 / 转发]
+    C -->|正向| A</pre>
+
+<p>反方向沿同样四条边逆行：<strong>A→C→D→B→A</strong>。每节点两个相邻端口均有独立链路状态；A 是唯一主机发起业务的节点，B&#x2F;D&#x2F;C 不需要各自的 start。FULL 顶层 <code>rtl/full/hnlink_full_ring_top.sv</code> 中四节点 <code>NODE_ID</code> 分别为 A&#x3D;0、B&#x3D;1、D&#x3D;3、C&#x3D;2，节点编号不是按字母排列。每条边都必须包含两个收发方向：只连正向而悬空反向，会让 Link ACK&#x2F;维护消息无法工作，甚至让工具裁剪真实接收&#x2F;发送 CPM 实例。</p>
+<p>设计按“先物理、再协议”收敛：</p>
+<ol>
+<li><strong>raw 物理基线</strong>：先验证 HAPS-80 S104 固定 MGT 资源、板级端点、GTH&#x2F;CPM&#x2F;MGTDM 的初始化、6 Gb&#x2F;s、150 MHz REFCLK0 和调试采样。CDR lock 只能说明物理层工作，不能作为业务 PASS。</li>
+<li><strong>基础逻辑环路</strong>：用 <code>haps80_ring_top_sim</code> 直接连接四个节点的逻辑 PMA seam，检查 4 KiB SRAM 数据能否按 A→B→D→C→A 正确转发；它故意绕过真实 CPM&#x2F;GTH。</li>
+<li><strong>FULL 协议环路</strong>：用更明确的 DMA、Link、PCS 和 <code>hnlink_cpm_transport</code> 组成生产 FULL top；后者解决 HAPS 的 256-bit CPM 记录并非普通无背压 streaming bus 的问题。</li>
+<li><strong>真实四片实现</strong>：四片综合&#x2F;布局布线、时序和物理检查后打包上板；MGT 初始化、建立新 session，双向事务长期运行并按计数器验收。</li>
+</ol>
+<h2 id="FULL-实现：保留协议，适配原型后端"><a href="#FULL-实现：保留协议，适配原型后端" class="headerlink" title="FULL 实现：保留协议，适配原型后端"></a>FULL 实现：保留协议，适配原型后端</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">hnlink_full_ring_top</span><br><span class="line">  └─ hnlink_full_board_node × 4</span><br><span class="line">      ├─ hnlink_full_umr / hnlink_full_control：session、提交、复位、状态</span><br><span class="line">      └─ hnlink_full_node：两端口 + 一套环路 DMA</span><br><span class="line">          ├─ hnlink_ring_dma：片内槽、事务检查、转发、退休</span><br><span class="line">          └─ hnlink_full_endpoint × 2</span><br><span class="line">              ├─ hnlink_credit_link：VC、credit、ACK/NAK、replay</span><br><span class="line">              ├─ chiplink_pcs_tx / chiplink_pcs_rx：66/40、训练与对齐</span><br><span class="line">              └─ hnlink_cpm_transport：256-bit HAPS 记录接口</span><br><span class="line">                  → ProtoCompiler CPM/MGTDM → S104 固定 GTH</span><br></pre></td></tr></table></figure>
+
+
+<p>　　<strong>DMA：把业务请求封成可验证的事务。</strong> A 从 <code>session/txn/方向/长度</code> 生成确定性 payload，先发一个 512-bit <code>WRITE</code> 头拍（<code>magic/version/opcode/session/txn/length/direction/slot/path/hops/crc</code>），再发 <code>⌈L/64⌉</code> 个 512-bit 数据拍，<code>1 ≤ L ≤ 4096</code> 字节。末拍仅前 <code>L mod 64</code> 字节有效（整除时为 64 字节），其余填零。头中的 <code>crc</code> 是<strong>端到端事务 CRC</strong>：覆盖不可变的事务字段及全部有效 payload 字节；逐跳变化的 <code>path/hops</code> 另行核对，不作为不变数据参与 CRC。<code>hops</code> 表示该方向已走过的跳数，不是链路重传次数。</p>
+<p>　　<strong>DMA：先存储校验，再转发&#x2F;退休。</strong> B&#x2F;D&#x2F;C 收齐后检查头、会话、方向、预期路径&#x2F;跳数、拍数、末拍填充和事务 CRC，成功才提交本地 BRAM 槽、回 <code>WRITE_DONE</code>，并从已提交的槽读出 payload，更新 <code>path/hops</code> 重建头发送下一跳。A 在第四跳收到数据后逐字节比较、核对 <code>txn/方向/路径</code>，沿环完成 <code>RETIRE/RETIRE_ACK</code> 后才计入成功。每方向有两个预留槽，但最多一笔有效回环（全网最多两笔）；槽须按写入、下一跳确认及退休状态管理，<strong>Link ACK 不能释放槽</strong>。这是固定槽与确定性数据的语义验证，尚非任意地址 AXI&#x2F;DDR DMA 或完整 descriptor ring。</p>
+<p>　　<strong>Link：把每个 DMA 拍封成一跳可重传的帧。</strong> <code>hnlink_credit_link</code> 不解释 DMA 头：不论头拍还是数据拍，均作为一个 512-bit payload 封装成 <strong>11 个 66-bit 块</strong>的 DATA 帧：<code>帧头(类型/长度/头 CRC) → 元数据(session/16-bit 序号/VC/first/last) → 8 个数据块 → 帧尾 CRC32</code>。<code>first/last</code> 标明同一 VC 上一组 app 拍的边界，而不是 PCS 的训练信号。VC（虚拟通道）是在同一物理链路上分开的缓冲与信用账本：DATA VC 传 <code>WRITE</code> 头及 payload，RESPONSE VC 传 <code>WRITE_DONE/RETIRE/RETIRE_ACK</code>；另有 <strong>5 块的 STATUS 帧</strong>传累计 ACK&#x2F;NAK、两类 VC 的累计释放信用和容量，不占业务 payload。</p>
+<p>　　<strong>Link：窗口与信用同时限制发送。</strong> DATA&#x2F;RESPONSE 分别预留 32&#x2F;8 个接收槽，发送端保留最多 16 个未确认帧；仅当 <code>未确认数 &lt; 16 ∧ 对应 VC 可用信用 &gt; 0</code> 时接受新 app 拍，否则拉低 <code>ready</code>。接收端验证帧头&#x2F;帧尾 CRC、session、预期序号与缓存容量后按序交付；CRC 错、缺序或超时触发 NAK&#x2F;Go-Back-N，从未确认帧缓存重发。重复 DATA 不重复提交给 DMA；累计 ACK&#x2F;累计释放量按差值更新，重复 STATUS 不重复归还窗口或信用。<strong>Link ACK 仅证明相邻节点收到帧，不等于 DMA 的 <code>WRITE_DONE</code>。</strong></p>
+<p>　　<strong>PCS：将 Link 块流变为四 lane 的并行物理数据。</strong> 每个块为 <code>2-bit sync + 64-bit body</code>（<code>01</code> 数据、<code>10</code> 控制）。TX 经过 <code>TRAIN → START → ACTIVE</code>，ACTIVE 时依次将 Link 块分配到四个逻辑 lane，无数据插入 IDLE，定期插入带 lane ID、共同序号及 CRC8 的 AM 对齐标记。数据&#x2F;IDLE 的 64-bit body 扰码而同步头不变；训练、START、AM 是可识别的控制有序集。每 lane 的 66→40 gearbox 连续重组比特，<strong>一个 66-bit 块不等于一个 40-bit PMA 拍</strong>。</p>
+<p>　　<strong>PCS：先恢复边界与 lane 顺序，再交还 Link。</strong> RX 经 40→66 gearbox 和 bitslip 搜索同步头、获得各 lane block lock，再依据 AM 的 ID&#x2F;序号完成 deskew；随后解扰、滤除 IDLE，按发送顺序输出块。训练&#x2F;对齐未完成时不允许 Link 建链；后端暂停时数据、gearbox 相位、扰码状态及 AM 计数必须一致地暂停，接收缓冲满则以 <code>ready</code> 反压，不能静默丢块。</p>
+<p><strong>HAPS 时钟、资源和可观测性。</strong> FULL 顶层使用 20 MHz 低速 fabric profile（早期基础设计采用 50 MHz 业务时钟），100 MHz 用于 A 侧 IICE&#x2F;debug，150 MHz 是由 MGTDM 管理的物理参考时钟。降低 fabric 注入速度不改变 6 Gb&#x2F;s 的 GTH 线速。UMR 命令使用跨域握手、一致性状态快照和本地同步释放的复位，避免异步控制直扇出；综合时用双向 CPM 连接及保活字段防止 RX&#x2F;TX 路径被优化掉；实现时还要核查四片分区、八个收发端点、时钟&#x2F;USRCLK 约束、CDC 与时序。IICE 触发计数器跳变只证明采样在工作，不代表链路已经 up，更不能取代端到端业务计数。</p>
+<h2 id="如何验证：仿真-→-真实链路-→-端到端结论"><a href="#如何验证：仿真-→-真实链路-→-端到端结论" class="headerlink" title="如何验证：仿真 → 真实链路 → 端到端结论"></a>如何验证：仿真 → 真实链路 → 端到端结论</h2><p>验收不是“一条波形能跳动”，而是逐层排除错误，再通过真实四片路径验证功能：</p>
+<pre class="mermaid">flowchart LR
+    SIM0[基础 seam 仿真<br/>4 KiB 四节点 SRAM 对照] --> SIM1[FULL 分层回归<br/>DMA / Link / PCS / CPM / UMR]
+    SIM1 --> RING[FULL 四片 scoreboard<br/>正反向、路径、字节、会话]
+    RING --> BUILD[四片综合布局布线<br/>时序 / CDC / 端点 / Runtime]
+    BUILD --> BOARD[HAPS 板测<br/>烧写 → 初始化 → 建会话 → 压力]
+    BOARD --> ASIC[保留协议契约<br/>后续替换 ASIC SerDes 与 DMA]</pre>
+
+<p><strong>基础仿真能证明什么？</strong> <code>tb/tb_haps80_ring_dma.sv</code> 在 A 的 SRAM 预填 64 × 512 bit 的固定 pattern（4 KiB），按逻辑 PMA seam 连接四节点，只触发 A；等 <code>ring_done</code> 后逐字比较四片 SRAM。它找得到明显的丢字、乱序、槽写入和转发错误，但不经过真实 HAPS SerDes。基础仿真的约 150 MHz testbench 时钟也不是 FULL 的 HAPS fabric 规格。</p>
+<p><strong>FULL 回归能证明什么？</strong> <code>make sim</code> 覆盖 transport 的同值相邻拍、分段刷新、混合字、坏 CRC 和超时；PCS 的 66&#x2F;40 相位、暂停、训练和重训；Link 的信用耗尽、错误&#x2F;重复 ACK、序号回绕、重传及重试耗尽；DMA 的 1～4096 字节、尾字节、双向在途、错误头&#x2F;响应、槽退休和新 session；UMR 的命令跨域与状态快照。FULL 四片独立 scoreboard 核对每笔事务的字节、长度、方向、txn、path 和完成事件，正式回归累计门槛为<strong>至少 10000 笔四跳事务</strong>；不能用 DMA 单元测试的计数顶替。构建流程绑定源码&#x2F;配置与仿真凭据，避免修改 RTL 后沿用旧 PASS。</p>
+<p><strong>上板能证明什么？</strong> 从 <code>make sim</code> → <code>make bitstream</code> → <code>make bundle</code> 得到经时序&#x2F;物理验收的同源发布包；服务器的 <code>make run</code> 烧写四片、初始化 MGT、建立新 session、进行正反向传输，要求<strong>至少 1000 笔且持续至少 10 分钟</strong>。验收同时检查 <code>accepted == completed</code>、<code>forward_good &gt; 0</code>、<code>reverse_good &gt; 0</code>、<code>data_errors == 0</code>、<code>path_errors == 0</code>、<code>timeouts == 0</code>；Link replay&#x2F;CRC 与 CPM transport CRC 则按相应板测规则分别检查，不把“混合记录被拒绝”混同为业务数据已出错。A 的 FSDB 和状态计数帮助定位是在物理锁定、PCS、Link 还是 DMA；不能仅凭物理寄存器 <code>CDR_LOCK</code> 或 IICE trigger 宣称环路 PASS。</p>
+<p><strong>汇报结论</strong>：这个项目用真实四片 FPGA 的物理路径，把“DMA 发出事务—Link 可靠传输—PCS 建链—HAPS SerDes 跨片—各节点存储转发—A 检查并退休”连接成了可测试闭环。后续 ASIC 应保留事务号、session、完成&#x2F;错误、credit&#x2F;重传、PCS&#x2F;IP 边界和端到端 scoreboard；替换 FPGA BRAM&#x2F;UMR、HAPS CPM&#x2F;MGTDM&#x2F;GTH 与板卡专用约束，再用 ASIC SerDes 模型、真实时钟复位&#x2F;CDC、模拟信道和物理实现逐层补足证据。</p>
+
+        
+      </div>
+      
+    
+    <footer class="article-footer">
+      <a data-url="https://dz-netizen.github.io/interconnect/" data-id="cuidY5zFGqM8bog872nNXZAqx" data-title="interconnect" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/master/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">master</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 Zhang Chaochao<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+  
+    
+    <a href="/" class="mobile-nav-link">
+      <span class="fa fa-home mobile-nav-icon" aria-hidden="true"></span>
+      首页
+    </a>
+  
+    
+    <a href="/archives" class="mobile-nav-link">
+      <span class="fa fa-archive mobile-nav-icon" aria-hidden="true"></span>
+      归档
+    </a>
+  
+    
+    <a href="/categories" class="mobile-nav-link">
+      <span class="fa fa-folder-open-o mobile-nav-icon" aria-hidden="true"></span>
+      分类
+    </a>
+  
+    
+    <a href="/tags" class="mobile-nav-link">
+      <span class="fa fa-tags mobile-nav-icon" aria-hidden="true"></span>
+      标签
+    </a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  <script src="https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default'
+      });
+    }
+  </script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,34 +1,62 @@
 (function($){
-  // Search
-  var $searchWrap = $('#search-form-wrap'),
-    isSearchAnim = false,
-    searchAnimDuration = 200;
+  // Search article titles locally, without sending queries to Google.
+  var $searchWrap = $('#search-form-wrap');
+  var $searchForm = $('#site-search-form');
+  var $searchInput = $('#site-search-input');
+  var $searchResults = $('#site-search-results');
+  var searchIndex = [];
 
-  var startSearchAnim = function(){
-    isSearchAnim = true;
+  try {
+    var searchIndexNode = document.getElementById('post-search-index');
+    if (searchIndexNode) searchIndex = JSON.parse(searchIndexNode.textContent || '[]');
+  } catch (e) {
+    searchIndex = [];
+  }
+
+  var closeSearch = function(){
+    $searchWrap.removeClass('on');
+    $searchResults.empty();
   };
 
-  var stopSearchAnim = function(callback){
-    setTimeout(function(){
-      isSearchAnim = false;
-      callback && callback();
-    }, searchAnimDuration);
-  };
+  var renderSearchResults = function(){
+    var query = ($searchInput.val() || '').trim().toLowerCase();
+    $searchResults.empty();
+    if (!query) return;
 
-  $('.nav-search-btn').on('click', function(){
-    if (isSearchAnim) return;
+    var matches = searchIndex.filter(function(item){
+      return item.title && item.title.toLowerCase().indexOf(query) !== -1;
+    }).slice(0, 8);
 
-    startSearchAnim();
-    $searchWrap.addClass('on');
-    stopSearchAnim(function(){
-      $('.search-form-input').focus();
+    if (!matches.length){
+      $('<p class="search-no-results"></p>').text('没有找到匹配的文章').appendTo($searchResults);
+      return;
+    }
+
+    matches.forEach(function(item){
+      $('<a class="search-result-item" role="option"></a>')
+        .attr('href', item.url)
+        .text(item.title)
+        .appendTo($searchResults);
     });
+  };
+
+  $('.nav-search-btn').on('click', function(e){
+    e.preventDefault();
+    $searchWrap.toggleClass('on');
+    if ($searchWrap.hasClass('on')) $searchInput.trigger('focus');
+    else $searchResults.empty();
   });
 
-  $('.search-form-input').on('blur', function(){
-    startSearchAnim();
-    $searchWrap.removeClass('on');
-    stopSearchAnim();
+  $searchInput.on('input', renderSearchResults);
+
+  $searchForm.on('submit', function(e){
+    e.preventDefault();
+    var $firstResult = $searchResults.find('.search-result-item').first();
+    if ($firstResult.length) window.location.href = $firstResult.attr('href');
+  });
+
+  $('body').on('click.search', function(e){
+    if (!$(e.target).closest('#search-form-wrap, .nav-search-btn').length) closeSearch();
   });
 
   // Share

@@ -14,13 +14,11 @@
 <meta property="og:description" content="这篇文章记录：用 Hexo 在本地写作与预览，并部署到 GitHub Pages（username.github.io） 的完整步骤。 你需要先了解的几个东西Node.js &#x2F; npm &#x2F; npx 是什么 Node.js：运行 JavaScript 的运行时环境。Hexo 是基于 Node.js 的。 npm：Node.js 的包管理器（安装依赖、运行脚本）。安装 Node.j">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-02-11T12:52:17.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:14:05.209Z">
+<meta property="article:modified_time" content="2026-09-23T15:39:52.202Z">
 <meta property="article:author" content="Zhang Chaochao">
 <meta property="article:tag" content="GitHub Pages">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="DZ Blog" type="application/atom+xml">
   
   
     <link rel="shortcut icon" href="/favicon.png">
@@ -69,56 +67,26 @@
           
             
             <a class="main-nav-link" href="/">
-              
+              <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
               首页
             </a>
           
             
             <a class="main-nav-link" href="/archives">
-              
+              <span class="fa fa-archive main-nav-icon" aria-hidden="true"></span>
               归档
             </a>
           
             
             <a class="main-nav-link" href="/categories">
-              
+              <span class="fa fa-folder-open-o main-nav-icon" aria-hidden="true"></span>
               分类
             </a>
           
             
             <a class="main-nav-link" href="/tags">
-              
-              标签
-            </a>
-          
-            
-            <a class="main-nav-link" href="/">
-              <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
-              Home
-            </a>
-          
-            
-            <a class="main-nav-link" href="/archives">
-              <span class="fa fa-archive main-nav-icon" aria-hidden="true"></span>
-              Archives
-            </a>
-          
-            
-            <a class="main-nav-link" href="/categories">
-              <span class="fa fa-folder-open-o main-nav-icon" aria-hidden="true"></span>
-              Categories
-            </a>
-          
-            
-            <a class="main-nav-link" href="/tags">
               <span class="fa fa-tags main-nav-icon" aria-hidden="true"></span>
-              Tags
-            </a>
-          
-            
-            <a class="main-nav-link" href="/">
-              <span class="fa fa-clock-o main-nav-icon" aria-hidden="true"></span>
-              Recent Posts
+              标签
             </a>
           
         </nav>
@@ -128,13 +96,16 @@
               <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/dz-netizen"><span class="fa fa-github"></span></a>
             
           
-          
-            <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
-          
-          <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+          <a class="nav-icon nav-search-btn" href="#site-search-input" title="搜索文章标题" aria-label="搜索文章标题"><span class="fa fa-search"></span></a>
         </nav>
+        
+        <script id="post-search-index" type="application/json">[{"title":"12306","url":"/12306/"},{"title":"ClaudeCode","url":"/ClaudeCode/"},{"title":"ComputerNetworks","url":"/ComputerNetworks/"},{"title":"NetworkPeripheralExpansion","url":"/NetworkPeripheralExpansion/"},{"title":"QimengFlow","url":"/QimengFlow/"},{"title":"compilers","url":"/compilers/"},{"title":"cpp","url":"/cpp/"},{"title":"Quant","url":"/Quant/"},{"title":"database","url":"/database/"},{"title":"Hello World","url":"/hello-world/"},{"title":"github.io blog 使用说明","url":"/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/"},{"title":"interconnect","url":"/interconnect/"},{"title":"master","url":"/master/"},{"title":"python","url":"/python/"},{"title":"vscode-ssh","url":"/vscode-ssh/"},{"title":"paper","url":"/paper/"}]</script>
         <div id="search-form-wrap">
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dz-netizen.github.io"></form>
+          <form id="site-search-form" class="search-form" role="search">
+            <input id="site-search-input" type="search" class="search-form-input" placeholder="搜索文章标题" autocomplete="off" aria-label="搜索文章标题">
+            <button type="submit" class="search-form-submit" aria-label="提交搜索">&#xF002;</button>
+            <div id="site-search-results" class="search-results" role="listbox" aria-live="polite"></div>
+          </form>
         </div>
       </div>
     </div>
@@ -145,10 +116,6 @@
       <h1 id="-wrap">
         <a href="/" id="logo" data-typing="true" data-text="DZ Blog">DZ Blog</a>
       </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">硬件 · 软件 · 工程实践</a>
-        </h2>
       
     </div>
   </div>
@@ -279,12 +246,31 @@
 <p>$$<br>H &#x3D;<br>\begin{bmatrix}<br>h_{11} &amp; h_{12} \<br>h_{21} &amp; h_{22}<br>\end{bmatrix}<br>$$</p>
 <p>源码写法参考（复制这段即可测试）：</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">行内：$E=mc^2$</span><br><span class="line"></span><br><span class="line">块级：</span><br><span class="line">$$</span><br><span class="line">\int<span class="emphasis">_0^1 x^2\,dx = \frac&#123;1&#125;&#123;3&#125;</span></span><br><span class="line"><span class="emphasis">$$</span></span><br></pre></td></tr></table></figure>
+
+
+<p>• 已实现。</p>
+<p>  修改了 source&#x2F;_posts&#x2F;serdes.md:5，加入：</p>
+<p>  published: false</p>
+<p>  并已执行：</p>
+<p>  npm run clean<br>  npm run build</p>
+<p>  构建结果已验证：</p>
+<ul>
+<li>public&#x2F;paper&#x2F;index.html 存在</li>
+<li>public&#x2F;serdes&#x2F;index.html 不存在</li>
+<li>SerDes 不会出现在首页、归档、分类和标签页面中</li>
+</ul>
+<p>  之后正常部署即可：</p>
+<p>  npm run deploy</p>
+<p>  需要重新发布 SerDes 时，把它改成：</p>
+<p>  published: true</p>
+<p>  然后重新执行构建和部署。</p>
+
         
       </div>
       
     
     <footer class="article-footer">
-      <a data-url="https://dz-netizen.github.io/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" data-id="cuid4kxJtwGqpBsYscNqTvN9j" data-title="github.io blog 使用说明" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://dz-netizen.github.io/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" data-id="cuidoZ_PKII5pmYpcVE25R1jN" data-title="github.io blog 使用说明" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -338,56 +324,26 @@
   
     
     <a href="/" class="mobile-nav-link">
-      
+      <span class="fa fa-home mobile-nav-icon" aria-hidden="true"></span>
       首页
     </a>
   
     
     <a href="/archives" class="mobile-nav-link">
-      
+      <span class="fa fa-archive mobile-nav-icon" aria-hidden="true"></span>
       归档
     </a>
   
     
     <a href="/categories" class="mobile-nav-link">
-      
+      <span class="fa fa-folder-open-o mobile-nav-icon" aria-hidden="true"></span>
       分类
     </a>
   
     
     <a href="/tags" class="mobile-nav-link">
-      
-      标签
-    </a>
-  
-    
-    <a href="/" class="mobile-nav-link">
-      <span class="fa fa-home mobile-nav-icon" aria-hidden="true"></span>
-      Home
-    </a>
-  
-    
-    <a href="/archives" class="mobile-nav-link">
-      <span class="fa fa-archive mobile-nav-icon" aria-hidden="true"></span>
-      Archives
-    </a>
-  
-    
-    <a href="/categories" class="mobile-nav-link">
-      <span class="fa fa-folder-open-o mobile-nav-icon" aria-hidden="true"></span>
-      Categories
-    </a>
-  
-    
-    <a href="/tags" class="mobile-nav-link">
       <span class="fa fa-tags mobile-nav-icon" aria-hidden="true"></span>
-      Tags
-    </a>
-  
-    
-    <a href="/" class="mobile-nav-link">
-      <span class="fa fa-clock-o mobile-nav-icon" aria-hidden="true"></span>
-      Recent Posts
+      标签
     </a>
   
 </nav>

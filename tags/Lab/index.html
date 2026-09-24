@@ -16,8 +16,6 @@
 <meta property="article:author" content="Zhang Chaochao">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="DZ Blog" type="application/atom+xml">
-  
   
     <link rel="shortcut icon" href="/favicon.png">
   
@@ -65,56 +63,26 @@
           
             
             <a class="main-nav-link" href="/">
-              
+              <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
               首页
             </a>
           
             
             <a class="main-nav-link" href="/archives">
-              
+              <span class="fa fa-archive main-nav-icon" aria-hidden="true"></span>
               归档
             </a>
           
             
             <a class="main-nav-link" href="/categories">
-              
+              <span class="fa fa-folder-open-o main-nav-icon" aria-hidden="true"></span>
               分类
             </a>
           
             
             <a class="main-nav-link" href="/tags">
-              
-              标签
-            </a>
-          
-            
-            <a class="main-nav-link" href="/">
-              <span class="fa fa-home main-nav-icon" aria-hidden="true"></span>
-              Home
-            </a>
-          
-            
-            <a class="main-nav-link" href="/archives">
-              <span class="fa fa-archive main-nav-icon" aria-hidden="true"></span>
-              Archives
-            </a>
-          
-            
-            <a class="main-nav-link" href="/categories">
-              <span class="fa fa-folder-open-o main-nav-icon" aria-hidden="true"></span>
-              Categories
-            </a>
-          
-            
-            <a class="main-nav-link" href="/tags">
               <span class="fa fa-tags main-nav-icon" aria-hidden="true"></span>
-              Tags
-            </a>
-          
-            
-            <a class="main-nav-link" href="/">
-              <span class="fa fa-clock-o main-nav-icon" aria-hidden="true"></span>
-              Recent Posts
+              标签
             </a>
           
         </nav>
@@ -124,13 +92,16 @@
               <a class="nav-icon" target="_blank" rel="noopener" href="https://github.com/dz-netizen"><span class="fa fa-github"></span></a>
             
           
-          
-            <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
-          
-          <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+          <a class="nav-icon nav-search-btn" href="#site-search-input" title="搜索文章标题" aria-label="搜索文章标题"><span class="fa fa-search"></span></a>
         </nav>
+        
+        <script id="post-search-index" type="application/json">[{"title":"12306","url":"/12306/"},{"title":"ClaudeCode","url":"/ClaudeCode/"},{"title":"ComputerNetworks","url":"/ComputerNetworks/"},{"title":"NetworkPeripheralExpansion","url":"/NetworkPeripheralExpansion/"},{"title":"QimengFlow","url":"/QimengFlow/"},{"title":"compilers","url":"/compilers/"},{"title":"cpp","url":"/cpp/"},{"title":"Quant","url":"/Quant/"},{"title":"database","url":"/database/"},{"title":"Hello World","url":"/hello-world/"},{"title":"github.io blog 使用说明","url":"/github-io-blog-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/"},{"title":"interconnect","url":"/interconnect/"},{"title":"master","url":"/master/"},{"title":"python","url":"/python/"},{"title":"vscode-ssh","url":"/vscode-ssh/"},{"title":"paper","url":"/paper/"}]</script>
         <div id="search-form-wrap">
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dz-netizen.github.io"></form>
+          <form id="site-search-form" class="search-form" role="search">
+            <input id="site-search-input" type="search" class="search-form-input" placeholder="搜索文章标题" autocomplete="off" aria-label="搜索文章标题">
+            <button type="submit" class="search-form-submit" aria-label="提交搜索">&#xF002;</button>
+            <div id="site-search-results" class="search-results" role="listbox" aria-live="polite"></div>
+          </form>
         </div>
       </div>
     </div>
@@ -141,10 +112,6 @@
       <h1 id="-wrap">
         <a href="/" id="logo" data-typing="true" data-text="DZ Blog">DZ Blog</a>
       </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">硬件 · 软件 · 工程实践</a>
-        </h2>
       
     </div>
   </div>
@@ -208,56 +175,26 @@
   
     
     <a href="/" class="mobile-nav-link">
-      
+      <span class="fa fa-home mobile-nav-icon" aria-hidden="true"></span>
       首页
     </a>
   
     
     <a href="/archives" class="mobile-nav-link">
-      
+      <span class="fa fa-archive mobile-nav-icon" aria-hidden="true"></span>
       归档
     </a>
   
     
     <a href="/categories" class="mobile-nav-link">
-      
+      <span class="fa fa-folder-open-o mobile-nav-icon" aria-hidden="true"></span>
       分类
     </a>
   
     
     <a href="/tags" class="mobile-nav-link">
-      
-      标签
-    </a>
-  
-    
-    <a href="/" class="mobile-nav-link">
-      <span class="fa fa-home mobile-nav-icon" aria-hidden="true"></span>
-      Home
-    </a>
-  
-    
-    <a href="/archives" class="mobile-nav-link">
-      <span class="fa fa-archive mobile-nav-icon" aria-hidden="true"></span>
-      Archives
-    </a>
-  
-    
-    <a href="/categories" class="mobile-nav-link">
-      <span class="fa fa-folder-open-o mobile-nav-icon" aria-hidden="true"></span>
-      Categories
-    </a>
-  
-    
-    <a href="/tags" class="mobile-nav-link">
       <span class="fa fa-tags mobile-nav-icon" aria-hidden="true"></span>
-      Tags
-    </a>
-  
-    
-    <a href="/" class="mobile-nav-link">
-      <span class="fa fa-clock-o mobile-nav-icon" aria-hidden="true"></span>
-      Recent Posts
+      标签
     </a>
   
 </nav>
